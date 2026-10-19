@@ -1,0 +1,110 @@
+{
+ "ci": {
+  "deploy": [],
+  "files": [],
+  "providers": [],
+  "scheduler": [],
+  "script_files_scanned": 0,
+  "sentry_refs": []
+ },
+ "iac": {
+  "terraform_sentry_files": []
+ },
+ "repo": {
+  "default_branch": "main",
+  "dirty": false,
+  "file_source": "git",
+  "git": true,
+  "name": "<fixture>",
+  "remote": null,
+  "root": ".",
+  "scm": null,
+  "truncated": false,
+  "workspace_files": []
+ },
+ "schema": 1,
+ "secrets": {
+  "token_hits": [],
+  "token_hits_total": 0,
+  "tracked_token_hits": 0
+ },
+ "units": [
+  {
+   "confidence": 0.95,
+   "docs_platform": "javascript/guides/electron",
+   "ecosystem": "js",
+   "evidence": {
+    "framework": [
+     "package.json:deps:electron"
+    ]
+   },
+   "framework": "electron",
+   "framework_label": "Electron",
+   "framework_module": "platforms/electron",
+   "framework_version": "33.2.1",
+   "id": "electron",
+   "library": false,
+   "manifests": [
+    "package.json"
+   ],
+   "overlays": [],
+   "package_manager": "npm",
+   "platforms": [],
+   "role": "desktop",
+   "root": ".",
+   "secrets": {
+    "sensitive_files": {},
+    "token_hits": 0,
+    "tracked_token_hits": 0
+   },
+   "sentry": {
+    "build": {},
+    "config_files": [],
+    "config_snapshot": [
+     {
+      "file": "src/main.js",
+      "options": {}
+     },
+     {
+      "file": "src/renderer.js",
+      "options": {}
+     }
+    ],
+    "dsn_literals": [
+     {
+      "file": "src/main.js",
+      "host": "o123456.ingest.us.sentry.io",
+      "line": 5,
+      "project_id": "1234567",
+      "region": "us"
+     }
+    ],
+    "dsn_sources": [],
+    "init_sites": [
+     {
+      "file": "src/main.js",
+      "line": 5,
+      "text": "Sentry.init({ dsn: 'https://0123456789abcdef0123456789abcdef@o123456.ingest.us.sentry.io/1234567' });"
+     },
+     {
+      "file": "src/renderer.js",
+      "line": 3,
+      "text": "Sentry.init({});"
+     }
+    ],
+    "legacy": [],
+    "notes": [],
+    "packages": [
+     {
+      "declared": "^6.2.0",
+      "name": "@sentry/electron",
+      "resolved": "6.2.0"
+     }
+    ],
+    "status": "present"
+   },
+   "signals": {},
+   "wizard": "electron"
+  }
+ ]
+}

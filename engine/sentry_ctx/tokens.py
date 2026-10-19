@@ -17,8 +17,9 @@ CONTEXT_HEX = re.compile(
 )
 DSN = re.compile(r"https?://[a-f0-9]{32}@[^/\s\"']+/\d+")
 ANY_PREFIXED = re.compile(r"sntry[usai]_[A-Za-z0-9+/=_-]{16,}")
+# Any prefixed credential is masked even when truncated (a clipped token must not leak its head).
 MASK_RE = re.compile(
-    r"(sntryu_[a-f0-9]{64}|sntrys_[A-Za-z0-9+/=]+_[A-Za-z0-9+/]{43}|sntry[ai]_[a-f0-9]{64})"
+    r"(sntry[usai]_[A-Za-z0-9+/=_-]{8,})"
     r"""|((?i:SENTRY_AUTH_TOKEN|SENTRY_TOKEN|authToken|auth\.token|auth_token|client_secret)["']?\s*[:=]\s*["']?)([a-f0-9]{64})\b"""
 )
 
@@ -34,6 +35,11 @@ def mask(text: str) -> str:
     if not text:
         return text
     return MASK_RE.sub(_mask_match, text)
+
+
+def clip(text: str, n: int) -> str:
+    """Mask first, then truncate: truncating first would cut a token below the pattern and leak its head."""
+    return mask(text)[:n]
 
 
 def find_tokens(text: str):

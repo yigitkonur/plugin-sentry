@@ -1,0 +1,58 @@
+lockfileVersion: '9.0'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+importers:
+
+  .:
+    devDependencies:
+      turbo:
+        specifier: ^2.3.3
+        version: 2.3.3
+
+  apps/web:
+    dependencies:
+      react:
+        specifier: ^19.0.0
+        version: 19.0.0
+      react-dom:
+        specifier: ^19.0.0
+        version: 19.0.0(react@19.0.0)
+    devDependencies:
+      vite:
+        specifier: ^6.0.3
+        version: 6.0.3
+
+  packages/ui:
+    devDependencies:
+      react:
+        specifier: ^19.0.0
+        version: 19.0.0
+
+packages:
+
+  react-dom@19.0.0:
+    resolution: {integrity: sha512-ZmFrZQ==}
+
+  react@19.0.0:
+    resolution: {integrity: sha512-ZmFrZQ==}
+
+  turbo@2.3.3:
+    resolution: {integrity: sha512-ZmFrZQ==}
+
+  vite@6.0.3:
+    resolution: {integrity: sha512-ZmFrZQ==}
+
+snapshots:
+
+  react-dom@19.0.0(react@19.0.0):
+    dependencies:
+      react: 19.0.0
+
+  react@19.0.0: {}
+
+  turbo@2.3.3: {}
+
+  vite@6.0.3: {}

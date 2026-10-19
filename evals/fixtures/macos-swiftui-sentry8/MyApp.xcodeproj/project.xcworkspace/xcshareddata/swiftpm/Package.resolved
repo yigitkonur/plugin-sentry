@@ -1,0 +1,8 @@
+{
+  "originHash" : "00000000000000000000000000000000000000000000000000000000deadbeef",
+  "pins" : [
+    { "identity" : "sentry-cocoa", "kind" : "remoteSourceControl", "location" : "https://github.com/getsentry/sentry-cocoa", "state" : { "revision" : "1111111111111111111111111111111111111111", "version" : "8.44.0" } },
+    { "identity" : "sparkle", "kind" : "remoteSourceControl", "location" : "https://github.com/sparkle-project/Sparkle", "state" : { "revision" : "2222222222222222222222222222222222222222", "version" : "2.6.4" } }
+  ],
+  "version" : 3
+}

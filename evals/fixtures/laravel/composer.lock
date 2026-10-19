@@ -1,0 +1,23 @@
+{
+    "_readme": ["This file locks the dependencies of your project to a known state"],
+    "content-hash": "0000000000000000000000000000fake",
+    "packages": [
+        {
+            "name": "laravel/framework",
+            "version": "v11.31.0",
+            "type": "library"
+        },
+        {
+            "name": "sentry/sentry",
+            "version": "4.10.0",
+            "type": "library"
+        },
+        {
+            "name": "sentry/sentry-laravel",
+            "version": "4.10.0",
+            "type": "library"
+        }
+    ],
+    "packages-dev": [],
+    "platform": { "php": "^8.3" }
+}

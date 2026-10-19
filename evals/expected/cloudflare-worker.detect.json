@@ -1,0 +1,111 @@
+{
+ "ci": {
+  "deploy": [],
+  "files": [],
+  "providers": [],
+  "scheduler": [],
+  "script_files_scanned": 0,
+  "sentry_refs": []
+ },
+ "iac": {
+  "terraform_sentry_files": []
+ },
+ "repo": {
+  "default_branch": "main",
+  "dirty": false,
+  "file_source": "git",
+  "git": true,
+  "name": "<fixture>",
+  "remote": null,
+  "root": ".",
+  "scm": null,
+  "truncated": false,
+  "workspace_files": []
+ },
+ "schema": 1,
+ "secrets": {
+  "token_hits": [],
+  "token_hits_total": 0,
+  "tracked_token_hits": 0
+ },
+ "units": [
+  {
+   "confidence": 0.95,
+   "docs_platform": "javascript/guides/hono",
+   "ecosystem": "js",
+   "evidence": {
+    "framework": [
+     "package.json:deps:hono"
+    ]
+   },
+   "framework": "hono",
+   "framework_label": "Hono",
+   "framework_module": "platforms/hono",
+   "framework_version": "4.6.14",
+   "id": "cloudflare-worker",
+   "library": false,
+   "manifests": [
+    "package.json"
+   ],
+   "overlays": [
+    "cloudflare"
+   ],
+   "package_manager": "npm",
+   "platforms": [],
+   "role": "serverless",
+   "root": ".",
+   "secrets": {
+    "sensitive_files": {},
+    "token_hits": 0,
+    "tracked_token_hits": 0
+   },
+   "sentry": {
+    "build": {},
+    "config_files": [],
+    "config_snapshot": [
+     {
+      "file": "src/index.ts",
+      "options": {
+       "tracesSampleRate": "1.0 }"
+      }
+     }
+    ],
+    "dsn_literals": [],
+    "dsn_sources": [
+     {
+      "file": "src/index.ts",
+      "kind": "code",
+      "line": 4,
+      "name": "SENTRY_DSN"
+     }
+    ],
+    "init_sites": [
+     {
+      "file": "src/index.ts",
+      "line": 11,
+      "text": "export default Sentry.withSentry("
+     }
+    ],
+    "legacy": [],
+    "notes": [],
+    "packages": [
+     {
+      "declared": "11.8.0",
+      "name": "@sentry/cloudflare",
+      "resolved": "11.8.0"
+     }
+    ],
+    "status": "present"
+   },
+   "signals": {
+    "deploy": [
+     "cloudflare (wrangler.jsonc)"
+    ],
+    "scheduler": [
+     "cloudflare-cron-trigger (wrangler.jsonc)"
+    ]
+   },
+   "wizard": null
+  }
+ ]
+}

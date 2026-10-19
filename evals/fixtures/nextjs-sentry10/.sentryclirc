@@ -1,0 +1,6 @@
+[auth]
+token=__FAKE_ORG_TOKEN__
+
+[defaults]
+org=acme
+project=web

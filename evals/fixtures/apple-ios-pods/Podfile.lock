@@ -1,0 +1,14 @@
+PODS:
+  - Sentry (8.36.0):
+    - Sentry/Core (= 8.36.0)
+  - Sentry/Core (8.36.0)
+
+DEPENDENCIES:
+  - Sentry (~> 8.36)
+
+SPEC CHECKSUMS:
+  Sentry: 2a4b8c1d3e5f60718293a4b5c6d7e8f90a1b2c3d
+
+PODFILE CHECKSUM: 0123456789abcdef0123456789abcdef01234567
+
+COCOAPODS: 1.15.2

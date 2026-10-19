@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "dependencies": {
+    "net8.0": {
+      "Sentry.AspNetCore": {
+        "type": "Direct",
+        "requested": "[5.1.0, )",
+        "resolved": "5.1.0",
+        "dependencies": { "Sentry": "5.1.0" }
+      },
+      "Sentry": {
+        "type": "Transitive",
+        "resolved": "5.1.0"
+      }
+    }
+  }
+}

@@ -86,5 +86,9 @@
  {
   "id": "sentry-upload-ci",
   "regex": "SENTRY_AUTH_TOKEN"
+ },
+ {
+  "id": "token-on-command-line",
+  "regex": "--auth-token[ =]\\S+"
  }
 ]

@@ -1,0 +1,8 @@
+:concurrency: 5
+:queues:
+  - default
+  - mailers
+:scheduler:
+  nightly_report:
+    cron: "0 2 * * *"
+    class: NightlyReportJob

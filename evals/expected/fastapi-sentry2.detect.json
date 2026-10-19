@@ -1,0 +1,128 @@
+{
+ "ci": {
+  "deploy": [],
+  "files": [],
+  "providers": [],
+  "scheduler": [],
+  "script_files_scanned": 1,
+  "sentry_refs": []
+ },
+ "iac": {
+  "terraform_sentry_files": []
+ },
+ "repo": {
+  "default_branch": "main",
+  "dirty": false,
+  "file_source": "git",
+  "git": true,
+  "name": "<fixture>",
+  "remote": null,
+  "root": ".",
+  "scm": null,
+  "truncated": false,
+  "workspace_files": []
+ },
+ "schema": 1,
+ "secrets": {
+  "token_hits": [],
+  "token_hits_total": 0,
+  "tracked_token_hits": 0
+ },
+ "units": [
+  {
+   "confidence": 0.95,
+   "docs_platform": "python/integrations/fastapi",
+   "ecosystem": "python",
+   "evidence": {
+    "framework": [
+     "pyproject.toml:deps:fastapi"
+    ]
+   },
+   "framework": "fastapi",
+   "framework_label": "FastAPI",
+   "framework_module": "platforms/fastapi",
+   "framework_version": "0.115.6",
+   "id": "fastapi-sentry2",
+   "library": false,
+   "manifests": [
+    "pyproject.toml"
+   ],
+   "overlays": [],
+   "package_manager": "uv",
+   "platforms": [],
+   "role": "backend",
+   "root": ".",
+   "secrets": {
+    "sensitive_files": {},
+    "token_hits": 0,
+    "tracked_token_hits": 0
+   },
+   "sentry": {
+    "build": {},
+    "config_files": [],
+    "config_snapshot": [
+     {
+      "file": "app/main.py",
+      "options": {
+       "enable_logs": "True}",
+       "include_local_variables": "True",
+       "integrations": "[LoggingIntegration(level=logging.INFO",
+       "profiles_sample_rate": "1.0",
+       "send_default_pii": "True",
+       "traces_sample_rate": "1.0"
+      }
+     }
+    ],
+    "dsn_literals": [],
+    "dsn_sources": [
+     {
+      "file": "app/main.py",
+      "kind": "code",
+      "line": 14,
+      "name": "SENTRY_DSN"
+     }
+    ],
+    "init_sites": [
+     {
+      "file": "app/main.py",
+      "line": 13,
+      "text": "sentry_sdk.init("
+     }
+    ],
+    "legacy": [],
+    "notes": [],
+    "packages": [
+     {
+      "declared": ">=2.0",
+      "name": "sentry-sdk",
+      "resolved": "2.72.0"
+     }
+    ],
+    "status": "present"
+   },
+   "signals": {
+    "ai": [
+     "anthropic"
+    ],
+    "db": [
+     "sqlalchemy",
+     "psycopg"
+    ],
+    "deploy": [
+     "docker (Dockerfile)"
+    ],
+    "logging": [
+     "stdlib-logging (app/main.py)"
+    ],
+    "scheduler": [
+     "apscheduler",
+     "py-schedule (app/jobs.py)"
+    ],
+    "service": [
+     "listens-on-port (Dockerfile)"
+    ]
+   },
+   "wizard": null
+  }
+ ]
+}

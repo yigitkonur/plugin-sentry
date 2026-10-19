@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+    <SentryOrg>acme</SentryOrg>
+    <SentryProject>api</SentryProject>
+    <SentryUploadSymbols>true</SentryUploadSymbols>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Sentry.AspNetCore" Version="5.1.0" />
+  </ItemGroup>
+
+</Project>

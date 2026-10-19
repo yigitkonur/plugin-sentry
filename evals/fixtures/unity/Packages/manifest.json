@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "com.unity.ugui": "1.0.0",
+    "io.sentry.unity": "https://github.com/getsentry/unity.git#4.10.3"
+  }
+}

@@ -1,0 +1,131 @@
+{
+ "ci": {
+  "deploy": [],
+  "files": [],
+  "providers": [],
+  "scheduler": [],
+  "script_files_scanned": 1,
+  "sentry_refs": []
+ },
+ "iac": {
+  "terraform_sentry_files": []
+ },
+ "repo": {
+  "default_branch": "main",
+  "dirty": false,
+  "file_source": "git",
+  "git": true,
+  "name": "<fixture>",
+  "remote": null,
+  "root": ".",
+  "scm": null,
+  "truncated": false,
+  "workspace_files": [
+   "."
+  ]
+ },
+ "schema": 1,
+ "secrets": {
+  "token_hits": [],
+  "token_hits_total": 0,
+  "tracked_token_hits": 0
+ },
+ "units": [
+  {
+   "confidence": 0.95,
+   "docs_platform": "java/guides/spring-boot",
+   "ecosystem": "jvm",
+   "evidence": {
+    "framework": [
+     "build.gradle.kts:deps:org.springframework.boot"
+    ]
+   },
+   "framework": "spring-boot",
+   "framework_label": "Spring Boot",
+   "framework_module": "platforms/spring-boot",
+   "framework_version": "3.3.5",
+   "id": "spring-boot",
+   "library": false,
+   "manifests": [
+    "build.gradle.kts"
+   ],
+   "overlays": [],
+   "package_manager": null,
+   "platforms": [],
+   "role": "backend",
+   "root": ".",
+   "secrets": {
+    "sensitive_files": {},
+    "token_hits": 0,
+    "tracked_token_hits": 0
+   },
+   "sentry": {
+    "build": {
+     "gradle-jvm-plugin": "build.gradle.kts:5"
+    },
+    "config_files": [],
+    "config_snapshot": [
+     {
+      "file": "src/main/resources/application.properties",
+      "kind": "config",
+      "options": {
+       "send-default-pii": "true",
+       "traces-sample-rate": "1.0"
+      }
+     }
+    ],
+    "dsn_literals": [],
+    "dsn_sources": [
+     {
+      "file": "src/main/resources/application.properties",
+      "kind": "config",
+      "line": 3,
+      "name": "sentry.dsn"
+     },
+     {
+      "file": "src/main/resources/application.properties",
+      "kind": "config",
+      "line": 3,
+      "name": "SENTRY_DSN"
+     }
+    ],
+    "init_sites": [
+     {
+      "file": "src/main/resources/application.properties",
+      "kind": "config",
+      "line": 3,
+      "text": "sentry.dsn=${SENTRY_DSN}"
+     }
+    ],
+    "legacy": [],
+    "notes": [],
+    "packages": [
+     {
+      "declared": "5.0.0",
+      "kind": "tooling",
+      "name": "io.sentry.jvm.gradle",
+      "resolved": "5.0.0"
+     },
+     {
+      "declared": "8.20.0",
+      "name": "io.sentry:sentry-spring-boot-starter-jakarta",
+      "resolved": "8.20.0"
+     }
+    ],
+    "status": "present"
+   },
+   "signals": {
+    "deploy": [
+     "docker (Dockerfile)"
+    ],
+    "scheduler": [
+     "spring-@Scheduled (src/main/java/com/example/NightlyJob.java)"
+    ],
+    "service": [
+     "listens-on-port (Dockerfile)"
+    ]
+   },
+   "wizard": null
+  }
+ ]
+}

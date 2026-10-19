@@ -1,0 +1,61 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXNativeTarget section */
+		A1000001 /* MyApp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A1000010 /* Build configuration list for PBXNativeTarget "MyApp" */;
+			buildPhases = (
+				A1000020 /* Upload Debug Symbols */,
+			);
+			name = MyApp;
+			productName = MyApp;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		A1000020 /* Upload Debug Symbols */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			name = "Upload Debug Symbols";
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "sentry-cli debug-files upload --include-sources \"$DWARF_DSYM_FOLDER_PATH\"";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		A1000030 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				SDKROOT = iphoneos;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.MyApp;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				INFOPLIST_FILE = MyApp/Info.plist;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A1000010 /* Build configuration list for PBXNativeTarget "MyApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A1000030 /* Release */,
+			);
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = A1000000 /* Project object */;
+}

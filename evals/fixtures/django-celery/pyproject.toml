@@ -1,0 +1,10 @@
+[project]
+name = "django-celery"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = [
+    "django>=5.1,<5.2",
+    "celery>=5.4,<5.5",
+    "psycopg[binary]>=3.2",
+    "sentry-sdk[django,celery]>=2.0",
+]

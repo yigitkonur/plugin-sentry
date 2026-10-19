@@ -94,10 +94,9 @@ def _framework_for(unit, texts_hint=None):
         elif rule["dep"] == ".*":
             hit = "(default)"
         else:
-            for d in depnames:
-                if rx.match(d):
-                    hit = d
-                    break
+            matches = [d for d in depnames if rx.match(d)]
+            versioned = [d for d in matches if unit["_deps"].get(d)]
+            hit = (versioned or matches or [None])[0]
         if not hit:
             continue
         if rule.get("overlay"):
@@ -174,7 +173,7 @@ def detect(root: str, include_tests: bool = False) -> dict:
     for c in cands:
         if c["workspace_root"] and has_children(c) and not sdk_dep(c):
             rule, _, _ = _framework_for(c)
-            if rule is None or rule["priority"] <= 10:
+            if data("ecosystems.json")[c["ecosystem"]].get("container_root") or rule is None or rule["priority"] <= 10:
                 continue
         kept.append(c)
     cands = kept
@@ -289,9 +288,13 @@ def _classify(unit, c, root, udir, fileset):
                 break
         unit["package_manager"] = unit["package_manager"] or "pip"
     # resolved versions for the framework dependency
-    if unit["framework"] and c["_hit"] and c["_hit"] not in ("(default)",):
+    if unit["framework"] and c["_hit"] and c["_hit"] not in ("(default)",) and not (rule or {}).get("no_version"):
         res = lockfiles.resolve(eco, udir, root, [c["_hit"]])
         unit["framework_version"] = res.get(c["_hit"]) or _clean_spec(deps.get(c["_hit"]))
+        if c["_hit"] == "flutter":
+            unit["framework_version"] = None
+    if not unit["framework_version"] and meta.get("target_framework"):
+        unit["framework_version"] = meta["target_framework"]
     # ----- ecosystem-independent library / role refinements driven by manifest meta
     src_text_cache: dict = {}
 

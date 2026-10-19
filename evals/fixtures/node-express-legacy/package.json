@@ -1,0 +1,14 @@
+{
+  "name": "node-express-legacy",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.0",
+    "raven": "^2.6.4",
+    "@sentry/node": "^7.120.0",
+    "@sentry/tracing": "^7.120.0"
+  }
+}

@@ -1,0 +1,148 @@
+{
+ "ci": {
+  "deploy": [],
+  "files": [
+   ".github/workflows/deploy.yml"
+  ],
+  "providers": [
+   "github-actions"
+  ],
+  "scheduler": [],
+  "script_files_scanned": 0,
+  "sentry_refs": [
+   {
+    "file": ".github/workflows/deploy.yml",
+    "kind": "sentry-upload-ci",
+    "line": 10,
+    "set_x_in_file": false,
+    "text": "SENTRY_AUTH_TOKEN: sntrys_****",
+    "where": "ci"
+   }
+  ]
+ },
+ "iac": {
+  "terraform_sentry_files": []
+ },
+ "repo": {
+  "default_branch": "main",
+  "dirty": false,
+  "file_source": "git",
+  "git": true,
+  "name": "<fixture>",
+  "remote": null,
+  "root": ".",
+  "scm": null,
+  "truncated": false,
+  "workspace_files": []
+ },
+ "schema": 1,
+ "secrets": {
+  "token_hits": [
+   {
+    "file": ".env",
+    "kind": "user",
+    "line": 1,
+    "tracked": true
+   },
+   {
+    "file": ".env.production",
+    "kind": "org",
+    "line": 1,
+    "tracked": true
+   },
+   {
+    "file": ".github/workflows/deploy.yml",
+    "kind": "org",
+    "line": 10,
+    "tracked": true
+   },
+   {
+    "file": ".sentryclirc",
+    "kind": "org",
+    "line": 2,
+    "tracked": true
+   }
+  ],
+  "token_hits_total": 4,
+  "tracked_token_hits": 4
+ },
+ "units": [
+  {
+   "confidence": 0.95,
+   "docs_platform": "javascript/guides/express",
+   "ecosystem": "js",
+   "evidence": {
+    "framework": [
+     "package.json:deps:express"
+    ]
+   },
+   "framework": "express",
+   "framework_label": "Express",
+   "framework_module": "platforms/express",
+   "framework_version": "4.19.0",
+   "id": "token-leak",
+   "library": false,
+   "manifests": [
+    "package.json"
+   ],
+   "overlays": [],
+   "package_manager": null,
+   "platforms": [],
+   "role": "backend",
+   "root": ".",
+   "secrets": {
+    "sensitive_files": {
+     ".sentryclirc": "tracked"
+    },
+    "token_hits": 4,
+    "tracked_token_hits": 4
+   },
+   "sentry": {
+    "build": {},
+    "config_files": [
+     ".sentryclirc"
+    ],
+    "config_snapshot": [],
+    "dsn_literals": [
+     {
+      "file": ".env",
+      "host": "o123456.ingest.us.sentry.io",
+      "line": 2,
+      "project_id": "1234567",
+      "region": "us"
+     }
+    ],
+    "dsn_sources": [
+     {
+      "file": ".env",
+      "has_value": true,
+      "kind": "env-file",
+      "line": 1,
+      "name": "SENTRY_AUTH_TOKEN"
+     },
+     {
+      "file": ".env",
+      "has_value": true,
+      "kind": "env-file",
+      "line": 2,
+      "name": "SENTRY_DSN"
+     },
+     {
+      "file": ".env.production",
+      "has_value": true,
+      "kind": "env-file",
+      "line": 1,
+      "name": "NEXT_PUBLIC_SENTRY_AUTH_TOKEN"
+     }
+    ],
+    "init_sites": [],
+    "legacy": [],
+    "notes": [],
+    "packages": [],
+    "status": "absent"
+   },
+   "signals": {},
+   "wizard": null
+  }
+ ]
+}

@@ -1,0 +1,128 @@
+{
+ "ci": {
+  "deploy": [],
+  "files": [],
+  "providers": [],
+  "scheduler": [],
+  "script_files_scanned": 0,
+  "sentry_refs": []
+ },
+ "iac": {
+  "terraform_sentry_files": []
+ },
+ "repo": {
+  "default_branch": "main",
+  "dirty": false,
+  "file_source": "git",
+  "git": true,
+  "name": "<fixture>",
+  "remote": null,
+  "root": ".",
+  "scm": null,
+  "truncated": false,
+  "workspace_files": []
+ },
+ "schema": 1,
+ "secrets": {
+  "token_hits": [],
+  "token_hits_total": 0,
+  "tracked_token_hits": 0
+ },
+ "units": [
+  {
+   "confidence": 0.95,
+   "docs_platform": "php/guides/laravel",
+   "ecosystem": "php",
+   "evidence": {
+    "framework": [
+     "composer.json:deps:laravel/framework"
+    ]
+   },
+   "framework": "laravel",
+   "framework_label": "Laravel",
+   "framework_module": "platforms/laravel",
+   "framework_version": "11.31.0",
+   "id": "laravel",
+   "library": false,
+   "manifests": [
+    "composer.json"
+   ],
+   "overlays": [],
+   "package_manager": null,
+   "platforms": [],
+   "role": "backend",
+   "root": ".",
+   "secrets": {
+    "sensitive_files": {},
+    "token_hits": 0,
+    "tracked_token_hits": 0
+   },
+   "sentry": {
+    "build": {},
+    "config_files": [
+     "config/sentry.php"
+    ],
+    "config_snapshot": [
+     {
+      "file": "bootstrap/app.php",
+      "options": {}
+     },
+     {
+      "file": "config/sentry.php",
+      "kind": "config",
+      "options": {
+       "environment": "env('APP_ENV'",
+       "release": "env('SENTRY_RELEASE'",
+       "send_default_pii": "true",
+       "traces_sample_rate": "1.0"
+      }
+     }
+    ],
+    "dsn_literals": [],
+    "dsn_sources": [
+     {
+      "file": "config/sentry.php",
+      "kind": "code",
+      "line": 4,
+      "name": "SENTRY_LARAVEL_DSN"
+     }
+    ],
+    "init_sites": [
+     {
+      "file": "bootstrap/app.php",
+      "line": 17,
+      "text": "\\Sentry\\Laravel\\Integration::handles($exceptions);"
+     },
+     {
+      "file": "config/sentry.php",
+      "kind": "config",
+      "line": 4,
+      "text": "'dsn' => env('SENTRY_LARAVEL_DSN'),"
+     }
+    ],
+    "legacy": [],
+    "notes": [],
+    "packages": [
+     {
+      "declared": "^4.10",
+      "name": "sentry/sentry-laravel",
+      "resolved": "4.10.0"
+     }
+    ],
+    "status": "present"
+   },
+   "signals": {
+    "cache": [
+     "laravel/framework"
+    ],
+    "db": [
+     "laravel/framework"
+    ],
+    "scheduler": [
+     "laravel/framework"
+    ]
+   },
+   "wizard": null
+  }
+ ]
+}

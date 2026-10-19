@@ -1,0 +1,16 @@
+{
+  "name": "ci-sentry-cli-v3",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "vite build"
+  },
+  "dependencies": {
+    "@sentry/browser": "^8.50.0"
+  },
+  "devDependencies": {
+    "vite": "^6.0.3",
+    "typescript": "^5.7.2"
+  }
+}

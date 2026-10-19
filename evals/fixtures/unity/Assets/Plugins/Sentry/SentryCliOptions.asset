@@ -1,0 +1,11 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_Name: SentryCliOptions
+  m_EditorClassIdentifier: 
+  UploadSymbols: 1
+  Auth: __FAKE_ORG_TOKEN__
+  Organization: acme
+  Project: unity-game

@@ -1,0 +1,123 @@
+{
+ "ci": {
+  "deploy": [],
+  "files": [],
+  "providers": [],
+  "scheduler": [],
+  "script_files_scanned": 0,
+  "sentry_refs": []
+ },
+ "iac": {
+  "terraform_sentry_files": []
+ },
+ "repo": {
+  "default_branch": "main",
+  "dirty": false,
+  "file_source": "git",
+  "git": true,
+  "name": "<fixture>",
+  "remote": null,
+  "root": ".",
+  "scm": null,
+  "truncated": false,
+  "workspace_files": []
+ },
+ "schema": 1,
+ "secrets": {
+  "token_hits": [],
+  "token_hits_total": 0,
+  "tracked_token_hits": 0
+ },
+ "units": [
+  {
+   "confidence": 0.95,
+   "docs_platform": "react-native/manual-setup/expo",
+   "ecosystem": "js",
+   "evidence": {
+    "framework": [
+     "package.json:deps:expo"
+    ]
+   },
+   "framework": "expo",
+   "framework_label": "Expo / React Native",
+   "framework_module": "platforms/react-native",
+   "framework_version": "52.0.20",
+   "id": "expo",
+   "library": false,
+   "manifests": [
+    "package.json"
+   ],
+   "native_subprojects": [
+    {
+     "ecosystem": "jvm",
+     "root": "android"
+    },
+    {
+     "ecosystem": "jvm",
+     "root": "android/app"
+    },
+    {
+     "ecosystem": "apple",
+     "root": "ios"
+    }
+   ],
+   "overlays": [],
+   "package_manager": "yarn",
+   "platforms": [],
+   "role": "mobile",
+   "root": ".",
+   "secrets": {
+    "sensitive_files": {},
+    "token_hits": 0,
+    "tracked_token_hits": 0
+   },
+   "sentry": {
+    "build": {
+     "rn-expo-plugin": "app.json:15"
+    },
+    "config_files": [],
+    "config_snapshot": [
+     {
+      "file": "App.tsx",
+      "options": {
+       "tracesSampleRate": "1.0 }"
+      }
+     }
+    ],
+    "dsn_literals": [],
+    "dsn_sources": [
+     {
+      "file": "App.tsx",
+      "kind": "code",
+      "line": 4,
+      "name": "EXPO_PUBLIC_SENTRY_DSN"
+     }
+    ],
+    "init_sites": [
+     {
+      "file": "App.tsx",
+      "line": 4,
+      "text": "Sentry.init({ dsn: process.env.EXPO_PUBLIC_SENTRY_DSN, tracesSampleRate: 1.0 });"
+     },
+     {
+      "file": "App.tsx",
+      "line": 14,
+      "text": "export default Sentry.wrap(App);"
+     }
+    ],
+    "legacy": [],
+    "notes": [],
+    "packages": [
+     {
+      "declared": "~6.10.0",
+      "name": "@sentry/react-native",
+      "resolved": "6.10.0"
+     }
+    ],
+    "status": "present"
+   },
+   "signals": {},
+   "wizard": null
+  }
+ ]
+}

@@ -1,0 +1,263 @@
+{
+ "ci": {
+  "deploy": [],
+  "files": [],
+  "providers": [],
+  "scheduler": [],
+  "script_files_scanned": 0,
+  "sentry_refs": []
+ },
+ "iac": {
+  "terraform_sentry_files": []
+ },
+ "repo": {
+  "default_branch": "main",
+  "dirty": false,
+  "file_source": "git",
+  "git": true,
+  "name": "<fixture>",
+  "remote": null,
+  "root": ".",
+  "scm": null,
+  "truncated": false,
+  "workspace_files": [
+   "."
+  ]
+ },
+ "schema": 1,
+ "secrets": {
+  "token_hits": [],
+  "token_hits_total": 0,
+  "tracked_token_hits": 0
+ },
+ "units": [
+  {
+   "confidence": 0.95,
+   "docs_platform": "javascript/guides/react",
+   "ecosystem": "js",
+   "evidence": {
+    "framework": [
+     "apps/web/package.json:deps:react"
+    ]
+   },
+   "framework": "react",
+   "framework_label": "React (SPA)",
+   "framework_module": "platforms/react",
+   "framework_version": "19.0.0",
+   "id": "web",
+   "library": false,
+   "manifests": [
+    "apps/web/package.json"
+   ],
+   "overlays": [],
+   "package_manager": "pnpm",
+   "platforms": [],
+   "role": "frontend",
+   "root": "apps/web",
+   "secrets": {
+    "sensitive_files": {},
+    "token_hits": 0,
+    "tracked_token_hits": 0
+   },
+   "sentry": {
+    "build": {},
+    "config_files": [],
+    "config_snapshot": [],
+    "dsn_literals": [],
+    "dsn_sources": [],
+    "init_sites": [],
+    "legacy": [],
+    "notes": [],
+    "packages": [],
+    "status": "absent"
+   },
+   "signals": {},
+   "wizard": null
+  },
+  {
+   "confidence": 0.95,
+   "docs_platform": "javascript/guides/react",
+   "ecosystem": "js",
+   "evidence": {
+    "framework": [
+     "packages/ui/package.json:deps:react"
+    ]
+   },
+   "framework": "react",
+   "framework_label": "React (SPA)",
+   "framework_module": "platforms/react",
+   "framework_version": "19.0.0",
+   "id": "ui",
+   "library": true,
+   "manifests": [
+    "packages/ui/package.json"
+   ],
+   "overlays": [],
+   "package_manager": "pnpm",
+   "platforms": [],
+   "role": "library",
+   "root": "packages/ui",
+   "secrets": {
+    "sensitive_files": {},
+    "token_hits": 0,
+    "tracked_token_hits": 0
+   },
+   "sentry": {
+    "build": {},
+    "config_files": [],
+    "config_snapshot": [],
+    "dsn_literals": [],
+    "dsn_sources": [],
+    "init_sites": [],
+    "legacy": [],
+    "notes": [],
+    "packages": [],
+    "status": "absent"
+   },
+   "signals": {},
+   "wizard": null
+  },
+  {
+   "confidence": 0.95,
+   "docs_platform": "python/integrations/fastapi",
+   "ecosystem": "python",
+   "evidence": {
+    "framework": [
+     "services/api/pyproject.toml:deps:fastapi"
+    ]
+   },
+   "framework": "fastapi",
+   "framework_label": "FastAPI",
+   "framework_module": "platforms/fastapi",
+   "framework_version": "0.115.6",
+   "id": "api",
+   "library": false,
+   "manifests": [
+    "services/api/pyproject.toml"
+   ],
+   "overlays": [],
+   "package_manager": "uv",
+   "platforms": [],
+   "role": "backend",
+   "root": "services/api",
+   "secrets": {
+    "sensitive_files": {},
+    "token_hits": 0,
+    "tracked_token_hits": 0
+   },
+   "sentry": {
+    "build": {},
+    "config_files": [],
+    "config_snapshot": [
+     {
+      "file": "services/api/app/main.py",
+      "options": {
+       "traces_sample_rate": "0.2"
+      }
+     }
+    ],
+    "dsn_literals": [],
+    "dsn_sources": [
+     {
+      "file": "services/api/app/main.py",
+      "kind": "code",
+      "line": 6,
+      "name": "SENTRY_DSN"
+     }
+    ],
+    "init_sites": [
+     {
+      "file": "services/api/app/main.py",
+      "line": 6,
+      "text": "sentry_sdk.init(dsn=os.environ.get(\"SENTRY_DSN\"), traces_sample_rate=0.2)"
+     }
+    ],
+    "legacy": [],
+    "notes": [],
+    "packages": [
+     {
+      "declared": ">=2.0",
+      "name": "sentry-sdk",
+      "resolved": "2.72.0"
+     }
+    ],
+    "status": "present"
+   },
+   "signals": {},
+   "wizard": null
+  },
+  {
+   "confidence": 0.95,
+   "docs_platform": "python/integrations/celery",
+   "ecosystem": "python",
+   "evidence": {
+    "framework": [
+     "services/worker/pyproject.toml:deps:celery"
+    ]
+   },
+   "framework": "celery",
+   "framework_label": "Celery",
+   "framework_module": "platforms/celery",
+   "framework_version": "5.4.0",
+   "id": "worker",
+   "library": false,
+   "manifests": [
+    "services/worker/pyproject.toml"
+   ],
+   "overlays": [],
+   "package_manager": "uv",
+   "platforms": [],
+   "role": "worker",
+   "root": "services/worker",
+   "secrets": {
+    "sensitive_files": {},
+    "token_hits": 0,
+    "tracked_token_hits": 0
+   },
+   "sentry": {
+    "build": {},
+    "config_files": [],
+    "config_snapshot": [
+     {
+      "file": "services/worker/worker/celery_app.py",
+      "options": {}
+     }
+    ],
+    "dsn_literals": [],
+    "dsn_sources": [
+     {
+      "file": "services/worker/worker/celery_app.py",
+      "kind": "code",
+      "line": 6,
+      "name": "SENTRY_DSN"
+     }
+    ],
+    "init_sites": [
+     {
+      "file": "services/worker/worker/celery_app.py",
+      "line": 6,
+      "text": "sentry_sdk.init(dsn=os.environ.get(\"SENTRY_DSN\"))"
+     }
+    ],
+    "legacy": [],
+    "notes": [
+     "init call found but the SDK is not declared in this unit's manifests (hoisted or shared dependency?)"
+    ],
+    "packages": [],
+    "status": "partial"
+   },
+   "signals": {
+    "cache": [
+     "redis"
+    ],
+    "queue": [
+     "celery"
+    ],
+    "scheduler": [
+     "celery"
+    ]
+   },
+   "wizard": null
+  }
+ ]
+}

@@ -1,0 +1,115 @@
+{
+ "ci": {
+  "deploy": [],
+  "files": [],
+  "providers": [],
+  "scheduler": [],
+  "script_files_scanned": 0,
+  "sentry_refs": []
+ },
+ "iac": {
+  "terraform_sentry_files": []
+ },
+ "repo": {
+  "default_branch": "main",
+  "dirty": false,
+  "file_source": "git",
+  "git": true,
+  "name": "<fixture>",
+  "remote": null,
+  "root": ".",
+  "scm": null,
+  "truncated": false,
+  "workspace_files": []
+ },
+ "schema": 1,
+ "secrets": {
+  "token_hits": [
+   {
+    "file": "Assets/Plugins/Sentry/SentryCliOptions.asset",
+    "kind": "org",
+    "line": 9,
+    "tracked": true
+   }
+  ],
+  "token_hits_total": 1,
+  "tracked_token_hits": 1
+ },
+ "units": [
+  {
+   "confidence": 0.7,
+   "docs_platform": "unity",
+   "ecosystem": "unity",
+   "evidence": {
+    "framework": [
+     "Packages/manifest.json"
+    ]
+   },
+   "framework": "unity",
+   "framework_label": "Unity",
+   "framework_module": "platforms/unity",
+   "framework_version": null,
+   "id": "unity",
+   "library": false,
+   "manifests": [
+    "Packages/manifest.json"
+   ],
+   "overlays": [],
+   "package_manager": null,
+   "platforms": [],
+   "role": "game",
+   "root": ".",
+   "secrets": {
+    "sensitive_files": {},
+    "token_hits": 1,
+    "tracked_token_hits": 1
+   },
+   "sentry": {
+    "build": {},
+    "config_files": [
+     "Assets/Plugins/Sentry/SentryCliOptions.asset",
+     "Assets/Resources/Sentry/SentryOptions.asset"
+    ],
+    "config_snapshot": [
+     {
+      "file": "Assets/Resources/Sentry/SentryOptions.asset",
+      "kind": "config",
+      "options": {
+       "TracesSampleRate": "1"
+      }
+     }
+    ],
+    "dsn_literals": [
+     {
+      "file": "Assets/Resources/Sentry/SentryOptions.asset",
+      "host": "o123456.ingest.us.sentry.io",
+      "line": 9,
+      "project_id": "1234567",
+      "region": "us"
+     }
+    ],
+    "dsn_sources": [],
+    "init_sites": [
+     {
+      "file": "Assets/Resources/Sentry/SentryOptions.asset",
+      "kind": "config",
+      "line": 9,
+      "text": "<Dsn>k__BackingField: https://0123456789abcdef0123456789abcdef@o123456.ingest.us.sentry.io/1234567"
+     }
+    ],
+    "legacy": [],
+    "notes": [],
+    "packages": [
+     {
+      "declared": "https://github.com/getsentry/unity.git#4.10.3",
+      "name": "io.sentry.unity",
+      "resolved": "4.10.3"
+     }
+    ],
+    "status": "present"
+   },
+   "signals": {},
+   "wizard": null
+  }
+ ]
+}

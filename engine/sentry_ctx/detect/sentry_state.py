@@ -11,8 +11,8 @@ from . import lockfiles
 _cache: dict = {}
 SENSITIVE_NAMES = [".sentryclirc", ".env.sentry-build-plugin", "sentry.properties", "SentryCliOptions.asset"]
 DSN_RE = re.compile(r"https?://[a-f0-9]{32}@([^/\s\"'`]+)/(\d+)")
-DSN_ENV_RE = re.compile(r"\b[A-Z][A-Z0-9_]*SENTRY[A-Z0-9_]*DSN[A-Z0-9_]*\b|\bSentry__?Dsn\b|\bsentry\.dsn\b")
-ENV_LINE_RE = re.compile(r"^\s*(?:export\s+)?([A-Z][A-Z0-9_]*SENTRY[A-Z0-9_]*)\s*=\s*(.*)$")
+DSN_ENV_RE = re.compile(r"\b[A-Z0-9_]*SENTRY[A-Z0-9_]*DSN[A-Z0-9_]*\b|\bSentry__?Dsn\b|\bsentry\.dsn\b")
+ENV_LINE_RE = re.compile(r"^\s*(?:export\s+)?([A-Z0-9_]*SENTRY[A-Z0-9_]*)\s*=\s*(.*)$")
 TEXT_EXT = {
     ".json", ".yml", ".yaml", ".toml", ".env", ".properties", ".sh", ".bash", ".zsh", ".md", ".mdx", ".txt", ".js", ".jsx",
     ".ts", ".tsx", ".mjs", ".cjs", ".py", ".go", ".rb", ".php", ".cs", ".java", ".kt", ".kts", ".swift", ".m", ".mm", ".xml",
@@ -101,6 +101,7 @@ def attach(unit: dict, root: str, udir: str, tracked: set) -> None:
         if note:
             legacy.append({"name": n, "note": note})
     resolved = lockfiles.resolve(eco, udir, root, sdk_names)
+    tooling_rx = [re.compile(t) for t in spec.get("tooling", [])]
     packages = []
     for n in sorted(sdk_names):
         declared = deps.get(n) or ""
@@ -109,12 +110,17 @@ def attach(unit: dict, root: str, udir: str, tracked: set) -> None:
             res = declared.lstrip("v")
         if not res and eco in ("jvm", "dotnet", "dart", "elixir") and re.match(r"^\d+(\.\d+)*$", declared or ""):
             res = declared
-        packages.append({"name": n, "declared": declared or None, "resolved": res})
+        pkg = {"name": n, "declared": declared or None, "resolved": res}
+        if any(t.match(n) for t in tooling_rx):
+            pkg["kind"] = "tooling"
+        if eco == "unity" and not res and "#" in declared:
+            pkg["resolved"] = declared.split("#", 1)[1].lstrip("v")
+        packages.append(pkg)
     # --- single pass over unit sources
     init_sites, dsn_literals, env_names, sig_src = [], [], {}, {}
     init_rx = re.compile("|".join("(?:%s)" % p for p in spec["init_patterns"]))
     opt_names = data("option_names.json")["options"]
-    opt_rx = re.compile(r"\b(%s)\b\s*[:=]\s*([^\n,;]{1,80})" % "|".join(re.escape(o) for o in opt_names))
+    opt_rx = re.compile(r"""['"]?\b(%s)\b['"]?\s*(?:=>|[:=])\s*([^\n,;]{1,80})""" % "|".join(re.escape(o) for o in opt_names))
     src_sigs = [(s, re.compile(s["regex"])) for s in data("source_signals.json") if s["eco"] in (eco, "*") and s["category"] != "public_url"]
     exts = set(spec["src_exts"])
     scanned = 0
@@ -139,13 +145,13 @@ def attach(unit: dict, root: str, udir: str, tracked: set) -> None:
             lines = text.splitlines()
             for i, line in enumerate(lines, 1):
                 if init_rx.search(line) and len(init_sites) < 25:
-                    init_sites.append({"file": rel, "line": i, "text": tokens.mask(line.strip()[:140])})
+                    init_sites.append({"file": rel, "line": i, "text": tokens.clip(line.strip(), 140)})
             if len(option_snapshots) < 4:
                 start = max(0, _line_of(text, m_init.start()) - 6)
                 window = "\n".join(lines[start:start + 90])
                 opts = {}
                 for m in opt_rx.finditer(window):
-                    opts.setdefault(m.group(1), tokens.mask(m.group(2).strip().rstrip(")").strip()[:80]))
+                    opts.setdefault(m.group(1), tokens.clip(m.group(2).strip().rstrip(")").strip(), 80))
                 option_snapshots.append({"file": rel, "options": opts})
         for m in DSN_RE.finditer(text):
             host = m.group(1)
@@ -174,6 +180,31 @@ def attach(unit: dict, root: str, udir: str, tracked: set) -> None:
                 mm = DSN_RE.search(line)
                 if mm and rel in tracked:
                     dsn_literals.append({"file": rel, "line": i, "host": mm.group(1), "project_id": mm.group(2), "region": _region(mm.group(1))})
+    # --- config-driven init (the SDK is configured in a file instead of an init call)
+    cfg_init = spec.get("config_init", [])
+    if cfg_init:
+        n_ci = 0
+        for rel in unit["_files"]:
+            base = os.path.basename(rel)
+            for ci in cfg_init:
+                if fnmatch.fnmatch(base, ci["glob"]) and (not ci.get("path") or fnmatch.fnmatch(rel, ci["path"])):
+                    n_ci += 1
+                    if n_ci > 80:
+                        break
+                    text = _readable(root, rel, 200_000)
+                    m = re.search(ci["regex"], text)
+                    if m and len(init_sites) < 25:
+                        init_sites.append({"file": rel, "line": _line_of(text, m.start()), "text": tokens.clip(text.splitlines()[_line_of(text, m.start()) - 1].strip(), 140), "kind": "config"})
+                        lines = text.splitlines()
+                        opts = {}
+                        for mm in opt_rx.finditer("\n".join(lines[:200])):
+                            opts.setdefault(mm.group(1), tokens.clip(mm.group(2).strip().rstrip(")").strip(), 80))
+                        if len(option_snapshots) < 6:
+                            option_snapshots.append({"file": rel, "options": opts, "kind": "config"})
+                        for dm in DSN_RE.finditer(text):
+                            dsn_literals.append({"file": rel, "line": _line_of(text, dm.start()), "host": dm.group(1), "project_id": dm.group(2), "region": _region(dm.group(1))})
+                        for em in DSN_ENV_RE.finditer(text):
+                            env_names.setdefault(em.group(0), {"kind": "config", "name": em.group(0), "file": rel, "line": _line_of(text, em.start())})
     # --- config files present
     config_files = []
     cfg_patterns = spec["config_names"]
@@ -215,7 +246,7 @@ def attach(unit: dict, root: str, udir: str, tracked: set) -> None:
         notes.append("SDK declared but no init call found in this unit (initialized elsewhere, or never)")
     if init_sites and not packages:
         notes.append("init call found but the SDK is not declared in this unit's manifests (hoisted or shared dependency?)")
-    majors = sorted({(p["resolved"] or "").split(".")[0] for p in packages if p["resolved"]})
+    majors = sorted({(p["resolved"] or "").split(".")[0] for p in packages if p["resolved"] and p.get("kind") != "tooling"})
     if len(majors) > 1:
         notes.append("multiple SDK majors resolved: %s" % ", ".join(majors))
     unit["sentry"] = {
@@ -300,17 +331,18 @@ def repo_signals(root, files, outside, units, tracked):
                 ci_providers.add(c["ci"])
                 ci_files.append((rel, c["ci"]))
     sentry_refs, deploy, scheduler = [], [], []
-    for rel, prov in ci_files[:120]:
+    script_files = [r for r in files if os.path.basename(r) in ("Makefile", "justfile", "Taskfile.yml", "Taskfile.yaml") or r.endswith(".sh") or os.path.basename(r).startswith("Dockerfile")]
+    for rel, prov in [(r, p) for r, p in ci_files[:120]] + [(r, "script") for r in script_files[:120] if r not in {c for c, _ in ci_files}]:
         text = _readable(root, rel)
         if not text:
             continue
         has_setx = bool(re.search(r"(?m)^\s*set\s+-[a-z]*x", text)) or "ACTIONS_STEP_DEBUG" in text
-        for bid in ("sentry-cli-v3", "sentry-v4-cli", "wizard", "github-action-release", "sentry-upload-ci"):
+        for bid in ("sentry-cli-v3", "sentry-v4-cli", "wizard", "github-action-release", "sentry-upload-ci", "token-on-command-line"):
             for m in bpats[bid].finditer(text):
                 line_no = _line_of(text, m.start())
                 line = text.splitlines()[line_no - 1].strip()
-                sentry_refs.append({"file": rel, "line": line_no, "kind": bid, "text": tokens.mask(line[:140]), "set_x_in_file": has_setx})
-                if len(sentry_refs) > 80:
+                sentry_refs.append({"file": rel, "line": line_no, "kind": bid, "where": "script" if prov == "script" else "ci", "text": tokens.clip(line.strip(), 140), "set_x_in_file": has_setx})
+                if len(sentry_refs) > 160:
                     break
         for cc in fs["ci_content"]:
             if cc.get("only") and cc["only"] != prov:
@@ -351,5 +383,5 @@ def repo_signals(root, files, outside, units, tracked):
         u["secrets"]["token_hits"] = len(mine)
         u["secrets"]["tracked_token_hits"] = sum(1 for h in mine if h["tracked"])
     iac = sorted({rel for rel in files if rel.endswith(".tf") and re.search(r"jianyuan/sentry|sentry_project|sentry_key|sentry_issue_alert|sentry_metric_alert|sentry_", util.read_text(os.path.join(root, rel), 100_000))})[:10]
-    return {"ci": {"providers": sorted(ci_providers), "files": [r for r, _ in ci_files][:30], "sentry_refs": sentry_refs[:60], "deploy": deploy[:12], "scheduler": scheduler[:12]},
+    return {"ci": {"providers": sorted(ci_providers), "files": [r for r, _ in ci_files][:30], "script_files_scanned": len(script_files), "sentry_refs": sentry_refs[:120], "deploy": deploy[:12], "scheduler": scheduler[:12]},
             "secrets": sec, "iac": {"terraform_sentry_files": iac}}

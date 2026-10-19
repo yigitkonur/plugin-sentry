@@ -1,0 +1,230 @@
+{
+ "ci": {
+  "deploy": [],
+  "files": [
+   ".github/workflows/release.yml"
+  ],
+  "providers": [
+   "github-actions"
+  ],
+  "scheduler": [],
+  "script_files_scanned": 1,
+  "sentry_refs": [
+   {
+    "file": ".github/workflows/release.yml",
+    "kind": "sentry-cli-v3",
+    "line": 19,
+    "set_x_in_file": true,
+    "text": "- name: Install sentry-cli",
+    "where": "ci"
+   },
+   {
+    "file": ".github/workflows/release.yml",
+    "kind": "sentry-cli-v3",
+    "line": 20,
+    "set_x_in_file": true,
+    "text": "run: npm i -g @sentry/cli",
+    "where": "ci"
+   },
+   {
+    "file": ".github/workflows/release.yml",
+    "kind": "sentry-cli-v3",
+    "line": 25,
+    "set_x_in_file": true,
+    "text": "sentry-cli releases new \"$GITHUB_SHA\"",
+    "where": "ci"
+   },
+   {
+    "file": ".github/workflows/release.yml",
+    "kind": "sentry-cli-v3",
+    "line": 26,
+    "set_x_in_file": true,
+    "text": "sentry-cli sourcemaps inject ./dist",
+    "where": "ci"
+   },
+   {
+    "file": ".github/workflows/release.yml",
+    "kind": "sentry-cli-v3",
+    "line": 27,
+    "set_x_in_file": true,
+    "text": "sentry-cli sourcemaps upload ./dist --release \"$GITHUB_SHA\"",
+    "where": "ci"
+   },
+   {
+    "file": ".github/workflows/release.yml",
+    "kind": "sentry-cli-v3",
+    "line": 28,
+    "set_x_in_file": true,
+    "text": "sentry-cli releases set-commits \"$GITHUB_SHA\" --auto --ignore-missing",
+    "where": "ci"
+   },
+   {
+    "file": ".github/workflows/release.yml",
+    "kind": "sentry-cli-v3",
+    "line": 30,
+    "set_x_in_file": true,
+    "text": "run: sentry-cli releases list --auth-token ${{ secrets.SENTRY_AUTH_TOKEN }}",
+    "where": "ci"
+   },
+   {
+    "file": ".github/workflows/release.yml",
+    "kind": "sentry-cli-v3",
+    "line": 36,
+    "set_x_in_file": true,
+    "text": "sentry-cli deploys new -r \"$GITHUB_SHA\" -e production",
+    "where": "ci"
+   },
+   {
+    "file": ".github/workflows/release.yml",
+    "kind": "sentry-upload-ci",
+    "line": 23,
+    "set_x_in_file": true,
+    "text": "SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}",
+    "where": "ci"
+   },
+   {
+    "file": ".github/workflows/release.yml",
+    "kind": "sentry-upload-ci",
+    "line": 23,
+    "set_x_in_file": true,
+    "text": "SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}",
+    "where": "ci"
+   },
+   {
+    "file": ".github/workflows/release.yml",
+    "kind": "sentry-upload-ci",
+    "line": 30,
+    "set_x_in_file": true,
+    "text": "run: sentry-cli releases list --auth-token ${{ secrets.SENTRY_AUTH_TOKEN }}",
+    "where": "ci"
+   },
+   {
+    "file": ".github/workflows/release.yml",
+    "kind": "sentry-upload-ci",
+    "line": 33,
+    "set_x_in_file": true,
+    "text": "SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}",
+    "where": "ci"
+   },
+   {
+    "file": ".github/workflows/release.yml",
+    "kind": "sentry-upload-ci",
+    "line": 33,
+    "set_x_in_file": true,
+    "text": "SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}",
+    "where": "ci"
+   },
+   {
+    "file": ".github/workflows/release.yml",
+    "kind": "token-on-command-line",
+    "line": 30,
+    "set_x_in_file": true,
+    "text": "run: sentry-cli releases list --auth-token ${{ secrets.SENTRY_AUTH_TOKEN }}",
+    "where": "ci"
+   },
+   {
+    "file": "Makefile",
+    "kind": "sentry-cli-v3",
+    "line": 2,
+    "set_x_in_file": false,
+    "text": "sentry-cli upload-dsym build/",
+    "where": "script"
+   }
+  ]
+ },
+ "iac": {
+  "terraform_sentry_files": []
+ },
+ "repo": {
+  "default_branch": "main",
+  "dirty": false,
+  "file_source": "git",
+  "git": true,
+  "name": "<fixture>",
+  "remote": null,
+  "root": ".",
+  "scm": null,
+  "truncated": false,
+  "workspace_files": []
+ },
+ "schema": 1,
+ "secrets": {
+  "token_hits": [],
+  "token_hits_total": 0,
+  "tracked_token_hits": 0
+ },
+ "units": [
+  {
+   "confidence": 0.95,
+   "docs_platform": "javascript",
+   "ecosystem": "js",
+   "evidence": {
+    "framework": [
+     "package.json:deps:vite"
+    ]
+   },
+   "framework": "vite",
+   "framework_label": "Vite (vanilla / no UI framework)",
+   "framework_module": "platforms/browser-spa",
+   "framework_version": "6.0.3",
+   "id": "ci-sentry-cli-v3",
+   "library": false,
+   "manifests": [
+    "package.json"
+   ],
+   "overlays": [],
+   "package_manager": "npm",
+   "platforms": [],
+   "role": "frontend",
+   "root": ".",
+   "secrets": {
+    "sensitive_files": {},
+    "token_hits": 0,
+    "tracked_token_hits": 0
+   },
+   "sentry": {
+    "build": {
+     "sentry-cli-v3": "Makefile:2",
+     "xcode-run-script": "Makefile:2"
+    },
+    "config_files": [],
+    "config_snapshot": [
+     {
+      "file": "src/main.ts",
+      "options": {
+       "release": "undefined }"
+      }
+     }
+    ],
+    "dsn_literals": [],
+    "dsn_sources": [
+     {
+      "file": "src/main.ts",
+      "kind": "code",
+      "line": 3,
+      "name": "VITE_SENTRY_DSN"
+     }
+    ],
+    "init_sites": [
+     {
+      "file": "src/main.ts",
+      "line": 3,
+      "text": "Sentry.init({ dsn: import.meta.env.VITE_SENTRY_DSN, release: undefined });"
+     }
+    ],
+    "legacy": [],
+    "notes": [],
+    "packages": [
+     {
+      "declared": "^8.50.0",
+      "name": "@sentry/browser",
+      "resolved": "8.50.0"
+     }
+    ],
+    "status": "present"
+   },
+   "signals": {},
+   "wizard": null
+  }
+ ]
+}

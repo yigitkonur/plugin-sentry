@@ -76,7 +76,14 @@
    "sentry.properties"
   ],
   "bundled": true,
-  "compiled": false
+  "compiled": false,
+  "tooling": [
+   "@sentry/cli",
+   "@sentry/wizard",
+   "@sentry/(vite|webpack|rollup|esbuild|bundler)-plugin.*",
+   "@sentry/babel-plugin.*",
+   "@sentry-internal/.*"
+  ]
  },
  "python": {
   "label": "Python",
@@ -186,7 +193,35 @@
    "AndroidManifest.xml"
   ],
   "bundled": false,
-  "compiled": true
+  "compiled": true,
+  "tooling": [
+   "io\\.sentry\\.(jvm|android|kotlin)\\..*gradle.*",
+   "io\\.sentry:sentry-maven-plugin",
+   "io\\.sentry:sentry-android-gradle-plugin"
+  ],
+  "container_root": true,
+  "config_init": [
+   {
+    "glob": "application*.properties",
+    "regex": "(?m)^\\s*sentry\\.dsn\\s*="
+   },
+   {
+    "glob": "application.yml",
+    "regex": "(?m)^\\s*sentry:\\s*$"
+   },
+   {
+    "glob": "application.yaml",
+    "regex": "(?m)^\\s*sentry:\\s*$"
+   },
+   {
+    "glob": "AndroidManifest.xml",
+    "regex": "io\\.sentry\\.dsn"
+   },
+   {
+    "glob": "sentry.properties",
+    "regex": "(?m)^\\s*dsn\\s*="
+   }
+  ]
  },
  "apple": {
   "label": "Apple (Swift / Objective-C)",
@@ -264,7 +299,8 @@
    "sentry.rb"
   ],
   "bundled": false,
-  "compiled": false
+  "compiled": false,
+  "config_init": []
  },
  "php": {
   "label": "PHP",
@@ -294,7 +330,18 @@
    "sentry.yaml"
   ],
   "bundled": false,
-  "compiled": false
+  "compiled": false,
+  "config_init": [
+   {
+    "glob": "sentry.php",
+    "path": "*config/sentry.php",
+    "regex": "['\"]dsn['\"]"
+   },
+   {
+    "glob": "sentry.yaml",
+    "regex": "(?m)^\\s*sentry:\\s*$"
+   }
+  ]
  },
  "dotnet": {
   "label": ".NET",
@@ -329,7 +376,13 @@
    "appsettings.*.json"
   ],
   "bundled": false,
-  "compiled": true
+  "compiled": true,
+  "config_init": [
+   {
+    "glob": "appsettings*.json",
+    "regex": "\"Sentry\"\\s*:\\s*\\{"
+   }
+  ]
  },
  "rust": {
   "label": "Rust",
@@ -415,7 +468,10 @@
    "pubspec.yaml"
   ],
   "bundled": false,
-  "compiled": true
+  "compiled": true,
+  "tooling": [
+   "sentry_dart_plugin"
+  ]
  },
  "unity": {
   "label": "Unity",
@@ -439,7 +495,13 @@
    "SentryCliOptions.asset"
   ],
   "bundled": false,
-  "compiled": true
+  "compiled": true,
+  "config_init": [
+   {
+    "glob": "SentryOptions.asset",
+    "regex": "(?m)^\\s*<?Dsn>?(?:k__BackingField)?\\s*:\\s*\\S+"
+   }
+  ]
  },
  "unreal": {
   "label": "Unreal Engine",

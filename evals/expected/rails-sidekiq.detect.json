@@ -1,0 +1,131 @@
+{
+ "ci": {
+  "deploy": [],
+  "files": [],
+  "providers": [],
+  "scheduler": [],
+  "script_files_scanned": 0,
+  "sentry_refs": []
+ },
+ "iac": {
+  "terraform_sentry_files": []
+ },
+ "repo": {
+  "default_branch": "main",
+  "dirty": false,
+  "file_source": "git",
+  "git": true,
+  "name": "<fixture>",
+  "remote": null,
+  "root": ".",
+  "scm": null,
+  "truncated": false,
+  "workspace_files": []
+ },
+ "schema": 1,
+ "secrets": {
+  "token_hits": [],
+  "token_hits_total": 0,
+  "tracked_token_hits": 0
+ },
+ "units": [
+  {
+   "confidence": 0.95,
+   "docs_platform": "ruby/guides/rails",
+   "ecosystem": "ruby",
+   "evidence": {
+    "framework": [
+     "Gemfile:deps:rails"
+    ]
+   },
+   "framework": "rails",
+   "framework_label": "Rails",
+   "framework_module": "platforms/rails",
+   "framework_version": "7.2.2",
+   "id": "rails-sidekiq",
+   "library": false,
+   "manifests": [
+    "Gemfile"
+   ],
+   "overlays": [],
+   "package_manager": null,
+   "platforms": [],
+   "role": "backend",
+   "root": ".",
+   "secrets": {
+    "sensitive_files": {},
+    "token_hits": 0,
+    "tracked_token_hits": 0
+   },
+   "sentry": {
+    "build": {},
+    "config_files": [
+     "config/initializers/sentry.rb"
+    ],
+    "config_snapshot": [
+     {
+      "file": "config/initializers/sentry.rb",
+      "options": {
+       "send_default_pii": "true",
+       "traces_sample_rate": "1.0"
+      }
+     }
+    ],
+    "dsn_literals": [],
+    "dsn_sources": [
+     {
+      "file": "config/initializers/sentry.rb",
+      "kind": "code",
+      "line": 2,
+      "name": "SENTRY_DSN"
+     }
+    ],
+    "init_sites": [
+     {
+      "file": "config/initializers/sentry.rb",
+      "line": 1,
+      "text": "Sentry.init do |config|"
+     }
+    ],
+    "legacy": [],
+    "notes": [],
+    "packages": [
+     {
+      "declared": null,
+      "name": "sentry-rails",
+      "resolved": "6.0.0"
+     },
+     {
+      "declared": null,
+      "name": "sentry-ruby",
+      "resolved": "6.0.0"
+     },
+     {
+      "declared": null,
+      "name": "sentry-sidekiq",
+      "resolved": "6.0.0"
+     }
+    ],
+    "status": "present"
+   },
+   "signals": {
+    "db": [
+     "pg"
+    ],
+    "deploy": [
+     "heroku (Procfile)"
+    ],
+    "queue": [
+     "sidekiq"
+    ],
+    "scheduler": [
+     "sidekiq-cron"
+    ],
+    "service": [
+     "procfile-web (Procfile)"
+    ]
+   },
+   "wizard": null
+  }
+ ]
+}

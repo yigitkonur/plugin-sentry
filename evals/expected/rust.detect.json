@@ -1,0 +1,103 @@
+{
+ "ci": {
+  "deploy": [],
+  "files": [],
+  "providers": [],
+  "scheduler": [],
+  "script_files_scanned": 0,
+  "sentry_refs": []
+ },
+ "iac": {
+  "terraform_sentry_files": []
+ },
+ "repo": {
+  "default_branch": "main",
+  "dirty": false,
+  "file_source": "git",
+  "git": true,
+  "name": "<fixture>",
+  "remote": null,
+  "root": ".",
+  "scm": null,
+  "truncated": false,
+  "workspace_files": []
+ },
+ "schema": 1,
+ "secrets": {
+  "token_hits": [],
+  "token_hits_total": 0,
+  "tracked_token_hits": 0
+ },
+ "units": [
+  {
+   "confidence": 0.95,
+   "docs_platform": "rust",
+   "ecosystem": "rust",
+   "evidence": {
+    "framework": [
+     "Cargo.toml:deps:axum"
+    ]
+   },
+   "framework": "axum",
+   "framework_label": "Axum",
+   "framework_module": "platforms/axum",
+   "framework_version": "0.7.9",
+   "id": "rust",
+   "library": false,
+   "manifests": [
+    "Cargo.toml"
+   ],
+   "overlays": [],
+   "package_manager": null,
+   "platforms": [],
+   "role": "backend",
+   "root": ".",
+   "secrets": {
+    "sensitive_files": {},
+    "token_hits": 0,
+    "tracked_token_hits": 0
+   },
+   "sentry": {
+    "build": {},
+    "config_files": [],
+    "config_snapshot": [
+     {
+      "file": "src/main.rs",
+      "options": {
+       "release": "sentry::release_name!("
+      }
+     }
+    ],
+    "dsn_literals": [
+     {
+      "file": "src/main.rs",
+      "host": "o123456.ingest.us.sentry.io",
+      "line": 5,
+      "project_id": "1234567",
+      "region": "us"
+     }
+    ],
+    "dsn_sources": [],
+    "init_sites": [
+     {
+      "file": "src/main.rs",
+      "line": 6,
+      "text": "let _guard = sentry::init(("
+     }
+    ],
+    "legacy": [],
+    "notes": [],
+    "packages": [
+     {
+      "declared": "0.34",
+      "name": "sentry",
+      "resolved": "0.34.0"
+     }
+    ],
+    "status": "present"
+   },
+   "signals": {},
+   "wizard": null
+  }
+ ]
+}

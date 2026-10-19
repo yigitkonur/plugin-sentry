@@ -1,0 +1,6 @@
+%{
+  "hackney": {:hex, :hackney, "1.20.1", "8d97aec62ddddd757d128bfd1df6c5861093419f8f7a4223823537bad5d064e2", [:rebar3], [], "hexpm", "fe9094e5f1a2a2c0a7d10918fee36bfec0ec2a979994cff8cfe8058cd9af38e3"},
+  "jason": {:hex, :jason, "1.4.4", "b9226785a9aa77b6857ca22832cffa5d5011a667207eb2a0ad56adb5db443b8a", [:mix], [], "hexpm", "c5eb0cab91f094599f94d55bc63409236a8ec69a21a67814529e8d5f6cc90b3b"},
+  "phoenix": {:hex, :phoenix, "1.7.14", "a7d0b3f1bc95987044ddada111e77bd7f75646a08518942c72a8440278ae7cf0", [:mix], [], "hexpm", "c7859bc56cc5dfef19ecfc240775dae358cbaa530231118a9e014df392ace61a"},
+  "sentry": {:hex, :sentry, "10.8.1", "d6ee18a3d1a3a0b2e9b3b9a8d4a2a3f7c8e1d5b6a7c9e0f1a2b3c4d5e6f70811", [:mix], [], "hexpm", "0a1b2c3d4e5f60718293a4b5c6d7e8f90a1b2c3d4e5f60718293a4b5c6d7e8f9"},
+}

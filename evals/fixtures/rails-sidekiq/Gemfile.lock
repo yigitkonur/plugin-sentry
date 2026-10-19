@@ -1,0 +1,34 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    pg (1.5.9)
+    puma (6.5.0)
+    rails (7.2.2)
+    sentry-rails (6.0.0)
+      railties (>= 5.0)
+      sentry-ruby (~> 6.0.0)
+    sentry-ruby (6.0.0)
+      bigdecimal
+      concurrent-ruby (~> 1.0, >= 1.0.2)
+    sentry-sidekiq (6.0.0)
+      sentry-ruby (~> 6.0.0)
+      sidekiq (>= 5.0)
+    sidekiq (7.3.6)
+    sidekiq-cron (2.0.0)
+      sidekiq (>= 6.5)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  pg (~> 1.5)
+  puma (>= 6.0)
+  rails (~> 7.2.0)
+  sentry-rails
+  sentry-ruby
+  sentry-sidekiq
+  sidekiq (~> 7.3)
+  sidekiq-cron (~> 2.0)
+
+BUNDLED WITH
+   2.5.23

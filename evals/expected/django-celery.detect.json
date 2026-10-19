@@ -1,0 +1,122 @@
+{
+ "ci": {
+  "deploy": [],
+  "files": [],
+  "providers": [],
+  "scheduler": [],
+  "script_files_scanned": 1,
+  "sentry_refs": []
+ },
+ "iac": {
+  "terraform_sentry_files": []
+ },
+ "repo": {
+  "default_branch": "main",
+  "dirty": false,
+  "file_source": "git",
+  "git": true,
+  "name": "<fixture>",
+  "remote": null,
+  "root": ".",
+  "scm": null,
+  "truncated": false,
+  "workspace_files": []
+ },
+ "schema": 1,
+ "secrets": {
+  "token_hits": [],
+  "token_hits_total": 0,
+  "tracked_token_hits": 0
+ },
+ "units": [
+  {
+   "confidence": 0.95,
+   "docs_platform": "python/integrations/django",
+   "ecosystem": "python",
+   "evidence": {
+    "framework": [
+     "pyproject.toml:deps:django"
+    ]
+   },
+   "framework": "django",
+   "framework_label": "Django",
+   "framework_module": "platforms/django",
+   "framework_version": "5.1.4",
+   "id": "django-celery",
+   "library": false,
+   "manifests": [
+    "pyproject.toml"
+   ],
+   "overlays": [],
+   "package_manager": "uv",
+   "platforms": [],
+   "role": "backend",
+   "root": ".",
+   "secrets": {
+    "sensitive_files": {},
+    "token_hits": 0,
+    "tracked_token_hits": 0
+   },
+   "sentry": {
+    "build": {},
+    "config_files": [],
+    "config_snapshot": [
+     {
+      "file": "config/settings.py",
+      "options": {
+       "integrations": "[DjangoIntegration()]",
+       "send_default_pii": "True",
+       "traces_sample_rate": "1.0"
+      }
+     }
+    ],
+    "dsn_literals": [],
+    "dsn_sources": [
+     {
+      "file": "config/settings.py",
+      "kind": "code",
+      "line": 28,
+      "name": "SENTRY_DSN"
+     }
+    ],
+    "init_sites": [
+     {
+      "file": "config/settings.py",
+      "line": 28,
+      "text": "sentry_sdk.init(dsn=os.environ.get(\"SENTRY_DSN\"), traces_sample_rate=1.0, send_default_pii=True, integrations=[DjangoIntegration()])"
+     }
+    ],
+    "legacy": [],
+    "notes": [],
+    "packages": [
+     {
+      "declared": ">=2.0",
+      "name": "sentry-sdk",
+      "resolved": "2.72.0"
+     }
+    ],
+    "status": "present"
+   },
+   "signals": {
+    "db": [
+     "psycopg",
+     "django"
+    ],
+    "deploy": [
+     "docker (Dockerfile)"
+    ],
+    "queue": [
+     "celery"
+    ],
+    "scheduler": [
+     "celery",
+     "py-schedule (config/celery.py)"
+    ],
+    "service": [
+     "listens-on-port (Dockerfile)"
+    ]
+   },
+   "wizard": null
+  }
+ ]
+}

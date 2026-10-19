@@ -1,0 +1,130 @@
+{
+ "ci": {
+  "deploy": [
+   {
+    "file": "Makefile",
+    "value": "apple-release"
+   }
+  ],
+  "files": [],
+  "providers": [],
+  "scheduler": [],
+  "script_files_scanned": 1,
+  "sentry_refs": []
+ },
+ "iac": {
+  "terraform_sentry_files": []
+ },
+ "repo": {
+  "default_branch": "main",
+  "dirty": false,
+  "file_source": "git",
+  "git": true,
+  "name": "<fixture>",
+  "remote": null,
+  "root": ".",
+  "scm": null,
+  "truncated": false,
+  "workspace_files": []
+ },
+ "schema": 1,
+ "secrets": {
+  "token_hits": [],
+  "token_hits_total": 0,
+  "tracked_token_hits": 0
+ },
+ "units": [
+  {
+   "apple": {
+    "carthage": false,
+    "cocoapods": false,
+    "entitlement_files": [
+     "MyApp/MyApp.entitlements"
+    ],
+    "network_client": false,
+    "sandbox": true,
+    "sparkle": true
+   },
+   "confidence": 0.7,
+   "docs_platform": "apple",
+   "ecosystem": "apple",
+   "evidence": {
+    "framework": [
+     "MyApp.xcodeproj/project.pbxproj"
+    ]
+   },
+   "framework": "swiftui",
+   "framework_label": "SwiftUI app",
+   "framework_module": "platforms/apple",
+   "framework_version": null,
+   "id": "macos-swiftui-sentry8",
+   "library": false,
+   "manifests": [
+    "MyApp.xcodeproj/project.pbxproj"
+   ],
+   "overlays": [],
+   "package_manager": null,
+   "platforms": [
+    "macos"
+   ],
+   "role": "desktop",
+   "root": ".",
+   "secrets": {
+    "sensitive_files": {},
+    "token_hits": 0,
+    "tracked_token_hits": 0
+   },
+   "sentry": {
+    "build": {},
+    "config_files": [],
+    "config_snapshot": [
+     {
+      "file": "MyApp/AppDelegate.swift",
+      "options": {
+       "attachScreenshot": "false",
+       "attachViewHierarchy": "false",
+       "debug": "true",
+       "profilesSampleRate": "1.0",
+       "releaseName": "Bundle.main.infoDictionary?[\"CFBundleShortVersionString\"] as? String",
+       "sendDefaultPii": "true",
+       "tracesSampleRate": "1.0"
+      }
+     }
+    ],
+    "dsn_literals": [
+     {
+      "file": "MyApp/AppDelegate.swift",
+      "host": "o123456.ingest.us.sentry.io",
+      "line": 7,
+      "project_id": "1234567",
+      "region": "us"
+     }
+    ],
+    "dsn_sources": [],
+    "init_sites": [
+     {
+      "file": "MyApp/AppDelegate.swift",
+      "line": 6,
+      "text": "SentrySDK.start { options in"
+     }
+    ],
+    "legacy": [],
+    "notes": [],
+    "packages": [
+     {
+      "declared": "upToNextMajorVersion 8.40.0",
+      "name": "sentry-cocoa",
+      "resolved": "8.44.0"
+     }
+    ],
+    "status": "present"
+   },
+   "signals": {},
+   "ui_frameworks": [
+    "swiftui",
+    "appkit"
+   ],
+   "wizard": null
+  }
+ ]
+}

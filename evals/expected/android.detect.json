@@ -1,0 +1,133 @@
+{
+ "ci": {
+  "deploy": [],
+  "files": [],
+  "providers": [],
+  "scheduler": [],
+  "script_files_scanned": 0,
+  "sentry_refs": []
+ },
+ "iac": {
+  "terraform_sentry_files": []
+ },
+ "repo": {
+  "default_branch": "main",
+  "dirty": false,
+  "file_source": "git",
+  "git": true,
+  "name": "<fixture>",
+  "remote": null,
+  "root": ".",
+  "scm": null,
+  "truncated": false,
+  "workspace_files": [
+   "."
+  ]
+ },
+ "schema": 1,
+ "secrets": {
+  "token_hits": [
+   {
+    "file": "sentry.properties",
+    "kind": "org",
+    "line": 3,
+    "tracked": true
+   }
+  ],
+  "token_hits_total": 1,
+  "tracked_token_hits": 1
+ },
+ "units": [
+  {
+   "confidence": 0.95,
+   "docs_platform": "android",
+   "ecosystem": "jvm",
+   "evidence": {
+    "framework": [
+     "app/build.gradle.kts:deps:androidx.appcompat:appcompat"
+    ]
+   },
+   "framework": "android",
+   "framework_label": "Android",
+   "framework_module": "platforms/android",
+   "framework_version": null,
+   "id": "app",
+   "library": false,
+   "manifests": [
+    "app/build.gradle.kts"
+   ],
+   "overlays": [],
+   "package_manager": null,
+   "platforms": [],
+   "role": "mobile",
+   "root": "app",
+   "secrets": {
+    "sensitive_files": {
+     "sentry.properties": "tracked"
+    },
+    "token_hits": 0,
+    "tracked_token_hits": 0
+   },
+   "sentry": {
+    "build": {
+     "gradle-android-plugin": "app/build.gradle.kts:4"
+    },
+    "config_files": [],
+    "config_snapshot": [
+     {
+      "file": "app/src/main/AndroidManifest.xml",
+      "kind": "config",
+      "options": {}
+     }
+    ],
+    "dsn_literals": [
+     {
+      "file": "app/src/main/AndroidManifest.xml",
+      "host": "o123456.ingest.us.sentry.io",
+      "line": 4,
+      "project_id": "1234567",
+      "region": "us"
+     }
+    ],
+    "dsn_sources": [
+     {
+      "file": "app/src/main/AndroidManifest.xml",
+      "kind": "config",
+      "line": 4,
+      "name": "sentry.dsn"
+     }
+    ],
+    "init_sites": [
+     {
+      "file": "app/src/main/AndroidManifest.xml",
+      "kind": "config",
+      "line": 4,
+      "text": "<meta-data android:name=\"io.sentry.dsn\" android:value=\"https://0123456789abcdef0123456789abcdef@o123456.ingest.us.sentry.io/1234567\" />"
+     }
+    ],
+    "legacy": [],
+    "notes": [],
+    "packages": [
+     {
+      "declared": "5.0.0",
+      "kind": "tooling",
+      "name": "io.sentry.android.gradle",
+      "resolved": "5.0.0"
+     },
+     {
+      "declared": "8.20.0",
+      "name": "io.sentry:sentry-android",
+      "resolved": "8.20.0"
+     }
+    ],
+    "status": "present"
+   },
+   "signals": {
+    "role": [
+     "android-app (app/src/main/AndroidManifest.xml)"
+    ]
+   },
+   "wizard": "android"
+  }
+ ]
+}

@@ -1,0 +1,149 @@
+{
+ "ci": {
+  "deploy": [],
+  "files": [],
+  "providers": [],
+  "scheduler": [],
+  "script_files_scanned": 0,
+  "sentry_refs": []
+ },
+ "iac": {
+  "terraform_sentry_files": []
+ },
+ "repo": {
+  "default_branch": "main",
+  "dirty": false,
+  "file_source": "git",
+  "git": true,
+  "name": "<fixture>",
+  "remote": null,
+  "root": ".",
+  "scm": null,
+  "truncated": false,
+  "workspace_files": []
+ },
+ "schema": 1,
+ "secrets": {
+  "token_hits": [],
+  "token_hits_total": 0,
+  "tracked_token_hits": 0
+ },
+ "units": [
+  {
+   "confidence": 0.95,
+   "docs_platform": "javascript/guides/nextjs",
+   "ecosystem": "js",
+   "evidence": {
+    "framework": [
+     "package.json:deps:next"
+    ]
+   },
+   "framework": "nextjs",
+   "framework_label": "Next.js",
+   "framework_module": "platforms/nextjs",
+   "framework_version": "16.4.2",
+   "id": "wizard-output",
+   "library": false,
+   "manifests": [
+    "package.json"
+   ],
+   "overlays": [],
+   "package_manager": "npm",
+   "platforms": [],
+   "role": "fullstack",
+   "root": ".",
+   "secrets": {
+    "sensitive_files": {},
+    "token_hits": 0,
+    "tracked_token_hits": 0
+   },
+   "sentry": {
+    "build": {
+     "next-with-sentry-config": "next.config.ts:2"
+    },
+    "config_files": [
+     "src/instrumentation-client.ts",
+     "src/instrumentation.ts",
+     "src/sentry.edge.config.ts",
+     "src/sentry.server.config.ts"
+    ],
+    "config_snapshot": [
+     {
+      "file": "src/instrumentation-client.ts",
+      "options": {
+       "enableLogs": "true",
+       "tracesSampleRate": "process.env.NODE_ENV === \"development\" ? 1.0 : 0.1"
+      }
+     },
+     {
+      "file": "src/sentry.edge.config.ts",
+      "options": {
+       "enableLogs": "true",
+       "tracesSampleRate": "process.env.NODE_ENV === \"development\" ? 1.0 : 0.1"
+      }
+     },
+     {
+      "file": "src/sentry.server.config.ts",
+      "options": {
+       "enableLogs": "true",
+       "tracesSampleRate": "process.env.NODE_ENV === \"development\" ? 1.0 : 0.1"
+      }
+     }
+    ],
+    "dsn_literals": [
+     {
+      "file": "src/instrumentation-client.ts",
+      "host": "o123456.ingest.us.sentry.io",
+      "line": 4,
+      "project_id": "1234567",
+      "region": "us"
+     },
+     {
+      "file": "src/sentry.edge.config.ts",
+      "host": "o123456.ingest.us.sentry.io",
+      "line": 4,
+      "project_id": "1234567",
+      "region": "us"
+     },
+     {
+      "file": "src/sentry.server.config.ts",
+      "host": "o123456.ingest.us.sentry.io",
+      "line": 4,
+      "project_id": "1234567",
+      "region": "us"
+     }
+    ],
+    "dsn_sources": [],
+    "init_sites": [
+     {
+      "file": "src/instrumentation-client.ts",
+      "line": 3,
+      "text": "Sentry.init({"
+     },
+     {
+      "file": "src/sentry.edge.config.ts",
+      "line": 3,
+      "text": "Sentry.init({"
+     },
+     {
+      "file": "src/sentry.server.config.ts",
+      "line": 3,
+      "text": "Sentry.init({"
+     }
+    ],
+    "legacy": [],
+    "notes": [],
+    "packages": [
+     {
+      "declared": "^11.8.0",
+      "name": "@sentry/nextjs",
+      "resolved": "11.8.0"
+     }
+    ],
+    "status": "present"
+   },
+   "signals": {},
+   "wizard": "nextjs"
+  }
+ ]
+}

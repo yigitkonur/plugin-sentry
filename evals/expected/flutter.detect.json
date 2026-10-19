@@ -1,0 +1,121 @@
+{
+ "ci": {
+  "deploy": [],
+  "files": [],
+  "providers": [],
+  "scheduler": [],
+  "script_files_scanned": 0,
+  "sentry_refs": []
+ },
+ "iac": {
+  "terraform_sentry_files": []
+ },
+ "repo": {
+  "default_branch": "main",
+  "dirty": false,
+  "file_source": "git",
+  "git": true,
+  "name": "<fixture>",
+  "remote": null,
+  "root": ".",
+  "scm": null,
+  "truncated": false,
+  "workspace_files": []
+ },
+ "schema": 1,
+ "secrets": {
+  "token_hits": [],
+  "token_hits_total": 0,
+  "tracked_token_hits": 0
+ },
+ "units": [
+  {
+   "confidence": 0.95,
+   "docs_platform": "dart/guides/flutter",
+   "ecosystem": "dart",
+   "evidence": {
+    "framework": [
+     "pubspec.yaml:deps:flutter"
+    ]
+   },
+   "framework": "flutter",
+   "framework_label": "Flutter",
+   "framework_module": "platforms/flutter",
+   "framework_version": null,
+   "id": "flutter",
+   "library": false,
+   "manifests": [
+    "pubspec.yaml"
+   ],
+   "native_subprojects": [
+    {
+     "ecosystem": "jvm",
+     "root": "android/app"
+    },
+    {
+     "ecosystem": "apple",
+     "root": "ios"
+    }
+   ],
+   "overlays": [],
+   "package_manager": null,
+   "platforms": [],
+   "role": "mobile",
+   "root": ".",
+   "secrets": {
+    "sensitive_files": {},
+    "token_hits": 0,
+    "tracked_token_hits": 0
+   },
+   "sentry": {
+    "build": {
+     "dart-plugin": "pubspec.yaml:17"
+    },
+    "config_files": [],
+    "config_snapshot": [
+     {
+      "file": "lib/main.dart",
+      "options": {
+       "tracesSampleRate": "1.0"
+      }
+     }
+    ],
+    "dsn_literals": [
+     {
+      "file": "lib/main.dart",
+      "host": "o123456.ingest.us.sentry.io",
+      "line": 7,
+      "project_id": "1234567",
+      "region": "us"
+     }
+    ],
+    "dsn_sources": [],
+    "init_sites": [
+     {
+      "file": "lib/main.dart",
+      "line": 5,
+      "text": "await SentryFlutter.init("
+     }
+    ],
+    "legacy": [],
+    "notes": [],
+    "packages": [
+     {
+      "declared": "^2.2.0",
+      "kind": "tooling",
+      "name": "sentry_dart_plugin",
+      "resolved": "2.2.0"
+     },
+     {
+      "declared": "^8.11.0",
+      "name": "sentry_flutter",
+      "resolved": "8.11.0"
+     }
+    ],
+    "status": "present"
+   },
+   "signals": {},
+   "wizard": "flutter"
+  }
+ ]
+}

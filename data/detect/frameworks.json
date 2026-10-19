@@ -490,7 +490,8 @@
   "label": "Android",
   "docs_platform": "android",
   "wizard": "android",
-  "module": "platforms/android"
+  "module": "platforms/android",
+  "no_version": true
  },
  {
   "id": "spring-boot",
@@ -822,5 +823,45 @@
   "label": "C / C++",
   "docs_platform": "native",
   "module": "platforms/native"
+ },
+ {
+  "id": "vite",
+  "eco": "js",
+  "dep": "vite",
+  "priority": 40,
+  "role": "frontend",
+  "label": "Vite (vanilla / no UI framework)",
+  "docs_platform": "javascript",
+  "module": "platforms/browser-spa"
+ },
+ {
+  "id": "webpack",
+  "eco": "js",
+  "dep": "webpack|webpack-cli",
+  "priority": 38,
+  "role": "frontend",
+  "label": "webpack (vanilla / no UI framework)",
+  "docs_platform": "javascript",
+  "module": "platforms/browser-spa"
+ },
+ {
+  "id": "parcel",
+  "eco": "js",
+  "dep": "parcel",
+  "priority": 38,
+  "role": "frontend",
+  "label": "Parcel (vanilla / no UI framework)",
+  "docs_platform": "javascript",
+  "module": "platforms/browser-spa"
+ },
+ {
+  "id": "browser-sdk",
+  "eco": "js",
+  "dep": "@sentry/browser",
+  "priority": 36,
+  "role": "frontend",
+  "label": "Browser app (@sentry/browser)",
+  "docs_platform": "javascript",
+  "module": "platforms/browser-spa"
  }
 ]

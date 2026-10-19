@@ -1,0 +1,9 @@
+platform :ios, '13.0'
+
+ENV['COCOAPODS_DISABLE_STATS'] = 'true'
+
+target 'Runner' do
+  use_frameworks!
+  flutter_root = File.expand_path(File.join('..', 'Flutter'))
+  # install_all_flutter_pods(flutter_root)
+end

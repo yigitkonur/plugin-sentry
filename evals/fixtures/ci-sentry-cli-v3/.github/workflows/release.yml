@@ -1,0 +1,36 @@
+name: release
+on:
+  push:
+    branches: [main]
+
+env:
+  SENTRY_ORG: acme
+  SENTRY_PROJECT: web
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm ci && npm run build
+      - name: Install sentry-cli
+        run: npm i -g @sentry/cli
+      - name: Create release and upload sourcemaps
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+        run: |
+          sentry-cli releases new "$GITHUB_SHA"
+          sentry-cli sourcemaps inject ./dist
+          sentry-cli sourcemaps upload ./dist --release "$GITHUB_SHA"
+          sentry-cli releases set-commits "$GITHUB_SHA" --auto --ignore-missing
+      - name: Debug upload
+        run: sentry-cli releases list --auth-token ${{ secrets.SENTRY_AUTH_TOKEN }}
+      - name: Mark deploy
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+        run: |
+          set -x
+          sentry-cli deploys new -r "$GITHUB_SHA" -e production

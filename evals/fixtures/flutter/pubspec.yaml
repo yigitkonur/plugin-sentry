@@ -1,0 +1,26 @@
+name: app
+description: Example Flutter app
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.6.0 <4.0.0"
+  flutter: ">=3.27.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  sentry_flutter: ^8.11.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  sentry_dart_plugin: ^2.2.0
+
+flutter:
+  uses-material-design: true
+
+sentry:
+  upload_debug_symbols: true
+  upload_sources: true
+  project: app
+  org: acme

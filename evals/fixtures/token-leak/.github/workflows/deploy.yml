@@ -1,0 +1,14 @@
+name: deploy
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      SENTRY_AUTH_TOKEN: __FAKE_ORG_TOKEN__
+    steps:
+      - uses: actions/checkout@v4
+      - run: npm ci
+      - run: npm run start --if-present

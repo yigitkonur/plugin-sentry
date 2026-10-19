@@ -1,0 +1,13 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_Name: SentryOptions
+  m_EditorClassIdentifier: 
+  <Enabled>k__BackingField: 1
+  <Dsn>k__BackingField: https://0123456789abcdef0123456789abcdef@o123456.ingest.us.sentry.io/1234567
+  <CaptureInEditor>k__BackingField: 1
+  <TracesSampleRate>k__BackingField: 1
+  TracesSampleRate: 1
+  <Debug>k__BackingField: 0

@@ -1,0 +1,124 @@
+{
+ "ci": {
+  "deploy": [],
+  "files": [],
+  "providers": [],
+  "scheduler": [],
+  "script_files_scanned": 1,
+  "sentry_refs": []
+ },
+ "iac": {
+  "terraform_sentry_files": []
+ },
+ "repo": {
+  "default_branch": "main",
+  "dirty": false,
+  "file_source": "git",
+  "git": true,
+  "name": "<fixture>",
+  "remote": null,
+  "root": ".",
+  "scm": null,
+  "truncated": false,
+  "workspace_files": []
+ },
+ "schema": 1,
+ "secrets": {
+  "token_hits": [],
+  "token_hits_total": 0,
+  "tracked_token_hits": 0
+ },
+ "units": [
+  {
+   "confidence": 0.95,
+   "docs_platform": "javascript/guides/express",
+   "ecosystem": "js",
+   "evidence": {
+    "framework": [
+     "package.json:deps:express"
+    ]
+   },
+   "framework": "express",
+   "framework_label": "Express",
+   "framework_module": "platforms/express",
+   "framework_version": "4.19.2",
+   "id": "node-express-legacy",
+   "library": false,
+   "manifests": [
+    "package.json"
+   ],
+   "overlays": [],
+   "package_manager": "npm",
+   "platforms": [],
+   "role": "backend",
+   "root": ".",
+   "secrets": {
+    "sensitive_files": {},
+    "token_hits": 0,
+    "tracked_token_hits": 0
+   },
+   "sentry": {
+    "build": {},
+    "config_files": [],
+    "config_snapshot": [
+     {
+      "file": "server.js",
+      "options": {
+       "integrations": "[new Tracing.Integrations.Express({ app })]",
+       "tracesSampleRate": "1.0"
+      }
+     }
+    ],
+    "dsn_literals": [],
+    "dsn_sources": [
+     {
+      "file": "server.js",
+      "kind": "code",
+      "line": 8,
+      "name": "SENTRY_DSN"
+     }
+    ],
+    "init_sites": [
+     {
+      "file": "server.js",
+      "line": 10,
+      "text": "Sentry.init({"
+     }
+    ],
+    "legacy": [
+     {
+      "name": "raven",
+      "note": "replaced by @sentry/node"
+     },
+     {
+      "name": "@sentry/tracing",
+      "note": "merged into the SDK since v8"
+     }
+    ],
+    "notes": [],
+    "packages": [
+     {
+      "declared": "^7.120.0",
+      "name": "@sentry/node",
+      "resolved": "7.120.0"
+     },
+     {
+      "declared": "^7.120.0",
+      "name": "@sentry/tracing",
+      "resolved": "7.120.0"
+     }
+    ],
+    "status": "present"
+   },
+   "signals": {
+    "deploy": [
+     "docker (Dockerfile)"
+    ],
+    "service": [
+     "listens-on-port (Dockerfile)"
+    ]
+   },
+   "wizard": null
+  }
+ ]
+}

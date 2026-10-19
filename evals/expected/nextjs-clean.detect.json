@@ -1,0 +1,87 @@
+{
+ "ci": {
+  "deploy": [],
+  "files": [],
+  "providers": [],
+  "scheduler": [],
+  "script_files_scanned": 0,
+  "sentry_refs": []
+ },
+ "iac": {
+  "terraform_sentry_files": []
+ },
+ "repo": {
+  "default_branch": "main",
+  "dirty": false,
+  "file_source": "git",
+  "git": true,
+  "name": "<fixture>",
+  "remote": null,
+  "root": ".",
+  "scm": null,
+  "truncated": false,
+  "workspace_files": []
+ },
+ "schema": 1,
+ "secrets": {
+  "token_hits": [],
+  "token_hits_total": 0,
+  "tracked_token_hits": 0
+ },
+ "units": [
+  {
+   "confidence": 0.95,
+   "docs_platform": "javascript/guides/nextjs",
+   "ecosystem": "js",
+   "evidence": {
+    "framework": [
+     "package.json:deps:next"
+    ]
+   },
+   "framework": "nextjs",
+   "framework_label": "Next.js",
+   "framework_module": "platforms/nextjs",
+   "framework_version": "15.1.0",
+   "id": "nextjs-clean",
+   "library": false,
+   "manifests": [
+    "package.json"
+   ],
+   "overlays": [],
+   "package_manager": "npm",
+   "platforms": [],
+   "role": "fullstack",
+   "root": ".",
+   "secrets": {
+    "sensitive_files": {},
+    "token_hits": 0,
+    "tracked_token_hits": 0
+   },
+   "sentry": {
+    "build": {},
+    "config_files": [],
+    "config_snapshot": [],
+    "dsn_literals": [],
+    "dsn_sources": [],
+    "init_sites": [],
+    "legacy": [],
+    "notes": [],
+    "packages": [],
+    "status": "absent"
+   },
+   "signals": {
+    "ai": [
+     "openai",
+     "ai-import (lib/openai.ts)"
+    ],
+    "deploy": [
+     "vercel (vercel.json)"
+    ],
+    "scheduler": [
+     "vercel-cron (vercel.json)"
+    ]
+   },
+   "wizard": "nextjs"
+  }
+ ]
+}
