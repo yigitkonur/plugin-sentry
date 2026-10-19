@@ -1,0 +1,504 @@
+{
+ "js": {
+  "label": "JavaScript / TypeScript",
+  "manifests": [
+   "package.json"
+  ],
+  "lockfiles": [
+   "package-lock.json",
+   "npm-shrinkwrap.json",
+   "pnpm-lock.yaml",
+   "yarn.lock",
+   "bun.lock",
+   "bun.lockb"
+  ],
+  "sdk_prefixes": [
+   "@sentry/"
+  ],
+  "sdk_exact": [
+   "toucan-js",
+   "@hono/sentry",
+   "sentry-expo",
+   "@sentry-internal/"
+  ],
+  "legacy": {
+   "raven-js": "replaced by @sentry/browser",
+   "raven": "replaced by @sentry/node",
+   "@sentry/tracing": "merged into the SDK since v8",
+   "@sentry/hub": "removed in v8",
+   "@sentry/integrations": "merged in v8",
+   "@sentry/minimal": "removed in v8",
+   "@sentry/types": "merged into @sentry/core",
+   "@sentry/replay": "merged into @sentry/browser",
+   "sentry-expo": "retired; use @sentry/react-native",
+   "toucan-js": "deprecated; use @sentry/cloudflare",
+   "@hono/sentry": "deprecated; use @sentry/hono"
+  },
+  "src_exts": [
+   ".js",
+   ".jsx",
+   ".ts",
+   ".tsx",
+   ".mjs",
+   ".cjs",
+   ".mts",
+   ".cts",
+   ".vue",
+   ".svelte",
+   ".astro"
+  ],
+  "init_patterns": [
+   "\\bSentry\\.init\\s*\\(",
+   "\\bwithSentry\\s*\\(",
+   "\\bsentryPagesPlugin\\b",
+   "\\bdefineCloudflareOptions\\b",
+   "\\binstrumentDurableObjectWithSentry\\b",
+   "\\bSentry\\.wrap\\s*\\(",
+   "\\bsetupSentry\\w*\\s*\\("
+  ],
+  "config_names": [
+   "instrumentation.ts",
+   "instrumentation.js",
+   "instrumentation-client.ts",
+   "instrumentation-client.js",
+   "sentry.client.config.*",
+   "sentry.server.config.*",
+   "sentry.edge.config.*",
+   "instrument.js",
+   "instrument.mjs",
+   "instrument.cjs",
+   "instrument.ts",
+   "instrument.server.*",
+   "instrument.client.*",
+   "instrumentation.server.*",
+   ".sentryclirc",
+   ".env.sentry-build-plugin",
+   "sentry.properties"
+  ],
+  "bundled": true,
+  "compiled": false
+ },
+ "python": {
+  "label": "Python",
+  "manifests": [
+   "pyproject.toml",
+   "requirements.txt",
+   "requirements-*.txt",
+   "requirements.in",
+   "Pipfile",
+   "setup.py",
+   "setup.cfg"
+  ],
+  "lockfiles": [
+   "uv.lock",
+   "poetry.lock",
+   "Pipfile.lock",
+   "pdm.lock",
+   "requirements.txt"
+  ],
+  "sdk_prefixes": [
+   "sentry-sdk",
+   "sentry_sdk"
+  ],
+  "sdk_exact": [],
+  "legacy": {
+   "raven": "replaced by sentry-sdk"
+  },
+  "src_exts": [
+   ".py"
+  ],
+  "init_patterns": [
+   "\\bsentry_sdk\\.init\\s*\\(",
+   "\\binit_sentry\\s*\\("
+  ],
+  "config_names": [
+   "sentry.properties",
+   ".sentryclirc"
+  ],
+  "bundled": false,
+  "compiled": false
+ },
+ "go": {
+  "label": "Go",
+  "manifests": [
+   "go.mod"
+  ],
+  "lockfiles": [
+   "go.sum"
+  ],
+  "sdk_prefixes": [
+   "github.com/getsentry/sentry-go"
+  ],
+  "sdk_exact": [],
+  "legacy": {
+   "github.com/getsentry/raven-go": "replaced by sentry-go"
+  },
+  "src_exts": [
+   ".go"
+  ],
+  "init_patterns": [
+   "\\bsentry\\.Init\\s*\\("
+  ],
+  "config_names": [
+   ".sentryclirc"
+  ],
+  "bundled": false,
+  "compiled": true
+ },
+ "jvm": {
+  "label": "Java / Kotlin / Scala",
+  "manifests": [
+   "pom.xml",
+   "build.gradle",
+   "build.gradle.kts",
+   "build.sbt"
+  ],
+  "lockfiles": [
+   "gradle.lockfile",
+   "libs.versions.toml"
+  ],
+  "sdk_prefixes": [
+   "io.sentry:",
+   "io.sentry."
+  ],
+  "sdk_exact": [],
+  "legacy": {
+   "com.getsentry.raven": "replaced by io.sentry"
+  },
+  "src_exts": [
+   ".java",
+   ".kt",
+   ".kts",
+   ".scala",
+   ".groovy"
+  ],
+  "init_patterns": [
+   "\\bSentry\\.init\\s*\\(",
+   "\\bSentryAndroid\\.init\\s*\\("
+  ],
+  "config_names": [
+   "sentry.properties",
+   "application.properties",
+   "application.yml",
+   "application.yaml",
+   "logback.xml",
+   "log4j2.xml",
+   "AndroidManifest.xml"
+  ],
+  "bundled": false,
+  "compiled": true
+ },
+ "apple": {
+  "label": "Apple (Swift / Objective-C)",
+  "manifests": [
+   "Package.swift",
+   "project.pbxproj",
+   "Podfile",
+   "Cartfile"
+  ],
+  "lockfiles": [
+   "Package.resolved",
+   "Podfile.lock",
+   "Cartfile.resolved"
+  ],
+  "sdk_prefixes": [
+   "sentry-cocoa",
+   "Sentry",
+   "SentrySwiftUI"
+  ],
+  "sdk_exact": [],
+  "legacy": {
+   "Carthage": "dropped in Cocoa 9",
+   "Cocoapods": "frozen at 9.19.1; trunk read-only 2026-12-02"
+  },
+  "src_exts": [
+   ".swift",
+   ".m",
+   ".mm",
+   ".h"
+  ],
+  "init_patterns": [
+   "\\bSentrySDK\\.start\\s*\\(",
+   "\\bSentrySDK\\.startWithOptions\\s*\\(",
+   "\\bSentrySDK\\.start\\b"
+  ],
+  "config_names": [
+   "sentry.properties",
+   ".sentryclirc",
+   "*.entitlements",
+   "Info.plist"
+  ],
+  "bundled": false,
+  "compiled": true
+ },
+ "ruby": {
+  "label": "Ruby",
+  "manifests": [
+   "Gemfile"
+  ],
+  "lockfiles": [
+   "Gemfile.lock"
+  ],
+  "sdk_prefixes": [
+   "sentry-ruby",
+   "sentry-rails",
+   "sentry-sidekiq",
+   "sentry-resque",
+   "sentry-delayed_job",
+   "sentry-opentelemetry"
+  ],
+  "sdk_exact": [],
+  "legacy": {
+   "sentry-raven": "replaced by sentry-ruby"
+  },
+  "src_exts": [
+   ".rb",
+   ".ru",
+   ".rake"
+  ],
+  "init_patterns": [
+   "\\bSentry\\.init\\s+do\\b",
+   "\\bSentry\\.init\\s*\\("
+  ],
+  "config_names": [
+   "sentry.rb"
+  ],
+  "bundled": false,
+  "compiled": false
+ },
+ "php": {
+  "label": "PHP",
+  "manifests": [
+   "composer.json"
+  ],
+  "lockfiles": [
+   "composer.lock"
+  ],
+  "sdk_prefixes": [
+   "sentry/"
+  ],
+  "sdk_exact": [],
+  "legacy": {
+   "raven/raven": "replaced by sentry/sentry"
+  },
+  "src_exts": [
+   ".php"
+  ],
+  "init_patterns": [
+   "\\\\?Sentry\\\\init\\s*\\(",
+   "Integration::handles\\s*\\(",
+   "\\\\Sentry\\\\SentrySdk"
+  ],
+  "config_names": [
+   "sentry.php",
+   "sentry.yaml"
+  ],
+  "bundled": false,
+  "compiled": false
+ },
+ "dotnet": {
+  "label": ".NET",
+  "manifests": [
+   "*.csproj",
+   "*.fsproj",
+   "*.vbproj",
+   "Directory.Packages.props"
+  ],
+  "lockfiles": [
+   "packages.lock.json"
+  ],
+  "sdk_prefixes": [
+   "Sentry"
+  ],
+  "sdk_exact": [],
+  "legacy": {
+   "SharpRaven": "replaced by Sentry"
+  },
+  "src_exts": [
+   ".cs",
+   ".fs",
+   ".vb",
+   ".cshtml"
+  ],
+  "init_patterns": [
+   "\\bUseSentry\\s*\\(",
+   "\\bSentrySdk\\.Init\\s*\\("
+  ],
+  "config_names": [
+   "appsettings.json",
+   "appsettings.*.json"
+  ],
+  "bundled": false,
+  "compiled": true
+ },
+ "rust": {
+  "label": "Rust",
+  "manifests": [
+   "Cargo.toml"
+  ],
+  "lockfiles": [
+   "Cargo.lock"
+  ],
+  "sdk_prefixes": [
+   "sentry"
+  ],
+  "sdk_exact": [],
+  "legacy": {},
+  "src_exts": [
+   ".rs"
+  ],
+  "init_patterns": [
+   "\\bsentry::init\\s*\\("
+  ],
+  "config_names": [
+   ".sentryclirc"
+  ],
+  "bundled": false,
+  "compiled": true
+ },
+ "elixir": {
+  "label": "Elixir",
+  "manifests": [
+   "mix.exs"
+  ],
+  "lockfiles": [
+   "mix.lock"
+  ],
+  "sdk_prefixes": [
+   ":sentry",
+   "sentry"
+  ],
+  "sdk_exact": [],
+  "legacy": {},
+  "src_exts": [
+   ".ex",
+   ".exs"
+  ],
+  "init_patterns": [
+   "config\\s*:sentry\\b",
+   "Sentry\\.LoggerHandler",
+   "Sentry\\.PlugCapture"
+  ],
+  "config_names": [
+   "config.exs",
+   "runtime.exs",
+   "prod.exs"
+  ],
+  "bundled": false,
+  "compiled": true
+ },
+ "dart": {
+  "label": "Dart / Flutter",
+  "manifests": [
+   "pubspec.yaml"
+  ],
+  "lockfiles": [
+   "pubspec.lock"
+  ],
+  "sdk_prefixes": [
+   "sentry",
+   "sentry_flutter",
+   "sentry_dart_plugin",
+   "sentry_logging",
+   "sentry_dio"
+  ],
+  "sdk_exact": [],
+  "legacy": {},
+  "src_exts": [
+   ".dart"
+  ],
+  "init_patterns": [
+   "\\bSentryFlutter\\.init\\s*\\(",
+   "\\bSentry\\.init\\s*\\("
+  ],
+  "config_names": [
+   "pubspec.yaml"
+  ],
+  "bundled": false,
+  "compiled": true
+ },
+ "unity": {
+  "label": "Unity",
+  "manifests": [
+   "manifest.json@Packages"
+  ],
+  "lockfiles": [],
+  "sdk_prefixes": [
+   "io.sentry.unity"
+  ],
+  "sdk_exact": [],
+  "legacy": {},
+  "src_exts": [
+   ".cs"
+  ],
+  "init_patterns": [
+   "\\bSentrySdk\\.Init\\s*\\("
+  ],
+  "config_names": [
+   "SentryOptions.asset",
+   "SentryCliOptions.asset"
+  ],
+  "bundled": false,
+  "compiled": true
+ },
+ "unreal": {
+  "label": "Unreal Engine",
+  "manifests": [
+   "*.uproject"
+  ],
+  "lockfiles": [],
+  "sdk_prefixes": [
+   "Sentry"
+  ],
+  "sdk_exact": [],
+  "legacy": {},
+  "src_exts": [
+   ".cpp",
+   ".h",
+   ".cs"
+  ],
+  "init_patterns": [
+   "\\bUSentrySubsystem\\b",
+   "\\bInitializeWithSettings\\b"
+  ],
+  "config_names": [
+   "DefaultEngine.ini",
+   "sentry.properties"
+  ],
+  "bundled": false,
+  "compiled": true
+ },
+ "native": {
+  "label": "C / C++",
+  "manifests": [
+   "CMakeLists.txt",
+   "vcpkg.json",
+   "conanfile.txt",
+   "conanfile.py",
+   "meson.build"
+  ],
+  "lockfiles": [],
+  "sdk_prefixes": [
+   "sentry-native",
+   "sentry"
+  ],
+  "sdk_exact": [],
+  "legacy": {},
+  "src_exts": [
+   ".c",
+   ".cc",
+   ".cpp",
+   ".cxx",
+   ".h",
+   ".hpp"
+  ],
+  "init_patterns": [
+   "\\bsentry_init\\s*\\("
+  ],
+  "config_names": [
+   ".sentryclirc"
+  ],
+  "bundled": false,
+  "compiled": true
+ }
+}

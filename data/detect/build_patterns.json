@@ -1,0 +1,90 @@
+[
+ {
+  "id": "next-with-sentry-config",
+  "regex": "\\bwithSentryConfig\\b"
+ },
+ {
+  "id": "vite-plugin",
+  "regex": "@sentry/vite-plugin|\\bsentryVitePlugin\\b"
+ },
+ {
+  "id": "webpack-plugin",
+  "regex": "@sentry/webpack-plugin|\\bsentryWebpackPlugin\\b"
+ },
+ {
+  "id": "rollup-plugin",
+  "regex": "@sentry/rollup-plugin|\\bsentryRollupPlugin\\b"
+ },
+ {
+  "id": "esbuild-plugin",
+  "regex": "@sentry/esbuild-plugin|\\bsentryEsbuildPlugin\\b"
+ },
+ {
+  "id": "nuxt-module",
+  "regex": "@sentry/nuxt/module"
+ },
+ {
+  "id": "sveltekit-plugin",
+  "regex": "\\bsentrySvelteKit\\b"
+ },
+ {
+  "id": "astro-integration",
+  "regex": "@sentry/astro"
+ },
+ {
+  "id": "react-router-plugin",
+  "regex": "\\bsentryReactRouter\\b"
+ },
+ {
+  "id": "rn-expo-plugin",
+  "regex": "@sentry/react-native/expo|getSentryExpoConfig|@sentry/react-native/metro"
+ },
+ {
+  "id": "gradle-android-plugin",
+  "regex": "io\\.sentry\\.android\\.gradle"
+ },
+ {
+  "id": "gradle-jvm-plugin",
+  "regex": "io\\.sentry\\.jvm\\.gradle"
+ },
+ {
+  "id": "maven-plugin",
+  "regex": "sentry-maven-plugin"
+ },
+ {
+  "id": "dart-plugin",
+  "regex": "sentry_dart_plugin|sentry:\\s*$"
+ },
+ {
+  "id": "msbuild-upload",
+  "regex": "SentryUploadSymbols|SentryUploadSources|SentryOrg\\b|UseSentryCLI"
+ },
+ {
+  "id": "xcode-run-script",
+  "regex": "sentry-cli[^\\n]*debug-files|sentry[ \\t]+debug-files|upload-dsym|SENTRY_ORG"
+ },
+ {
+  "id": "fastlane",
+  "regex": "sentry_(upload|create_release|set_commits|finalize|check_cli)|sentry_cli\\b"
+ },
+ {
+  "id": "sentry-cli-v3",
+  "regex": "\\bsentry-cli\\b|@sentry/cli\\b"
+ },
+ {
+  "id": "sentry-v4-cli",
+  "regex": "(?<![\\w@/-])sentry[ \\t]+(release|sourcemap|debug-files|api|issue|event|monitor|init)\\b|npx[ \\t]+(--yes[ \\t]+)?sentry\\b"
+ },
+ {
+  "id": "wizard",
+  "regex": "@sentry/wizard"
+ },
+ {
+  "id": "github-action-release",
+  "regex": "getsentry/action-release|getsentry/action-"
+ },
+ {
+  "id": "sentry-upload-ci",
+  "regex": "SENTRY_AUTH_TOKEN"
+ }
+]

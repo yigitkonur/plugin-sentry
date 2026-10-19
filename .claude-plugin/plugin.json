@@ -1,0 +1,19 @@
+{
+  "name": "sentry",
+  "version": "0.1.0",
+  "description": "Audit, initialize and harden Sentry in any repo, CLI-first on the sentry v4 CLI. Detects what the repo is, finds gaps or sets Sentry up properly, applies only what you approve, and proves it with a live event.",
+  "author": { "name": "yigitkonur", "url": "https://github.com/yigitkonur" },
+  "homepage": "https://github.com/yigitkonur/plugin-sentry",
+  "repository": "https://github.com/yigitkonur/plugin-sentry",
+  "license": "MIT",
+  "keywords": ["sentry", "observability", "error-tracking", "audit", "cli", "tracing", "source-maps"],
+  "userConfig": {
+    "hook_mode": {
+      "type": "string",
+      "title": "Hook mode",
+      "description": "on: all hooks active. quiet: hooks only block (token paste, unapproved Sentry writes, premature stop) and add no advisory context. off: no hooks.",
+      "options": ["on", "quiet", "off"],
+      "default": "on"
+    }
+  }
+}

@@ -1,0 +1,826 @@
+[
+ {
+  "id": "nextjs",
+  "eco": "js",
+  "dep": "next",
+  "priority": 95,
+  "role": "fullstack",
+  "label": "Next.js",
+  "docs_platform": "javascript/guides/nextjs",
+  "wizard": "nextjs",
+  "module": "platforms/nextjs"
+ },
+ {
+  "id": "nuxt",
+  "eco": "js",
+  "dep": "nuxt|nuxt3",
+  "priority": 94,
+  "role": "fullstack",
+  "label": "Nuxt",
+  "docs_platform": "javascript/guides/nuxt",
+  "wizard": "nuxt",
+  "module": "platforms/nuxt"
+ },
+ {
+  "id": "remix",
+  "eco": "js",
+  "dep": "@remix-run/(react|node|server-runtime)",
+  "priority": 93,
+  "role": "fullstack",
+  "label": "Remix v2",
+  "docs_platform": "javascript/guides/remix",
+  "wizard": "remix",
+  "module": "platforms/remix"
+ },
+ {
+  "id": "react-router",
+  "eco": "js",
+  "dep": "@react-router/(node|dev|serve|fs-routes)",
+  "priority": 93,
+  "role": "fullstack",
+  "label": "React Router v7 (framework mode)",
+  "docs_platform": "javascript/guides/react-router",
+  "wizard": "reactRouter",
+  "module": "platforms/react-router"
+ },
+ {
+  "id": "sveltekit",
+  "eco": "js",
+  "dep": "@sveltejs/kit",
+  "priority": 93,
+  "role": "fullstack",
+  "label": "SvelteKit",
+  "docs_platform": "javascript/guides/sveltekit",
+  "wizard": "sveltekit",
+  "module": "platforms/sveltekit"
+ },
+ {
+  "id": "astro",
+  "eco": "js",
+  "dep": "astro",
+  "priority": 92,
+  "role": "fullstack",
+  "label": "Astro",
+  "docs_platform": "javascript/guides/astro",
+  "module": "platforms/astro"
+ },
+ {
+  "id": "tanstack-start",
+  "eco": "js",
+  "dep": "@tanstack/(react|solid)-start",
+  "priority": 92,
+  "role": "fullstack",
+  "label": "TanStack Start",
+  "docs_platform": "javascript/guides/tanstackstart-react",
+  "module": "platforms/tanstack-start"
+ },
+ {
+  "id": "solid-start",
+  "eco": "js",
+  "dep": "@solidjs/start",
+  "priority": 91,
+  "role": "fullstack",
+  "label": "SolidStart",
+  "docs_platform": "javascript/guides/solidstart",
+  "module": "platforms/solid-start"
+ },
+ {
+  "id": "gatsby",
+  "eco": "js",
+  "dep": "gatsby",
+  "priority": 90,
+  "role": "frontend",
+  "label": "Gatsby",
+  "docs_platform": "javascript/guides/gatsby",
+  "module": "platforms/gatsby"
+ },
+ {
+  "id": "electron",
+  "eco": "js",
+  "dep": "electron",
+  "priority": 92,
+  "role": "desktop",
+  "label": "Electron",
+  "docs_platform": "javascript/guides/electron",
+  "wizard": "electron",
+  "module": "platforms/electron"
+ },
+ {
+  "id": "expo",
+  "eco": "js",
+  "dep": "expo",
+  "priority": 91,
+  "role": "mobile",
+  "label": "Expo / React Native",
+  "docs_platform": "react-native/manual-setup/expo",
+  "module": "platforms/react-native"
+ },
+ {
+  "id": "react-native",
+  "eco": "js",
+  "dep": "react-native",
+  "priority": 90,
+  "role": "mobile",
+  "label": "React Native",
+  "docs_platform": "react-native",
+  "wizard": "reactNative",
+  "module": "platforms/react-native"
+ },
+ {
+  "id": "cordova",
+  "eco": "js",
+  "dep": "cordova-android|cordova-ios|cordova",
+  "priority": 88,
+  "role": "mobile",
+  "label": "Cordova / Ionic Capacitor",
+  "docs_platform": "javascript/guides/capacitor",
+  "wizard": "cordova",
+  "module": "platforms/react-native"
+ },
+ {
+  "id": "nestjs",
+  "eco": "js",
+  "dep": "@nestjs/core",
+  "priority": 85,
+  "role": "backend",
+  "label": "NestJS",
+  "docs_platform": "javascript/guides/nestjs",
+  "module": "platforms/nestjs"
+ },
+ {
+  "id": "hono",
+  "eco": "js",
+  "dep": "hono",
+  "priority": 84,
+  "role": "backend",
+  "label": "Hono",
+  "docs_platform": "javascript/guides/hono",
+  "module": "platforms/hono"
+ },
+ {
+  "id": "fastify",
+  "eco": "js",
+  "dep": "fastify",
+  "priority": 83,
+  "role": "backend",
+  "label": "Fastify",
+  "docs_platform": "javascript/guides/fastify",
+  "module": "platforms/fastify"
+ },
+ {
+  "id": "express",
+  "eco": "js",
+  "dep": "express",
+  "priority": 82,
+  "role": "backend",
+  "label": "Express",
+  "docs_platform": "javascript/guides/express",
+  "module": "platforms/express"
+ },
+ {
+  "id": "koa",
+  "eco": "js",
+  "dep": "koa",
+  "priority": 82,
+  "role": "backend",
+  "label": "Koa",
+  "docs_platform": "javascript/guides/koa",
+  "module": "platforms/koa"
+ },
+ {
+  "id": "angular",
+  "eco": "js",
+  "dep": "@angular/core",
+  "priority": 80,
+  "role": "frontend",
+  "label": "Angular",
+  "docs_platform": "javascript/guides/angular",
+  "wizard": "angular",
+  "module": "platforms/angular"
+ },
+ {
+  "id": "vue",
+  "eco": "js",
+  "dep": "vue",
+  "priority": 70,
+  "role": "frontend",
+  "label": "Vue",
+  "docs_platform": "javascript/guides/vue",
+  "module": "platforms/vue"
+ },
+ {
+  "id": "svelte",
+  "eco": "js",
+  "dep": "svelte",
+  "priority": 70,
+  "role": "frontend",
+  "label": "Svelte",
+  "docs_platform": "javascript/guides/svelte",
+  "module": "platforms/svelte"
+ },
+ {
+  "id": "solid",
+  "eco": "js",
+  "dep": "solid-js",
+  "priority": 70,
+  "role": "frontend",
+  "label": "Solid",
+  "docs_platform": "javascript/guides/solid",
+  "module": "platforms/solid"
+ },
+ {
+  "id": "react",
+  "eco": "js",
+  "dep": "react-dom|react",
+  "priority": 60,
+  "role": "frontend",
+  "label": "React (SPA)",
+  "docs_platform": "javascript/guides/react",
+  "module": "platforms/react"
+ },
+ {
+  "id": "cloudflare",
+  "eco": "js",
+  "dep": "wrangler|@cloudflare/workers-types|@cloudflare/vitest-pool-workers|@cloudflare/vite-plugin",
+  "priority": 96,
+  "role": "serverless",
+  "label": "Cloudflare Workers / Pages",
+  "docs_platform": "javascript/guides/cloudflare",
+  "wizard": "cloudflare",
+  "module": "platforms/cloudflare",
+  "note": "overlay: wrangler config is the stronger signal",
+  "overlay": true
+ },
+ {
+  "id": "bun",
+  "eco": "js",
+  "dep": "bun-types|@types/bun",
+  "priority": 50,
+  "role": "backend",
+  "label": "Bun",
+  "docs_platform": "javascript/guides/bun",
+  "module": "platforms/bun"
+ },
+ {
+  "id": "deno",
+  "eco": "js",
+  "dep": "@deno/.*",
+  "priority": 50,
+  "role": "backend",
+  "label": "Deno",
+  "docs_platform": "javascript/guides/deno",
+  "module": "platforms/deno"
+ },
+ {
+  "id": "node",
+  "eco": "js",
+  "dep": "@types/node|dotenv|ts-node|tsx|nodemon|pm2",
+  "priority": 10,
+  "role": "backend",
+  "label": "Node.js",
+  "docs_platform": "javascript/guides/node",
+  "module": "platforms/node"
+ },
+ {
+  "id": "django",
+  "eco": "python",
+  "dep": "[Dd]jango",
+  "priority": 90,
+  "role": "backend",
+  "label": "Django",
+  "docs_platform": "python/integrations/django",
+  "module": "platforms/django"
+ },
+ {
+  "id": "fastapi",
+  "eco": "python",
+  "dep": "fastapi",
+  "priority": 88,
+  "role": "backend",
+  "label": "FastAPI",
+  "docs_platform": "python/integrations/fastapi",
+  "module": "platforms/fastapi"
+ },
+ {
+  "id": "flask",
+  "eco": "python",
+  "dep": "[Ff]lask",
+  "priority": 88,
+  "role": "backend",
+  "label": "Flask",
+  "docs_platform": "python/integrations/flask",
+  "module": "platforms/flask"
+ },
+ {
+  "id": "litestar",
+  "eco": "python",
+  "dep": "litestar",
+  "priority": 87,
+  "role": "backend",
+  "label": "Litestar",
+  "docs_platform": "python/integrations/litestar",
+  "module": "platforms/litestar"
+ },
+ {
+  "id": "starlette",
+  "eco": "python",
+  "dep": "starlette",
+  "priority": 80,
+  "role": "backend",
+  "label": "Starlette",
+  "docs_platform": "python/integrations/starlette",
+  "module": "platforms/starlette"
+ },
+ {
+  "id": "celery",
+  "eco": "python",
+  "dep": "celery",
+  "priority": 86,
+  "role": "worker",
+  "label": "Celery",
+  "docs_platform": "python/integrations/celery",
+  "module": "platforms/celery"
+ },
+ {
+  "id": "aiohttp",
+  "eco": "python",
+  "dep": "aiohttp",
+  "priority": 70,
+  "role": "backend",
+  "label": "aiohttp",
+  "docs_platform": "python/integrations/aiohttp",
+  "module": "platforms/aiohttp"
+ },
+ {
+  "id": "tornado",
+  "eco": "python",
+  "dep": "tornado",
+  "priority": 70,
+  "role": "backend",
+  "label": "Tornado",
+  "docs_platform": "python/integrations/tornado",
+  "module": "platforms/tornado"
+ },
+ {
+  "id": "sanic",
+  "eco": "python",
+  "dep": "sanic",
+  "priority": 70,
+  "role": "backend",
+  "label": "Sanic",
+  "docs_platform": "python/integrations/sanic",
+  "module": "platforms/sanic"
+ },
+ {
+  "id": "pyramid",
+  "eco": "python",
+  "dep": "pyramid",
+  "priority": 70,
+  "role": "backend",
+  "label": "Pyramid",
+  "docs_platform": "python/integrations/pyramid",
+  "module": "platforms/pyramid"
+ },
+ {
+  "id": "rq",
+  "eco": "python",
+  "dep": "rq",
+  "priority": 60,
+  "role": "worker",
+  "label": "RQ",
+  "docs_platform": "python/integrations/rq",
+  "module": "platforms/rq"
+ },
+ {
+  "id": "airflow",
+  "eco": "python",
+  "dep": "apache-airflow",
+  "priority": 75,
+  "role": "worker",
+  "label": "Airflow",
+  "docs_platform": "python/integrations/airflow",
+  "module": "platforms/airflow"
+ },
+ {
+  "id": "python",
+  "eco": "python",
+  "dep": ".*",
+  "priority": 1,
+  "role": "unknown",
+  "label": "Python",
+  "docs_platform": "python",
+  "module": "platforms/python"
+ },
+ {
+  "id": "gin",
+  "eco": "go",
+  "dep": "github.com/gin-gonic/gin",
+  "priority": 90,
+  "role": "backend",
+  "label": "Gin",
+  "docs_platform": "go/guides/gin",
+  "module": "platforms/gin"
+ },
+ {
+  "id": "echo",
+  "eco": "go",
+  "dep": "github.com/labstack/echo(/v\\d+)?",
+  "priority": 90,
+  "role": "backend",
+  "label": "Echo",
+  "docs_platform": "go/guides/echo",
+  "module": "platforms/echo"
+ },
+ {
+  "id": "fiber",
+  "eco": "go",
+  "dep": "github.com/gofiber/fiber(/v\\d+)?",
+  "priority": 90,
+  "role": "backend",
+  "label": "Fiber",
+  "docs_platform": "go/guides/fiber",
+  "module": "platforms/fiber"
+ },
+ {
+  "id": "iris",
+  "eco": "go",
+  "dep": "github.com/kataras/iris(/v\\d+)?",
+  "priority": 90,
+  "role": "backend",
+  "label": "Iris",
+  "docs_platform": "go/guides/iris",
+  "module": "platforms/iris"
+ },
+ {
+  "id": "negroni",
+  "eco": "go",
+  "dep": "github.com/urfave/negroni",
+  "priority": 85,
+  "role": "backend",
+  "label": "Negroni",
+  "docs_platform": "go/guides/negroni",
+  "module": "platforms/negroni"
+ },
+ {
+  "id": "fasthttp",
+  "eco": "go",
+  "dep": "github.com/valyala/fasthttp",
+  "priority": 85,
+  "role": "backend",
+  "label": "FastHTTP",
+  "docs_platform": "go/guides/fasthttp",
+  "module": "platforms/fasthttp"
+ },
+ {
+  "id": "go",
+  "eco": "go",
+  "dep": ".*",
+  "priority": 1,
+  "role": "unknown",
+  "label": "Go",
+  "docs_platform": "go",
+  "module": "platforms/go"
+ },
+ {
+  "id": "android",
+  "eco": "jvm",
+  "dep": "com\\.android\\.application|com\\.android\\.library|androidx\\..*|com\\.google\\.android\\..*",
+  "priority": 95,
+  "role": "mobile",
+  "label": "Android",
+  "docs_platform": "android",
+  "wizard": "android",
+  "module": "platforms/android"
+ },
+ {
+  "id": "spring-boot",
+  "eco": "jvm",
+  "dep": "org\\.springframework\\.boot.*|spring-boot.*",
+  "priority": 90,
+  "role": "backend",
+  "label": "Spring Boot",
+  "docs_platform": "java/guides/spring-boot",
+  "module": "platforms/spring-boot"
+ },
+ {
+  "id": "ktor",
+  "eco": "jvm",
+  "dep": "io\\.ktor.*",
+  "priority": 85,
+  "role": "backend",
+  "label": "Ktor",
+  "docs_platform": "java/guides/ktor",
+  "module": "platforms/ktor"
+ },
+ {
+  "id": "micronaut",
+  "eco": "jvm",
+  "dep": "io\\.micronaut.*",
+  "priority": 85,
+  "role": "backend",
+  "label": "Micronaut",
+  "docs_platform": "java/guides/micronaut",
+  "module": "platforms/micronaut"
+ },
+ {
+  "id": "quarkus",
+  "eco": "jvm",
+  "dep": "io\\.quarkus.*",
+  "priority": 85,
+  "role": "backend",
+  "label": "Quarkus",
+  "docs_platform": "java/guides/quarkus",
+  "module": "platforms/quarkus"
+ },
+ {
+  "id": "jvm",
+  "eco": "jvm",
+  "dep": ".*",
+  "priority": 1,
+  "role": "unknown",
+  "label": "Java / Kotlin",
+  "docs_platform": "java",
+  "module": "platforms/jvm"
+ },
+ {
+  "id": "swiftui",
+  "eco": "apple",
+  "dep": "__swiftui__",
+  "priority": 50,
+  "role": "unknown",
+  "label": "SwiftUI app",
+  "docs_platform": "apple",
+  "module": "platforms/apple"
+ },
+ {
+  "id": "apple",
+  "eco": "apple",
+  "dep": ".*",
+  "priority": 1,
+  "role": "unknown",
+  "label": "Apple app",
+  "docs_platform": "apple",
+  "module": "platforms/apple"
+ },
+ {
+  "id": "rails",
+  "eco": "ruby",
+  "dep": "rails|railties",
+  "priority": 90,
+  "role": "backend",
+  "label": "Rails",
+  "docs_platform": "ruby/guides/rails",
+  "module": "platforms/rails"
+ },
+ {
+  "id": "sinatra",
+  "eco": "ruby",
+  "dep": "sinatra",
+  "priority": 80,
+  "role": "backend",
+  "label": "Sinatra",
+  "docs_platform": "ruby/guides/sinatra",
+  "module": "platforms/sinatra"
+ },
+ {
+  "id": "sidekiq",
+  "eco": "ruby",
+  "dep": "sidekiq",
+  "priority": 60,
+  "role": "worker",
+  "label": "Sidekiq",
+  "docs_platform": "ruby/guides/sidekiq",
+  "module": "platforms/sidekiq"
+ },
+ {
+  "id": "rack",
+  "eco": "ruby",
+  "dep": "rack",
+  "priority": 20,
+  "role": "backend",
+  "label": "Rack",
+  "docs_platform": "ruby/guides/rack",
+  "module": "platforms/rack"
+ },
+ {
+  "id": "ruby",
+  "eco": "ruby",
+  "dep": ".*",
+  "priority": 1,
+  "role": "unknown",
+  "label": "Ruby",
+  "docs_platform": "ruby",
+  "module": "platforms/ruby"
+ },
+ {
+  "id": "laravel",
+  "eco": "php",
+  "dep": "laravel/framework|laravel/laravel",
+  "priority": 90,
+  "role": "backend",
+  "label": "Laravel",
+  "docs_platform": "php/guides/laravel",
+  "module": "platforms/laravel"
+ },
+ {
+  "id": "symfony",
+  "eco": "php",
+  "dep": "symfony/framework-bundle|symfony/symfony",
+  "priority": 88,
+  "role": "backend",
+  "label": "Symfony",
+  "docs_platform": "php/guides/symfony",
+  "module": "platforms/symfony"
+ },
+ {
+  "id": "wordpress",
+  "eco": "php",
+  "dep": "johnpbloch/wordpress.*|roots/wordpress.*",
+  "priority": 70,
+  "role": "backend",
+  "label": "WordPress",
+  "docs_platform": "php",
+  "module": "platforms/wordpress"
+ },
+ {
+  "id": "php",
+  "eco": "php",
+  "dep": ".*",
+  "priority": 1,
+  "role": "unknown",
+  "label": "PHP",
+  "docs_platform": "php",
+  "module": "platforms/php"
+ },
+ {
+  "id": "maui",
+  "eco": "dotnet",
+  "dep": "Microsoft\\.Maui.*",
+  "priority": 92,
+  "role": "mobile",
+  "label": "MAUI",
+  "docs_platform": "dotnet/guides/maui",
+  "module": "platforms/maui"
+ },
+ {
+  "id": "aspnetcore",
+  "eco": "dotnet",
+  "dep": "Microsoft\\.AspNetCore.*|__aspnet_sdk__",
+  "priority": 88,
+  "role": "backend",
+  "label": "ASP.NET Core",
+  "docs_platform": "dotnet/guides/aspnetcore",
+  "module": "platforms/aspnetcore"
+ },
+ {
+  "id": "azure-functions",
+  "eco": "dotnet",
+  "dep": "Microsoft\\.Azure\\.Functions.*|Microsoft\\.NET\\.Sdk\\.Functions",
+  "priority": 88,
+  "role": "serverless",
+  "label": "Azure Functions",
+  "docs_platform": "dotnet/guides/azure-functions",
+  "module": "platforms/azure-functions"
+ },
+ {
+  "id": "wpf",
+  "eco": "dotnet",
+  "dep": "__wpf__",
+  "priority": 80,
+  "role": "desktop",
+  "label": "WPF",
+  "docs_platform": "dotnet/guides/wpf",
+  "module": "platforms/wpf"
+ },
+ {
+  "id": "winforms",
+  "eco": "dotnet",
+  "dep": "__winforms__",
+  "priority": 80,
+  "role": "desktop",
+  "label": "WinForms",
+  "docs_platform": "dotnet/guides/winforms",
+  "module": "platforms/winforms"
+ },
+ {
+  "id": "dotnet",
+  "eco": "dotnet",
+  "dep": ".*",
+  "priority": 1,
+  "role": "unknown",
+  "label": ".NET",
+  "docs_platform": "dotnet",
+  "module": "platforms/dotnet"
+ },
+ {
+  "id": "actix",
+  "eco": "rust",
+  "dep": "actix-web",
+  "priority": 85,
+  "role": "backend",
+  "label": "Actix Web",
+  "docs_platform": "rust",
+  "module": "platforms/actix"
+ },
+ {
+  "id": "axum",
+  "eco": "rust",
+  "dep": "axum",
+  "priority": 85,
+  "role": "backend",
+  "label": "Axum",
+  "docs_platform": "rust",
+  "module": "platforms/axum"
+ },
+ {
+  "id": "rocket",
+  "eco": "rust",
+  "dep": "rocket",
+  "priority": 85,
+  "role": "backend",
+  "label": "Rocket",
+  "docs_platform": "rust",
+  "module": "platforms/rocket"
+ },
+ {
+  "id": "rust",
+  "eco": "rust",
+  "dep": ".*",
+  "priority": 1,
+  "role": "unknown",
+  "label": "Rust",
+  "docs_platform": "rust",
+  "module": "platforms/rust"
+ },
+ {
+  "id": "phoenix",
+  "eco": "elixir",
+  "dep": ":?phoenix",
+  "priority": 90,
+  "role": "backend",
+  "label": "Phoenix",
+  "docs_platform": "elixir/guides/phoenix",
+  "module": "platforms/phoenix"
+ },
+ {
+  "id": "elixir",
+  "eco": "elixir",
+  "dep": ".*",
+  "priority": 1,
+  "role": "unknown",
+  "label": "Elixir",
+  "docs_platform": "elixir",
+  "module": "platforms/elixir"
+ },
+ {
+  "id": "flutter",
+  "eco": "dart",
+  "dep": "flutter",
+  "priority": 90,
+  "role": "mobile",
+  "label": "Flutter",
+  "docs_platform": "dart/guides/flutter",
+  "wizard": "flutter",
+  "module": "platforms/flutter"
+ },
+ {
+  "id": "dart",
+  "eco": "dart",
+  "dep": ".*",
+  "priority": 1,
+  "role": "unknown",
+  "label": "Dart",
+  "docs_platform": "dart",
+  "module": "platforms/dart"
+ },
+ {
+  "id": "unity",
+  "eco": "unity",
+  "dep": ".*",
+  "priority": 1,
+  "role": "game",
+  "label": "Unity",
+  "docs_platform": "unity",
+  "module": "platforms/unity"
+ },
+ {
+  "id": "unreal",
+  "eco": "unreal",
+  "dep": ".*",
+  "priority": 1,
+  "role": "game",
+  "label": "Unreal Engine",
+  "docs_platform": "unreal",
+  "module": "platforms/unreal"
+ },
+ {
+  "id": "native",
+  "eco": "native",
+  "dep": ".*",
+  "priority": 1,
+  "role": "unknown",
+  "label": "C / C++",
+  "docs_platform": "native",
+  "module": "platforms/native"
+ }
+]

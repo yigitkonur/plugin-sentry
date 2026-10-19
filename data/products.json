@@ -1,0 +1,94 @@
+{
+ "core": {
+  "label": "SDK core (init, release, environment, flush)",
+  "group": "foundation"
+ },
+ "errors": {
+  "label": "Errors, grouping, ownership",
+  "group": "foundation"
+ },
+ "releases": {
+  "label": "Releases, commits, deploys, CI",
+  "group": "foundation"
+ },
+ "debug-artifacts": {
+  "label": "Source maps and debug files",
+  "group": "foundation"
+ },
+ "privacy": {
+  "label": "Privacy, PII scrubbing, secrets",
+  "group": "privacy"
+ },
+ "tracing": {
+  "label": "Tracing and performance",
+  "group": "telemetry"
+ },
+ "profiling": {
+  "label": "Profiling",
+  "group": "telemetry"
+ },
+ "logs": {
+  "label": "Logs",
+  "group": "telemetry"
+ },
+ "metrics": {
+  "label": "Application metrics",
+  "group": "telemetry"
+ },
+ "ai": {
+  "label": "AI agent monitoring",
+  "group": "telemetry"
+ },
+ "mcp": {
+  "label": "MCP server monitoring",
+  "group": "telemetry"
+ },
+ "flags": {
+  "label": "Feature flags",
+  "group": "telemetry"
+ },
+ "otlp": {
+  "label": "OpenTelemetry / OTLP / drains",
+  "group": "telemetry"
+ },
+ "replay": {
+  "label": "Session Replay",
+  "group": "client"
+ },
+ "feedback": {
+  "label": "User feedback",
+  "group": "client"
+ },
+ "crons": {
+  "label": "Cron monitors",
+  "group": "jobs"
+ },
+ "uptime": {
+  "label": "Uptime monitors",
+  "group": "jobs"
+ },
+ "mobile-builds": {
+  "label": "Mobile builds (size, distribution, snapshots)",
+  "group": "foundation"
+ },
+ "dev-spotlight": {
+  "label": "Spotlight / local dev",
+  "group": "foundation"
+ },
+ "alerts": {
+  "label": "Monitors and alerts",
+  "group": "org"
+ },
+ "quota": {
+  "label": "Quota, filters, sampling controls",
+  "group": "org"
+ },
+ "seer": {
+  "label": "Seer prerequisites",
+  "group": "org"
+ },
+ "org": {
+  "label": "Organization, projects, integrations",
+  "group": "org"
+ }
+}

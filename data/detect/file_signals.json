@@ -1,0 +1,299 @@
+{
+ "files": [
+  {
+   "match": "vercel.json",
+   "category": "deploy",
+   "value": "vercel"
+  },
+  {
+   "match": "vercel.json",
+   "content": "\"crons\"\\s*:",
+   "category": "scheduler",
+   "value": "vercel-cron"
+  },
+  {
+   "match": "wrangler.toml",
+   "category": "deploy",
+   "value": "cloudflare"
+  },
+  {
+   "match": "wrangler.json",
+   "category": "deploy",
+   "value": "cloudflare"
+  },
+  {
+   "match": "wrangler.jsonc",
+   "category": "deploy",
+   "value": "cloudflare"
+  },
+  {
+   "match": "wrangler.toml",
+   "content": "crons\\s*=",
+   "category": "scheduler",
+   "value": "cloudflare-cron-trigger"
+  },
+  {
+   "match": "wrangler.jsonc",
+   "content": "\"crons\"\\s*:",
+   "category": "scheduler",
+   "value": "cloudflare-cron-trigger"
+  },
+  {
+   "match": "wrangler.json",
+   "content": "\"crons\"\\s*:",
+   "category": "scheduler",
+   "value": "cloudflare-cron-trigger"
+  },
+  {
+   "match": "netlify.toml",
+   "category": "deploy",
+   "value": "netlify"
+  },
+  {
+   "match": "fly.toml",
+   "category": "deploy",
+   "value": "fly"
+  },
+  {
+   "match": "render.yaml",
+   "category": "deploy",
+   "value": "render"
+  },
+  {
+   "match": "railway.json",
+   "category": "deploy",
+   "value": "railway"
+  },
+  {
+   "match": "railway.toml",
+   "category": "deploy",
+   "value": "railway"
+  },
+  {
+   "match": "Procfile",
+   "category": "deploy",
+   "value": "heroku"
+  },
+  {
+   "match": "app.yaml",
+   "content": "runtime\\s*:",
+   "category": "deploy",
+   "value": "gcp-app-engine"
+  },
+  {
+   "match": "serverless.yml",
+   "category": "deploy",
+   "value": "serverless-framework"
+  },
+  {
+   "match": "serverless.yaml",
+   "category": "deploy",
+   "value": "serverless-framework"
+  },
+  {
+   "match": "template.yaml",
+   "content": "AWS::Serverless",
+   "category": "deploy",
+   "value": "aws-sam"
+  },
+  {
+   "match": "Dockerfile",
+   "category": "deploy",
+   "value": "docker"
+  },
+  {
+   "match": "Dockerfile.*",
+   "category": "deploy",
+   "value": "docker"
+  },
+  {
+   "match": "docker-compose.yml",
+   "category": "deploy",
+   "value": "docker-compose"
+  },
+  {
+   "match": "docker-compose.yaml",
+   "category": "deploy",
+   "value": "docker-compose"
+  },
+  {
+   "match": "compose.yaml",
+   "category": "deploy",
+   "value": "docker-compose"
+  },
+  {
+   "match": "Dockerfile",
+   "content": "(?m)^\\s*EXPOSE\\s+\\d+",
+   "category": "service",
+   "value": "listens-on-port"
+  },
+  {
+   "match": "Procfile",
+   "content": "(?m)^web\\s*:",
+   "category": "service",
+   "value": "procfile-web"
+  },
+  {
+   "match": "*.tf",
+   "content": "jianyuan/sentry|sentry_project|sentry_key|sentry_issue_alert|sentry_metric_alert",
+   "category": "iac",
+   "value": "terraform-sentry"
+  },
+  {
+   "match": "*.tf",
+   "content": "google_cloud_run",
+   "category": "deploy",
+   "value": "cloud-run"
+  },
+  {
+   "match": "*.yaml",
+   "content": "(?m)^kind:\\s*CronJob\\b",
+   "category": "scheduler",
+   "value": "k8s-cronjob"
+  },
+  {
+   "match": "*.yml",
+   "content": "(?m)^kind:\\s*CronJob\\b",
+   "category": "scheduler",
+   "value": "k8s-cronjob"
+  },
+  {
+   "match": "*.yaml",
+   "content": "(?m)^kind:\\s*Ingress\\b",
+   "category": "service",
+   "value": "k8s-ingress"
+  },
+  {
+   "match": "*.yml",
+   "content": "(?m)^kind:\\s*Ingress\\b",
+   "category": "service",
+   "value": "k8s-ingress"
+  },
+  {
+   "match": "crontab",
+   "category": "scheduler",
+   "value": "crontab"
+  },
+  {
+   "match": "CNAME",
+   "category": "public_url",
+   "value": "cname-file"
+  },
+  {
+   "match": "AndroidManifest.xml",
+   "category": "role",
+   "value": "android-app"
+  }
+ ],
+ "ci": [
+  {
+   "match": ".github/workflows/*.yml",
+   "ci": "github-actions"
+  },
+  {
+   "match": ".github/workflows/*.yaml",
+   "ci": "github-actions"
+  },
+  {
+   "match": ".gitlab-ci.yml",
+   "ci": "gitlab-ci"
+  },
+  {
+   "match": ".circleci/config.yml",
+   "ci": "circleci"
+  },
+  {
+   "match": "Jenkinsfile",
+   "ci": "jenkins"
+  },
+  {
+   "match": "azure-pipelines.yml",
+   "ci": "azure-pipelines"
+  },
+  {
+   "match": "bitbucket-pipelines.yml",
+   "ci": "bitbucket-pipelines"
+  },
+  {
+   "match": "cloudbuild.yaml",
+   "ci": "cloud-build"
+  },
+  {
+   "match": ".buildkite/*.yml",
+   "ci": "buildkite"
+  },
+  {
+   "match": "fastlane/Fastfile",
+   "ci": "fastlane"
+  },
+  {
+   "match": ".travis.yml",
+   "ci": "travis"
+  },
+  {
+   "match": "bitrise.yml",
+   "ci": "bitrise"
+  },
+  {
+   "match": "codemagic.yaml",
+   "ci": "codemagic"
+  },
+  {
+   "match": ".xcode-version",
+   "ci": null
+  }
+ ],
+ "ci_content": [
+  {
+   "regex": "(?m)^\\s*schedule\\s*:",
+   "category": "scheduler",
+   "value": "ci-scheduled-workflow",
+   "only": "github-actions"
+  },
+  {
+   "regex": "gcloud\\s+run\\s+deploy|google-github-actions/deploy-cloudrun",
+   "category": "deploy",
+   "value": "cloud-run"
+  },
+  {
+   "regex": "flyctl\\s+deploy|superfly/flyctl-actions",
+   "category": "deploy",
+   "value": "fly"
+  },
+  {
+   "regex": "vercel\\s+(deploy|--prod)|amondnet/vercel-action",
+   "category": "deploy",
+   "value": "vercel"
+  },
+  {
+   "regex": "wrangler\\s+(deploy|publish)|cloudflare/wrangler-action",
+   "category": "deploy",
+   "value": "cloudflare"
+  },
+  {
+   "regex": "aws\\s+(lambda|ecs|s3\\s+sync)|aws-actions/",
+   "category": "deploy",
+   "value": "aws"
+  },
+  {
+   "regex": "kubectl\\s+(apply|set\\s+image)|helm\\s+(upgrade|install)",
+   "category": "deploy",
+   "value": "kubernetes"
+  },
+  {
+   "regex": "firebase\\s+deploy|FirebaseExtended/action-hosting-deploy",
+   "category": "deploy",
+   "value": "firebase"
+  },
+  {
+   "regex": "fastlane\\s|xcodebuild\\s|notarytool|altool",
+   "category": "deploy",
+   "value": "apple-release"
+  },
+  {
+   "regex": "gradlew?\\s+(assemble|bundle)Release|r0adkll/upload-google-play",
+   "category": "deploy",
+   "value": "android-release"
+  }
+ ]
+}

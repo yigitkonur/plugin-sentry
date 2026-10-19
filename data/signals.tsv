@@ -1,0 +1,26 @@
+# product	mode	group	applies_when	na_reason
+# mode: always | cond | org.  applies_when: OR of AND-terms (| and &, parentheses not supported; AND binds tighter).
+# keys: always notlib role: eco: fw: platform: sig: build:bundler compiled client serverless org url policy:<product>; prefix ! negates.
+core	always	foundation	notlib		library: SDK init belongs to the application, not the package
+errors	always	foundation	notlib		library: SDK init belongs to the application, not the package
+releases	always	foundation	notlib		library: SDK init belongs to the application, not the package
+privacy	always	privacy	notlib		library: SDK init belongs to the application, not the package
+debug-artifacts	cond	foundation	build:bundler&notlib|compiled&notlib|role:mobile,desktop,game	interpreted code with no build step
+tracing	cond	telemetry	role:frontend,backend,worker,serverless,mobile,fullstack	no request or job boundary (library, CLI, game or desktop tool)
+profiling	cond	telemetry	role:backend,worker&eco:python,js,jvm,dotnet,ruby,php&!serverless|role:fullstack&eco:js&deploy:docker,fly,render,railway,heroku,cloud-run,kubernetes,gcp-app-engine|role:mobile|platform:macos,ios,tvos,visionos	short-lived serverless runtime or a platform without profiling support
+replay	cond	client	role:frontend,fullstack&eco:js|role:mobile|fw:electron	no UI the SDK can record (server, CLI, or a native macOS app: replay is not supported there)
+logs	cond	telemetry	sig:logging|policy:logs	no logging library detected (add Sentry logs only if wanted)
+metrics	cond	telemetry	sig:metrics|policy:metrics	no metrics client detected
+crons	cond	jobs	sig:scheduler	no scheduled jobs found
+uptime	cond	jobs	url&notlib|policy:uptime	no public URL found (ask the user for it)
+feedback	cond	client	client	not user-facing
+ai	cond	telemetry	sig:ai	no AI SDK detected
+mcp	cond	telemetry	sig:mcp	no MCP SDK detected
+flags	cond	telemetry	sig:flags	no feature-flag SDK detected
+otlp	cond	telemetry	sig:otel	no OpenTelemetry detected
+mobile-builds	cond	foundation	role:mobile	not a mobile app
+dev-spotlight	cond	foundation	role:frontend,backend,fullstack,worker	no local web/server workflow to attach Spotlight to
+alerts	org	org	org		UNVERIFIED: no org access
+quota	org	org	org		UNVERIFIED: no org access
+seer	org	org	org		UNVERIFIED: no org access
+org	org	org	org		UNVERIFIED: no org access

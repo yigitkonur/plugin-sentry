@@ -1,0 +1,83 @@
+{
+  "version": 1,
+  "note": "Rendered by the policy skill with AskUserQuestion (max 4 questions per call). The previous answer, when one exists, is moved to the first option and labelled (previous). Nothing is ever reused silently.",
+  "questions": [
+    {
+      "id": "privacy.preset", "call": "A", "header": "Privacy", "multiSelect": false, "when": "always",
+      "question": "How much user data may Sentry collect from this app?",
+      "options": [
+        {"value": "strict", "label": "Strict", "description": "No user info, IP, cookies, headers, request/response bodies, DB query values or local variables. Only what you add by hand."},
+        {"value": "standard", "label": "Standard", "description": "Error context and breadcrumbs, a hashed or opaque user id, no IP, cookies, auth headers or bodies. Recommended for most products."},
+        {"value": "permissive", "label": "Permissive", "description": "SDK defaults with user info and IP. Only for internal tools or when users have consented."},
+        {"value": "custom", "label": "Custom", "description": "I will set each dimension (user, IP, cookies/headers, bodies, query data, local variables, screenshots) myself."}
+      ]
+    },
+    {
+      "id": "privacy.ai_io", "call": "A", "header": "AI prompts", "multiSelect": false, "when": "sig:ai",
+      "question": "May Sentry record AI prompts and model outputs? (Server-side scrubbing does not cover gen_ai fields.)",
+      "options": [
+        {"value": "off", "label": "Off", "description": "Record model, tokens, latency and tool calls, never the prompt or output text."},
+        {"value": "redacted", "label": "Redacted", "description": "Record text only after the app's own redaction hook runs."},
+        {"value": "on", "label": "On", "description": "Record full prompts and outputs. Only if the data may be stored by Sentry."}
+      ]
+    },
+    {
+      "id": "privacy.replay_mask", "call": "A", "header": "Replay", "multiSelect": false, "when": "product:replay",
+      "question": "How should Session Replay mask the UI?",
+      "options": [
+        {"value": "all", "label": "Mask everything", "description": "Mask all text and inputs and block media (the SDK default)."},
+        {"value": "inputs-only", "label": "Inputs only", "description": "Mask form inputs; show static text. Review each screen for personal data first."},
+        {"value": "none", "label": "No masking", "description": "Only for apps with no user-generated or personal content."}
+      ]
+    },
+    {
+      "id": "org_access", "call": "A", "header": "Org access", "multiSelect": false, "when": "always",
+      "question": "What may this plugin do in your Sentry organization?",
+      "options": [
+        {"value": "read-only", "label": "Read only", "description": "Audit org settings, alerts, monitors, releases. Nothing is changed."},
+        {"value": "read-write", "label": "Read + approved writes", "description": "Also create projects, monitors and alerts, one exact API call at a time, each shown and approved first."},
+        {"value": "none", "label": "No org access", "description": "Repo-only work. Every org-side check is reported UNVERIFIED."}
+      ]
+    },
+    {
+      "id": "environments", "call": "B", "header": "Environments", "multiSelect": true, "when": "always",
+      "question": "Which environments should send events to Sentry?",
+      "options": [
+        {"value": "production", "label": "production", "description": "Real users."},
+        {"value": "staging", "label": "staging", "description": "Pre-release testing; usually lower sample rates."},
+        {"value": "development", "label": "development (Spotlight)", "description": "Local only through Spotlight; nothing is billed."}
+      ]
+    },
+    {
+      "id": "volume", "call": "B", "header": "Volume", "multiSelect": false, "when": "product:tracing,logs,profiling,metrics",
+      "question": "Roughly how much traffic, and is a pay-as-you-go budget set? (Logs, metrics and profiling overage need one.)",
+      "options": [
+        {"value": "low-no-budget", "label": "Low traffic, no budget", "description": "Keep rates conservative; skip logs, metrics and profiling unless free quota covers them."},
+        {"value": "medium-budget", "label": "Medium traffic, budget set", "description": "Tracing at 10-20%, logs on errors and warnings, profiling sampled."},
+        {"value": "high-budget", "label": "High traffic, budget set", "description": "Use a traces sampler: keep critical routes, drop health checks, sample the rest low."},
+        {"value": "unknown", "label": "Not sure", "description": "Use conservative rates and show the numbers so you can adjust."}
+      ]
+    },
+    {
+      "id": "release_owner", "call": "B", "header": "Releases", "multiSelect": false, "when": "always",
+      "question": "Who creates releases and uploads source maps / debug files?",
+      "options": [
+        {"value": "ci", "label": "CI", "description": "A CI job on each deploy with an organization auth token in the secret store."},
+        {"value": "integration", "label": "Vercel / host integration", "description": "The hosting integration handles releases."},
+        {"value": "local", "label": "Local machine", "description": "A manual or Makefile step (macOS apps, small projects)."},
+        {"value": "none", "label": "Nobody yet", "description": "Set it up as part of this run."}
+      ]
+    },
+    {
+      "id": "products", "call": "B", "header": "Products", "multiSelect": true, "when": "always",
+      "question": "Any products to force on or off? (Defaults come from what the repo shows.)",
+      "options": [
+        {"value": "none", "label": "Use detected defaults", "description": "No overrides."},
+        {"value": "include:logs", "label": "Also logs", "description": "Add Sentry Logs even without a detected logging library."},
+        {"value": "exclude:replay", "label": "Never replay", "description": "Mark Session Replay not wanted."},
+        {"value": "exclude:profiling", "label": "Never profiling", "description": "Mark profiling not wanted."}
+      ]
+    }
+  ],
+  "headless_env": "SENTRY_PLUGIN_POLICY_ANSWERS"
+}

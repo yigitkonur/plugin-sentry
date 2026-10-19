@@ -1,0 +1,90 @@
+[
+ {
+  "category": "scheduler",
+  "eco": "jvm",
+  "regex": "@Scheduled\\s*\\(",
+  "value": "spring-@Scheduled"
+ },
+ {
+  "category": "scheduler",
+  "eco": "js",
+  "regex": "cron\\.schedule\\s*\\(|new\\s+CronJob\\s*\\(|schedule\\.scheduleJob\\s*\\(|@Cron\\s*\\(",
+  "value": "js-cron"
+ },
+ {
+  "category": "scheduler",
+  "eco": "python",
+  "regex": "\\bcrontab\\s*\\(|\\badd_job\\s*\\(|beat_schedule|@scheduler\\.scheduled_job|CELERY_BEAT_SCHEDULE",
+  "value": "py-schedule"
+ },
+ {
+  "category": "scheduler",
+  "eco": "go",
+  "regex": "\\bcron\\.New\\s*\\(|\\bgocron\\.\\w+\\(|\\.AddFunc\\s*\\(",
+  "value": "go-cron"
+ },
+ {
+  "category": "scheduler",
+  "eco": "ruby",
+  "regex": "Sidekiq::Cron|Rufus::Scheduler|\\bevery\\s+[\\d.]+\\.(minutes?|hours?|days?)\\s+do",
+  "value": "ruby-schedule"
+ },
+ {
+  "category": "scheduler",
+  "eco": "php",
+  "regex": "->schedule\\(|\\$schedule->|ScheduleRunCommand",
+  "value": "php-schedule"
+ },
+ {
+  "category": "scheduler",
+  "eco": "dotnet",
+  "regex": "RecurringJob\\.|AddHangfire|IJob\\b|\\[CronSchedule",
+  "value": "dotnet-jobs"
+ },
+ {
+  "category": "logging",
+  "eco": "go",
+  "regex": "\"log/slog\"",
+  "value": "slog"
+ },
+ {
+  "category": "logging",
+  "eco": "python",
+  "regex": "(?m)^\\s*(import\\s+logging|from\\s+logging\\s+import)",
+  "value": "stdlib-logging"
+ },
+ {
+  "category": "logging",
+  "eco": "js",
+  "regex": "\\bconsole\\.(error|warn)\\s*\\(",
+  "value": "console"
+ },
+ {
+  "category": "logging",
+  "eco": "rust",
+  "regex": "\\buse\\s+(tracing|log)::",
+  "value": "rust-logging"
+ },
+ {
+  "category": "ai",
+  "eco": "js",
+  "regex": "from\\s+['\"](openai|@anthropic-ai/sdk|ai|@ai-sdk/[\\w-]+)['\"]",
+  "value": "ai-import"
+ },
+ {
+  "category": "public_url",
+  "eco": "*",
+  "regex": "https?://(?!localhost|127\\.|0\\.0\\.0\\.0|example\\.|[\\w.-]*\\.local\\b|[\\w.-]*sentry\\.io|schemas?\\.|www\\.w3\\.org|github\\.com|docs\\.|[\\w.-]*\\.ingest\\.)[\\w.-]+\\.(com|io|app|dev|net|org|co|ai|xyz)(/[\\w./-]*)?",
+  "value": "url-literal",
+  "files": [
+   "vercel.json",
+   "wrangler.toml",
+   "wrangler.jsonc",
+   "fly.toml",
+   "render.yaml",
+   "CNAME",
+   "ingress.yaml",
+   "ingress.yml"
+  ]
+ }
+]

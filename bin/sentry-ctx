@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# bin/sentry-ctx: PATH-exposed shim for the plugin engine.
+# Claude Code adds a plugin's bin/ to the Bash tool's PATH, so the model can run
+# `sentry-ctx ...` as a bare command without ${CLAUDE_PLUGIN_ROOT}.
+here="$(cd -P "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+root="${CLAUDE_PLUGIN_ROOT:-$here/..}"
+export SENTRY_PLUGIN_ROOT="$root"
+exec python3 -I -S "$root/engine/run.py" "$@"

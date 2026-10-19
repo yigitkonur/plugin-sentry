@@ -1,0 +1,292 @@
+{
+ "version": 1,
+ "sources": [
+  "https://cli.sentry.dev/migrating-from-v3.md",
+  "https://cli.sentry.dev/configuration.md",
+  "sentry 0.47.0 and sentry-cli 3.8.0 --help trees (spike S10)"
+ ],
+ "env_unchanged": [
+  "SENTRY_AUTH_TOKEN",
+  "SENTRY_ORG",
+  "SENTRY_PROJECT",
+  "SENTRY_DSN",
+  "SENTRY_URL",
+  ".sentryclirc (still read)"
+ ],
+ "global_flags": [
+  {
+   "v3": "--auth-token T",
+   "v4": "SENTRY_AUTH_TOKEN=T SENTRY_FORCE_ENV_TOKEN=1 (env, never a flag); or the stored login from `sentry auth login`",
+   "note": "Never put a token on a command line: it lands in shell history and CI logs."
+  },
+  {
+   "v3": "--url U (Sentry host)",
+   "v4": "SENTRY_URL=U (and SENTRY_HOST=U) for a command; `sentry auth login --url U` once for self-hosted",
+   "note": "On `release create|deploy` `--url` is the release/deploy URL, not the host."
+  },
+  {
+   "v3": "--header K:V",
+   "v4": "SENTRY_CUSTOM_HEADERS=\"K:V; K2:V2\""
+  },
+  {
+   "v3": "-o / --org ORG",
+   "v4": "--org ORG (long form only; global) or the ORG/ prefix on the version/target argument or SENTRY_ORG"
+  },
+  {
+   "v3": "-p / --project P",
+   "v4": "--project P (long form only; global) or SENTRY_PROJECT. The short -p/-o aliases do not exist in v4"
+  },
+  {
+   "v3": "--log-level L",
+   "v4": "--log-level L (kept)"
+  },
+  {
+   "v3": "--quiet / --silent",
+   "v4": "no global equivalent; use --json and redirect, or `>/dev/null`"
+  },
+  {
+   "v3": "--allow-failure / SENTRY_ALLOW_FAILURE",
+   "v4": "removed: append `|| true` where failure must not break the job"
+  }
+ ],
+ "commands": [
+  {
+   "v3": "releases new V",
+   "v4": "release create [ORG/]V [--project P] [--finalize] [--ref R] [--url U]",
+   "alias": "release new",
+   "note": "Org goes in the version argument (acme/1.0.0) or --org."
+  },
+  {
+   "v3": "releases finalize V",
+   "v4": "release finalize [ORG/]V [--released T] [--url U]"
+  },
+  {
+   "v3": "releases set-commits V --auto",
+   "v4": "release set-commits [ORG/]V --auto",
+   "note": "Also --local, --commit SPEC, --clear, --path, --from, --initial-depth."
+  },
+  {
+   "v3": "releases set-commits V --ignore-missing",
+   "v4": "release set-commits [ORG/]V --auto || true",
+   "note": "--ignore-missing has no v4 flag."
+  },
+  {
+   "v3": "releases propose-version",
+   "v4": "release propose-version"
+  },
+  {
+   "v3": "releases info V",
+   "v4": "release view [ORG/]V"
+  },
+  {
+   "v3": "releases list",
+   "v4": "release list [ORG/PROJECT]"
+  },
+  {
+   "v3": "releases delete|archive|restore V",
+   "v4": "release delete|archive|restore [ORG/]V"
+  },
+  {
+   "v3": "deploys new -r V -e ENV [-n NAME] [-u URL]",
+   "v4": "release deploy [ORG/]V ENV [NAME] [--url U] [--started T] [--finished T] [--time S]",
+   "note": "Environment and name are positionals now."
+  },
+  {
+   "v3": "deploys list -r V",
+   "v4": "release deploys [ORG/]V"
+  },
+  {
+   "v3": "sourcemaps upload PATH... -r V",
+   "v4": "sourcemap upload DIR --release V [--dist D] [--url-prefix P] [--ext .js,.mjs] [--ignore G] [--strip-prefix P] [--no-rewrite] [--allow-empty]",
+   "note": "One directory argument. Debug IDs are injected automatically unless --no-rewrite."
+  },
+  {
+   "v3": "sourcemaps upload --validate|--wait|--wait-for|--note|--decompress|--url-suffix|--no-sourcemap-reference|--debug-id-reference",
+   "v4": "(no v4 flag)",
+   "note": "Drop the flag; v4 matches by debug ID and does not need these."
+  },
+  {
+   "v3": "sourcemaps inject PATH...",
+   "v4": "sourcemap inject DIR [--ext --ignore --ignore-file --dry-run --allow-empty]"
+  },
+  {
+   "v3": "sourcemaps resolve",
+   "v4": "sourcemap resolve DIR"
+  },
+  {
+   "v3": "debug-files upload PATH...",
+   "v4": "debug-files upload PATH... [--type T] [--include-sources] [--wait] [--derived-data] [--no-zips] [--no-upload]",
+   "note": "--symbol-maps has no v4 flag."
+  },
+  {
+   "v3": "debug-files check|find|print-sources|bundle-sources|bundle-jvm",
+   "v4": "debug-files check|find|print-sources|bundle-sources|bundle-jvm"
+  },
+  {
+   "v3": "upload-dif | upload-dsym",
+   "v4": "debug-files upload"
+  },
+  {
+   "v3": "difutil check",
+   "v4": "debug-files check"
+  },
+  {
+   "v3": "upload-proguard | proguard upload",
+   "v4": "proguard upload"
+  },
+  {
+   "v3": "proguard uuid",
+   "v4": "proguard uuid"
+  },
+  {
+   "v3": "monitors run SLUG -- CMD",
+   "v4": "monitor run SLUG -- CMD [--dsn D] [--environment E] [--schedule S] [--check-in-margin M] [--max-runtime M] [--timezone Z]",
+   "note": "Check-ins use the DSN; no login needed."
+  },
+  {
+   "v3": "monitors list",
+   "v4": "monitor list"
+  },
+  {
+   "v3": "send-event -m MSG",
+   "v4": "event send -m MSG --no-environ",
+   "alias": "send-event",
+   "note": "Both CLIs attach the whole process environment unless --no-environ is given. Always pass it."
+  },
+  {
+   "v3": "send-envelope FILE",
+   "v4": "event send FILE --raw"
+  },
+  {
+   "v3": "login",
+   "v4": "auth login [--read-only] [--scope S] [--url U]"
+  },
+  {
+   "v3": "logout",
+   "v4": "auth logout"
+  },
+  {
+   "v3": "info",
+   "v4": "info (also: auth status, auth whoami)"
+  },
+  {
+   "v3": "update",
+   "v4": "cli upgrade"
+  },
+  {
+   "v3": "uninstall",
+   "v4": "cli uninstall"
+  },
+  {
+   "v3": "completions SHELL",
+   "v4": "cli completion"
+  },
+  {
+   "v3": "organizations list",
+   "v4": "org list",
+   "alias": "organizations"
+  },
+  {
+   "v3": "projects list",
+   "v4": "project list"
+  },
+  {
+   "v3": "repos list",
+   "v4": "repo list"
+  },
+  {
+   "v3": "issues list",
+   "v4": "issue list [-q QUERY] [-s recommended|date|new|freq|user] [-t PERIOD] [-n LIMIT]"
+  },
+  {
+   "v3": "issues resolve",
+   "v4": "issue resolve ISSUE [--in RELEASE]"
+  },
+  {
+   "v3": "issues mute",
+   "v4": "issue archive ISSUE [--until WHEN]"
+  },
+  {
+   "v3": "issues unresolve",
+   "v4": "issue unresolve ISSUE"
+  },
+  {
+   "v3": "events list",
+   "v4": "issue events ISSUE | event list ISSUE"
+  },
+  {
+   "v3": "logs list",
+   "v4": "log list ORG/PROJECT [-q QUERY] [--period P]"
+  },
+  {
+   "v3": "code-mappings upload",
+   "v4": "code-mappings upload PATH --repo R --default-branch B"
+  },
+  {
+   "v3": "build upload|download",
+   "v4": "build upload|download"
+  },
+  {
+   "v3": "dart-symbol-map upload",
+   "v4": "dart-symbol-map upload PATH --debug-id ID"
+  },
+  {
+   "v3": "snapshots upload|diff|download",
+   "v4": "snapshots upload|diff|download"
+  },
+  {
+   "v3": "react-native gradle|xcode",
+   "v4": "react-native gradle|xcode"
+  },
+  {
+   "v3": "bash-hook",
+   "v4": "(still accepted per the migration page; prefer `monitor run` for cron jobs)"
+  }
+ ],
+ "intents": {
+  "create_release": {
+   "v4": "sentry release create {org}/{version} --project {project}",
+   "v3": "sentry-cli releases new {version} -o {org} -p {project}"
+  },
+  "finalize_release": {
+   "v4": "sentry release finalize {org}/{version}",
+   "v3": "sentry-cli releases finalize {version} -o {org}"
+  },
+  "set_commits": {
+   "v4": "sentry release set-commits {org}/{version} --auto",
+   "v3": "sentry-cli releases set-commits {version} --auto -o {org}"
+  },
+  "deploy": {
+   "v4": "sentry release deploy {org}/{version} {environment}",
+   "v3": "sentry-cli deploys new -r {version} -e {environment} -o {org}"
+  },
+  "upload_sourcemaps": {
+   "v4": "sentry sourcemap upload {dir} --release {version} --org {org} --project {project}",
+   "v3": "sentry-cli sourcemaps inject {dir} && sentry-cli sourcemaps upload {dir} -r {version} -o {org} -p {project}"
+  },
+  "inject_sourcemaps": {
+   "v4": "sentry sourcemap inject {dir}",
+   "v3": "sentry-cli sourcemaps inject {dir}"
+  },
+  "upload_dsyms": {
+   "v4": "sentry debug-files upload {path} --org {org} --project {project} --include-sources",
+   "v3": "sentry-cli debug-files upload --include-sources {path} -o {org} -p {project}"
+  },
+  "upload_proguard": {
+   "v4": "sentry proguard upload {mapping} --org {org} --project {project}",
+   "v3": "sentry-cli upload-proguard {mapping} -o {org} -p {project}"
+  },
+  "wrap_cron": {
+   "v4": "sentry monitor run {slug} -- {command}",
+   "v3": "sentry-cli monitors run {slug} -- {command}"
+  },
+  "marker_event": {
+   "v4": "sentry event send {org}/{project} -m {message} -l error --tag plugin_marker:{marker} --env {environment} --no-environ",
+   "v3": "sentry-cli send-event -m {message} -l error -t plugin_marker:{marker} -E {environment} --no-environ"
+  },
+  "install": {
+   "v4": "curl https://cli.sentry.dev/install -fsS | bash",
+   "v3": "curl -sL https://sentry.io/get-cli/ | sh"
+  }
+ }
+}

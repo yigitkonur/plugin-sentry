@@ -1,0 +1,61 @@
+# id	product	default_severity	applies_when	method	passes_when
+core.sdk-version	core	P2	SDK present	S	Installed major is the newest with a stale-API table, or the gap is documented; CocoaPods users flagged P1 (frozen 9.19.1)
+core.removed-api	core	P1	SDK present	S	No hit in `stale-apis/<eco>.tsv` for the installed major
+core.init-placement	core	P1	SDK present	S	Init runs before app code (Node `--import`, Next.js `instrumentation*.ts`, Python before app construction, Go at top of `main`, Cocoa earliest main-thread hook, Rails initializer)
+core.dsn-source	core	P2	SDK present	S	DSN read from env/config per platform convention (a literal is advisory only: DSNs are public)
+core.dsn-region	core	P1	org access	C	DSN ingest host region equals the org's region
+core.environment	core	P1	SDK present	S	`environment` derived from the deploy environment, not hard-coded or absent
+core.release	core	P1	SDK present	S+C	`release` set; string identical in SDK and artifact upload; Apple default kept
+core.flush	core	P1	short-lived process (CLI, serverless, worker, daemon)	S	`flush`/`close` with timeout before exit
+core.double-handlers	core	P1	Node/Python	S	No custom global exception handlers duplicating the SDK's
+core.tunnel	core	P2	browser unit, ad-blocker exposure	S	If `tunnel` set: relative URL, handler validates DSN host and project id
+priv.token-in-repo	privacy	**P0**	always	S	No official-regex token match in tracked files, CI YAML, Dockerfiles, committed `.env*`
+priv.token-files-ignored	privacy	**P0**	wizard/CLI configs present	S	`.sentryclirc`, `.env.sentry-build-plugin`, `sentry.properties` gitignored
+priv.token-exposed-client	privacy	**P0**	JS	S	No `NEXT_PUBLIC_`/`VITE_`/`PUBLIC_`-prefixed auth token; token not in a client bundle env
+priv.token-ci-logs	privacy	**P0**	CI present	S	Secrets store used; no `set -x`/echo of the token; fork PRs don't receive it
+priv.token-scope	privacy	P1	org access	C	CI uses an org token (`sntrys_`, `org:ci`), not a personal token
+priv.data-collection	privacy	P0/P1	SDK present	S	Settings match the policy (`dataCollection` explicit on JS v11; `sendDefaultPii`/`send_default_pii` elsewhere; Python `data_collection`)
+priv.before-send	privacy	P1	policy requires scrubbing	S	`beforeSend`/`before_send` plus span/log/metric hooks cover request data, user, breadcrumbs, URL query tokens
+priv.ai-io	privacy	P0/P1	AI SDK detected	S+C	Capture of prompts/outputs matches policy; server rule for `gen_ai.*` fields if captured
+priv.replay-mask	privacy	**P0**	replay configured	S	Mask/block defaults kept; `unmask` narrow; canvas off unless approved; network-detail allow-list narrow
+priv.attachments	privacy	P1	mobile/native	S	Screenshots, view hierarchy, minidump storage match policy (attachments are not scrubbed)
+priv.server-scrub	privacy	P1	org access	C	Default scrubber on; safe fields reasonable; IP/geo handling matches policy
+priv.local-vars	privacy	P1	Python	S	`include_local_variables` matches policy
+priv.log-attrs	privacy	P1	logs enabled	S	No user content interpolated into log messages/attributes (Cocoa extracts interpolations into attributes)
+priv.user-context	privacy	P1	`setUser` used	S	Fields set match policy
+err.boundaries	errors	P2	framework	S	Framework error hooks wired (Next.js `onRequestError` + `global-error`, React boundary, Express error handler order, Fastify setup, Gin recovery middleware, ASP.NET middleware)
+err.noise	errors	P2	client unit / noisy	S+C	`ignoreErrors`/`denyUrls`/inbound filters consider known noise
+err.expected-as-error	errors	P3	server	S	4xx handled separately from 5xx
+err.ownership	errors	P3	org access + SCM	C	Ownership rules/CODEOWNERS imported; code mappings present
+trace.rate	tracing	P1/P2	tracing on	S	Not a flat 1.0 on high-volume prod; sampler drops noise, keeps critical routes
+trace.propagation	tracing	P1	frontend + backend present	S	`tracePropagationTargets` lists API origins; backend CORS allows `sentry-trace`, `baggage`, `traceparent`
+trace.v11-hooks	tracing	P1	JS v11	S	No `beforeSendTransaction`/`ignoreTransactions` (use `ignoreSpans`)
+trace.span-names	tracing	P3	custom spans	S	Templated, low-cardinality names
+trace.gaps	tracing	P2	queues/caches present	S	Custom spans where dashboards need them
+prof.lifecycle	profiling	P1	profiling configured	S	`manual` lifecycle has `startProfiler()`; `trace` has tracing; browser has `Document-Policy`; no removed `profilesSampleRate`
+replay.rates	replay	P1	replay configured	S	Not session 1.0 in prod; on-error > 0; CSP `workerUrl` when needed
+log.enabled	logs	P1	logging desired	S	Version-correct enabling (JS <10.71 `enableLogs`; ≥10.71 default; Python `capture_sentry_logs`; Java `logs.enabled`; .NET `EnableLogs`)
+log.hooks	logs	P1/P2	logs enabled	S	`beforeSendLog` honors policy; level filter set
+metric.migration	metrics	P1	old metrics API found	S	No `metrics.increment/set/timing`; new API used
+cron.coverage	crons	P2	scheduler found	S	Each scheduled job has a monitor or check-in
+cron.config	crons	P2	monitors in code	S	Stable slug; schedule matches; margins/thresholds; no double monitoring; DSN auth
+uptime.fit	uptime	P2	public URL known	C	Uptime monitor exists with an alert
+fb.widget	feedback	P2/P3	user-facing unit	S	Feedback widget or API present, or deliberately excluded by policy
+rel.sourcemaps	debug-artifacts	P1	bundled JS	S	Bundler plugin or inject+upload; hidden maps; Debug IDs; maps deleted/blocked after upload
+rel.debug-files	debug-artifacts	P1	compiled/mobile	S	Upload step exists (Xcode script with sandboxing off, Gradle plugin, MSBuild properties, `debug-files upload`)
+rel.resolve	debug-artifacts	P1	org access + events	C+R	Sampled recent events have readable frames (no minified/`unknown`)
+rel.commits-deploys	releases	P2	CI present	S+C	Commits associated and deploys recorded (CLI or integration)
+rel.cli-version	releases	P2	CI uses a Sentry CLI	S	Pinned; migration path from `sentry-cli` 3.x to `sentry` v4 noted
+rel.health	releases	P2	release health wanted	S	Session tracking on; user set for crash-free users
+alert.legacy-api	alerts	P1	IaC/scripts found	S	No calls to `/rules/` or `/alert-rules/`; detector/workflow APIs and seconds-based `timeWindow`
+alert.coverage	alerts	P2	org access	C	Every monitor routes to an alert; each production project has issue alerts to a real channel
+ai.integration	ai	P2	LLM SDK detected	S	Integration/instrumentation present (JS v11 automatic; Python integrations; manual spans elsewhere)
+ai.sampling	ai	P1	AI monitoring on	S	Sampler keeps `gen_ai` spans; agent name and conversation id set
+ai.mcp	mcp	P2	MCP server code	S	JS ≥11.1 automatic, else `wrapMcpServerWithSentry`; Python `MCPIntegration`
+flags.integration	flags	P3	flag SDK found	S	`featureFlagsIntegration` + webhook
+quota.controls	quota	P2	org access	C	Spike protection on; key rate limits considered; filters on; no reliance on dynamic sampling for new orgs
+quota.size-billed	quota	P2	logs/metrics on	S+C	Budget exists; attribute count/message size bounded
+seer.prereq	seer	P3	org access	C	GitHub.com/GitLab.com integration + code mappings, or deliberately off
+dev.spotlight	dev-spotlight	P3	dev workflow	S	`spotlight` guarded to dev; not enabled in prod
+ci.release-step	releases	P1	CI present	S	Artifacts uploaded on every deploy build, same release string
+org.projects	org	P2	org access	C	One project per deployable unit; platform field matches
