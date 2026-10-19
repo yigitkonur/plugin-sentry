@@ -15,7 +15,7 @@ import urllib.request
 
 from . import paths, util
 
-HOSTS = {"docs.sentry.io", "develop.sentry.dev", "cli.sentry.dev", "skills.sentry.dev", "mcp.sentry.dev"}
+HOSTS = {"docs.sentry.io", "develop.sentry.dev", "cli.sentry.dev", "skills.sentry.dev", "mcp.sentry.dev", "raw.githubusercontent.com", "github.com"}
 TTL = 24 * 3600
 MAX_CHARS = 14000
 UA = "sentry-plugin-docs/0.1 (+https://github.com/yigitkonur/plugin-sentry)"
@@ -30,6 +30,15 @@ def normalize(page: str) -> str:
     if host not in HOSTS:
         raise util.EngineError("host %s is not allowed (only %s)" % (host, ", ".join(sorted(HOSTS))))
     path = path.split("#")[0]
+    if host in ("github.com", "raw.githubusercontent.com"):
+        if not path.startswith("/getsentry/"):
+            raise util.EngineError("only github.com/getsentry/... sources are allowed")
+        if host == "github.com":
+            m = re.match(r"^/(getsentry/[^/]+)/blob/(.+)$", path)
+            if not m:
+                raise util.EngineError("use a github.com/getsentry/<repo>/blob/<ref>/<path> URL")
+            return "https://raw.githubusercontent.com/%s/%s" % (m.group(1), m.group(2))
+        return "https://%s%s" % (host, path)
     if path.endswith("/llms.txt") or path.endswith(".md") or path.endswith(".txt"):
         pass
     else:

@@ -24,6 +24,7 @@ def env() -> dict:
     e = dict(os.environ)
     e["SENTRY_NO_CACHE"] = "1"
     e["NO_COLOR"] = "1"
+    e["SENTRY_CLI_NO_TELEMETRY"] = "1"
     return e
 
 

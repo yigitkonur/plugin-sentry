@@ -1,0 +1,16 @@
+# pkg_regex	majors	name	kind	message	since	source	when
+# majors = installed SDK majors the entry applies to. kind: removed | renamed | inert | deprecated | changed-default | platform-gated. when: optional unit predicate (platform:macos, role:library ...).
+^(sentry-cocoa|Sentry)$	9	profilesSampleRate	removed	Removed in 9.0. Use options.configureProfiling { $0.sessionSampleRate = ...; $0.lifecycle = .trace } (not on tvOS/watchOS/visionOS).	9.0.0	https://docs.sentry.io/platforms/apple/migration/v8-to-v9/	
+^(sentry-cocoa|Sentry)$	9	profilesSampler	removed	Removed in 9.0; see configureProfiling.	9.0.0	https://docs.sentry.io/platforms/apple/migration/v8-to-v9/	
+^(sentry-cocoa|Sentry)$	9	enableAppLaunchProfiling	removed	Removed in 9.0.	9.0.0	https://docs.sentry.io/platforms/apple/migration/v8-to-v9/	
+^(sentry-cocoa|Sentry)$	9	enableTracing	removed	Removed in 9.0. Set tracesSampleRate.	9.0.0	https://docs.sentry.io/platforms/apple/migration/v8-to-v9/	
+^(sentry-cocoa|Sentry)$	9	enablePerformanceV2	removed	Removed in 9.0.	9.0.0	https://docs.sentry.io/platforms/apple/migration/v8-to-v9/	
+^(sentry-cocoa|Sentry)$	9	enableAppHangTrackingV2	removed	Removed in 9.0 (app hangs V2 is iOS/tvOS only and no longer a flag).	9.0.0	https://github.com/getsentry/sentry-cocoa/blob/main/CHANGELOG.md	
+^(sentry-cocoa|Sentry)$	9	inAppExclude	removed	Removed in 9.0.	9.0.0	https://docs.sentry.io/platforms/apple/migration/v8-to-v9/	
+^(sentry-cocoa|Sentry)$	9	defaultIntegrations	removed	Removed in 9.0.	9.0.0	https://docs.sentry.io/platforms/apple/migration/v8-to-v9/	
+^(sentry-cocoa|Sentry)$	9	enableLogs	deprecated	No-op since 9.27.0: manual logger calls are not gated by it, so setting it false does NOT stop SentrySDK.logger output.	9.27.0	https://github.com/getsentry/sentry-cocoa/blob/main/CHANGELOG.md	
+^(sentry-cocoa|Sentry)$	8,9	attachScreenshot	platform-gated	Declared only for iOS/tvOS/visionOS: a COMPILE ERROR on native macOS. Remove it or wrap in #if os(iOS) || os(tvOS) || os(visionOS).	8.0.0	https://github.com/getsentry/sentry-cocoa/blob/main/Sources/Swift/Options.swift	platform:macos
+^(sentry-cocoa|Sentry)$	8,9	attachViewHierarchy	platform-gated	iOS/tvOS/visionOS only: compile error on native macOS.	8.0.0	https://github.com/getsentry/sentry-cocoa/blob/main/Sources/Swift/Options.swift	platform:macos
+^(sentry-cocoa|Sentry)$	8,9	sessionReplay	platform-gated	Session Replay is not available on native macOS: compile error. Official support is iOS only.	8.0.0	https://github.com/getsentry/sentry-cocoa/blob/main/Sources/Swift/Options.swift	platform:macos
+^(sentry-cocoa|Sentry)$	8,9	waitForFullDisplay	platform-gated	SentryTracedView(waitForFullDisplay:) exists only on iOS/tvOS: compile error on macOS.	8.0.0	https://github.com/getsentry/sentry-cocoa/blob/main/Sources/Swift/SentrySwiftUI/SentryTracedView.swift	platform:macos
+^(sentry-cocoa|Sentry)$	8,9	enableFileIOTracking	wrong-name	There is no such option; it is enableFileIOTracing.	8.0.0	https://docs.sentry.io/platforms/apple/configuration/options/	

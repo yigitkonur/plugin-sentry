@@ -1,0 +1,19 @@
+# pkg_regex	majors	name	kind	message	since	source	when
+# majors = installed SDK majors the entry applies to. kind: removed | renamed | inert | deprecated | changed-default | platform-gated. when: optional unit predicate (platform:macos, role:library ...).
+^sentry-sdk$	3	enable_tracing	removed	Removed in 3.0. Set traces_sample_rate.	3.0.0	https://docs.sentry.io/platforms/python/migration/2.x-to-3.x/	
+^sentry-sdk$	3	enable_logs	removed	Removed in 3.0; Sentry logs work without configuration.	3.0.0	https://docs.sentry.io/platforms/python/migration/2.x-to-3.x/	
+^sentry-sdk$	3	enable_metrics	removed	Removed in 3.0.	3.0.0	https://docs.sentry.io/platforms/python/migration/2.x-to-3.x/	
+^sentry-sdk$	3	send_default_pii	removed	Removed in 3.0 in favor of data_collection. Defaults are MORE permissive (user info, bodies, AI inputs/outputs, local variables unscrubbed): set data_collection explicitly from the privacy policy.	3.0.0	https://docs.sentry.io/platforms/python/migration/2.x-to-3.x/	
+^sentry-sdk$	3	include_local_variables	removed	Removed in 3.0; use data_collection stack_frame_variables.	3.0.0	https://docs.sentry.io/platforms/python/migration/2.x-to-3.x/	
+^sentry-sdk$	3	include_source_context	removed	Removed in 3.0; covered by data_collection.	3.0.0	https://docs.sentry.io/platforms/python/migration/2.x-to-3.x/	
+^sentry-sdk$	3	propagate_traces	removed	Removed in 3.0. Use trace_propagation_targets.	3.0.0	https://docs.sentry.io/platforms/python/migration/2.x-to-3.x/	
+^sentry-sdk$	3	trace_ignore_status_codes	removed	Removed in 3.0.	3.0.0	https://docs.sentry.io/platforms/python/migration/2.x-to-3.x/	
+^sentry-sdk$	3	event_scrubber	removed	Removed in 3.0 with sentry_sdk.scrubber; use data_collection and before_send.	3.0.0	https://docs.sentry.io/platforms/python/migration/2.x-to-3.x/	
+^sentry-sdk$	3	before_send_transaction	removed	Transactions no longer exist in 3.0 (span streaming only). Use before_send_span.	3.0.0	https://docs.sentry.io/platforms/python/migration/2.x-to-3.x/	
+^sentry-sdk$	3	start_transaction	removed	Removed in 3.0. Use sentry_sdk.start_span().	3.0.0	https://docs.sentry.io/platforms/python/migration/2.x-to-3.x/	
+^sentry-sdk$	3	transaction_style	removed	Removed from all web framework integrations in 3.0.	3.0.0	https://docs.sentry.io/platforms/python/migration/2.x-to-3.x/	
+^sentry-sdk$	3	capture_sentry_logs	removed	Removed in 3.0; use the logging integration's level option.	3.0.0	https://docs.sentry.io/platforms/python/migration/2.x-to-3.x/	
+^sentry-sdk$	3	include_prompts	removed	Removed in 3.0; use data_collection gen_ai.	3.0.0	https://docs.sentry.io/platforms/python/migration/2.x-to-3.x/	
+^sentry-sdk$	3	configure_scope	removed	Hub, push_scope and configure_scope were removed in 3.0.	3.0.0	https://docs.sentry.io/platforms/python/migration/2.x-to-3.x/	
+^sentry-sdk$	3	profiles_sample_rate	removed	Transaction-based profiling was removed in 3.0. Use profile_session_sample_rate (continuous profiling).	3.0.0	https://docs.sentry.io/platforms/python/migration/2.x-to-3.x/	
+^sentry-sdk$	2	profiles_sample_rate	deprecated	Legacy transaction-based profiling; it is removed in 3.0. Prefer profile_session_sample_rate (continuous profiling).	2.24.1	https://docs.sentry.io/platforms/python/migration/2.x-to-3.x/	

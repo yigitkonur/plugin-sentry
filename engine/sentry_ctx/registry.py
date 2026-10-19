@@ -167,10 +167,36 @@ def cmd_report(args):
 
 
 # ---- knowledge ----
+def cmd_clean(args):
+    from . import clean
+    root = _root(args)
+    keep = args.keep or "none"
+    if keep not in ("none", "policy", "all"):
+        raise util.EngineError("--keep must be none|policy|all")
+    p = clean.plan(root, keep)
+    if not args.yes:
+        p["dry_run"] = True
+        util.emit(p)
+        return
+    util.emit(clean.execute(root, keep, args.gitignore_line))
+
+
 def cmd_ref(args):
     from . import refs
     if args.name == "list":
         util.emit(refs.list_names(args.section or ""))
+    elif args.name == "verify":
+        from . import refcheck
+        targets = [args.section] if args.section else [n for n in refs.list_names() if n.startswith(("forge/products/", "forge/platforms/"))]
+        bad = 0
+        out = []
+        for t in targets:
+            t = t[len("forge/"):] if t.startswith("forge/") else t
+            r = refcheck.verify(t)
+            out.append(r)
+            bad += 0 if r.get("ok", True) else 1
+        util.emit(out)
+        return 1 if bad else 0
     else:
         print(refs.read(args.name, args.section))
 
@@ -263,6 +289,12 @@ def register(sub):
 
     sub.add_parser("ledger", help="completeness check (exit 1 when work remains)").set_defaults(fn=cmd_ledger, action="check")
     sub.add_parser("report", help="render .sentry-plugin/report.md").set_defaults(fn=cmd_report)
+
+    cl = sub.add_parser("clean", help="remove run artifacts (dry-run unless --yes)")
+    cl.add_argument("--yes", action="store_true")
+    cl.add_argument("--keep", default=None, help="none | policy | all")
+    cl.add_argument("--gitignore-line", default="keep", choices=["keep", "remove"])
+    cl.set_defaults(fn=cmd_clean)
 
     rf = sub.add_parser("ref", help="read a reference file by name (or `list`)")
     rf.add_argument("name")
