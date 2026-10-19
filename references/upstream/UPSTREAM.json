@@ -1,0 +1,8 @@
+{
+  "repo": "https://github.com/getsentry/sentry-for-ai",
+  "sha": "224af963a2bc17c455a368bfaaa5b570dcd6822f",
+  "commit_date": "2026-10-15T18:04:39Z",
+  "license": "MIT",
+  "path": "src/references",
+  "included": ["concepts", "debug-artifacts", "releases", "first-error-setup.md", "new-project.md", "sdk-docs.md", "auth-token.md", "search-query-language.md"]
+}

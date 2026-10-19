@@ -165,7 +165,7 @@
   "role": "backend",
   "label": "Fastify",
   "docs_platform": "javascript/guides/fastify",
-  "module": "platforms/fastify"
+  "module": "platforms/node"
  },
  {
   "id": "express",
@@ -175,7 +175,7 @@
   "role": "backend",
   "label": "Express",
   "docs_platform": "javascript/guides/express",
-  "module": "platforms/express"
+  "module": "platforms/node"
  },
  {
   "id": "koa",
@@ -185,7 +185,7 @@
   "role": "backend",
   "label": "Koa",
   "docs_platform": "javascript/guides/koa",
-  "module": "platforms/koa"
+  "module": "platforms/node"
  },
  {
   "id": "angular",
@@ -206,7 +206,7 @@
   "role": "frontend",
   "label": "Vue",
   "docs_platform": "javascript/guides/vue",
-  "module": "platforms/vue"
+  "module": "platforms/browser-spa"
  },
  {
   "id": "svelte",
@@ -216,7 +216,7 @@
   "role": "frontend",
   "label": "Svelte",
   "docs_platform": "javascript/guides/svelte",
-  "module": "platforms/svelte"
+  "module": "platforms/browser-spa"
  },
  {
   "id": "solid",
@@ -226,7 +226,7 @@
   "role": "frontend",
   "label": "Solid",
   "docs_platform": "javascript/guides/solid",
-  "module": "platforms/solid"
+  "module": "platforms/browser-spa"
  },
  {
   "id": "react",
@@ -236,7 +236,7 @@
   "role": "frontend",
   "label": "React (SPA)",
   "docs_platform": "javascript/guides/react",
-  "module": "platforms/react"
+  "module": "platforms/browser-spa"
  },
  {
   "id": "cloudflare",

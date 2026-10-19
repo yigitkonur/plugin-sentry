@@ -4,6 +4,10 @@ You are the orchestrator in the main thread. You must stay here: you need `AskUs
 `sentry-ctx` finds the project root itself (CLAUDE_PROJECT_DIR or the git root); run it from anywhere in the repo.
 Read `sentry-ctx ref forge/ground-rules` once if you have not this session.
 
+**No human to ask?** If `AskUserQuestion` is unavailable (headless `-p`, evals, CI), take the recommended default for every question,
+say in the output that you did, set `SENTRY_PLUGIN_POLICY_ANSWERS`-based policy only if that variable is set, and treat every
+approval gate as "Report only": never approve findings, org writes or cleanup on your own. The report is the result.
+
 1. **Tools and login.** Run `sentry-ctx doctor`. Show the user the CLI line, the login/scopes line and the advice lines.
    - No CLI or no login: say plainly that every org-side check will be reported **UNVERIFIED** (not skipped, not clean), print the
      exact command for them to run (`! sentry auth login --read-only` for audits), and continue repo-only unless they stop you.

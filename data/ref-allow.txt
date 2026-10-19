@@ -52,3 +52,5 @@ tsconfig
 package_json
 pyproject_toml
 requirements_txt
+applicationWillFinishLaunching
+applicationDidFinishLaunching

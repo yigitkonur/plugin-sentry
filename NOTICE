@@ -1,0 +1,14 @@
+sentry (plugin-sentry) - third-party material
+
+1. references/upstream/ is vendored, unmodified, from https://github.com/getsentry/sentry-for-ai
+   (path src/references) at the commit recorded in references/upstream/UPSTREAM.json.
+   License: MIT, Copyright (c) 2025 Sentry (https://sentry.io) and contributors.
+   The full license text is in references/upstream/LICENSE. Refresh with scripts/sync-upstream.sh.
+   Only the repository's reference documents are vendored; its skills are not.
+
+2. Option names, versions and behaviors in references/forge/ and data/ are facts taken from Sentry's public documentation
+   (docs.sentry.io, cli.sentry.dev, develop.sentry.dev) and SDK repositories under github.com/getsentry. Each row cites the page
+   it came from, and scripts/check-stale-apis.py and `sentry-ctx ref verify` re-check them against those pages. Documentation text
+   is paraphrased, not copied.
+
+3. "Sentry" is a trademark of Functional Software, Inc. This project is independent and is not affiliated with or endorsed by Sentry.

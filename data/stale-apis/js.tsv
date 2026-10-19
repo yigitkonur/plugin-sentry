@@ -22,14 +22,14 @@
 ^@sentry/(?!cli$|wizard$)	11	maxIncomingRequestBodySize	renamed	httpIntegration option renamed to maxRequestBodySize.	11.0.0	https://docs.sentry.io/platforms/javascript/guides/node/migration/v10-to-v11/	
 ^@sentry/(?!cli$|wizard$)	11	dropSpansForIncomingRequestStatusCodes	renamed	httpIntegration option renamed to ignoreStatusCodes (only effective with traceLifecycle: 'static').	11.0.0	https://docs.sentry.io/platforms/javascript/guides/node/migration/v10-to-v11/	
 ^@sentry/(?!cli$|wizard$)	11	otlpIntegration	renamed	Renamed to openTelemetryIntegration().	11.0.0	https://docs.sentry.io/platforms/javascript/guides/node/migration/v10-to-v11/	
-^@sentry/nextjs$	11	hideSourceMaps	removed	Removed in v9: source maps are hidden by default and deleted after upload.	9.0.0	https://docs.sentry.io/platforms/javascript/guides/nextjs/migration/v8-to-v9/	
-^@sentry/nextjs$	11	autoInstrumentServerFunctions	renamed	Top-level withSentryConfig option removed in v11; use webpack.autoInstrumentServerFunctions.	11.0.0	https://docs.sentry.io/platforms/javascript/guides/nextjs/migration/v10-to-v11/	
-^@sentry/nextjs$	11	autoInstrumentMiddleware	renamed	Use webpack.autoInstrumentMiddleware.	11.0.0	https://docs.sentry.io/platforms/javascript/guides/nextjs/migration/v10-to-v11/	
-^@sentry/nextjs$	11	autoInstrumentAppDirectory	renamed	Use webpack.autoInstrumentAppDirectory.	11.0.0	https://docs.sentry.io/platforms/javascript/guides/nextjs/migration/v10-to-v11/	
-^@sentry/nextjs$	11	automaticVercelMonitors	renamed	Use webpack.automaticVercelMonitors.	11.0.0	https://docs.sentry.io/platforms/javascript/guides/nextjs/migration/v10-to-v11/	
-^@sentry/nextjs$	11	excludeServerRoutes	renamed	Use webpack.excludeServerRoutes.	11.0.0	https://docs.sentry.io/platforms/javascript/guides/nextjs/migration/v10-to-v11/	
-^@sentry/nextjs$	11	disableLogger	renamed	Use webpack.treeshake.removeDebugLogging (Turbopack ignores webpack.* options).	11.0.0	https://docs.sentry.io/platforms/javascript/guides/nextjs/migration/v10-to-v11/	
-^@sentry/nextjs$	11	disableManifestInjection	renamed	Use routeManifestInjection: false.	11.0.0	https://docs.sentry.io/platforms/javascript/guides/nextjs/migration/v10-to-v11/	
+^@sentry/nextjs$	9,10,11	hideSourceMaps	removed	Removed in v9: source maps are hidden by default and deleted after upload.	9.0.0	https://docs.sentry.io/platforms/javascript/guides/nextjs/migration/v8-to-v9/	
+^@sentry/nextjs$	10,11	autoInstrumentServerFunctions	renamed	Deprecated since 10.30.0 and removed in v11; use webpack.autoInstrumentServerFunctions.	10.30.0	https://docs.sentry.io/platforms/javascript/guides/nextjs/migration/v10-to-v11/	
+^@sentry/nextjs$	10,11	autoInstrumentMiddleware	renamed	Use webpack.autoInstrumentMiddleware.	10.30.0	https://docs.sentry.io/platforms/javascript/guides/nextjs/migration/v10-to-v11/	
+^@sentry/nextjs$	10,11	autoInstrumentAppDirectory	renamed	Use webpack.autoInstrumentAppDirectory.	10.30.0	https://docs.sentry.io/platforms/javascript/guides/nextjs/migration/v10-to-v11/	
+^@sentry/nextjs$	10,11	automaticVercelMonitors	renamed	Use webpack.automaticVercelMonitors.	10.30.0	https://docs.sentry.io/platforms/javascript/guides/nextjs/migration/v10-to-v11/	
+^@sentry/nextjs$	10,11	excludeServerRoutes	renamed	Use webpack.excludeServerRoutes.	10.30.0	https://docs.sentry.io/platforms/javascript/guides/nextjs/migration/v10-to-v11/	
+^@sentry/nextjs$	10,11	disableLogger	renamed	Deprecated since 10.30.0 and removed in v11; Use webpack.treeshake.removeDebugLogging (Turbopack ignores webpack.* options).	10.30.0	https://docs.sentry.io/platforms/javascript/guides/nextjs/migration/v10-to-v11/	
+^@sentry/nextjs$	10,11	disableManifestInjection	renamed	Deprecated since 10.30.0 and removed in v11; Use routeManifestInjection: false.	10.30.0	https://docs.sentry.io/platforms/javascript/guides/nextjs/migration/v10-to-v11/	
 ^@sentry/nextjs$	11	unstable_sentryWebpackPluginOptions	removed	Set the plugin options as first-class build options instead.	11.0.0	https://docs.sentry.io/platforms/javascript/guides/nextjs/migration/v10-to-v11/	
 ^@sentry/nextjs$	11	@sentry/nextjs/config	info	In v11 import withSentryConfig from '@sentry/nextjs/config', not '@sentry/nextjs'.	11.0.0	https://docs.sentry.io/platforms/javascript/guides/nextjs/migration/v10-to-v11/	
 ^@sentry/(?!cli$|wizard$)	9,10,11	enableTracing	removed	Removed in v9. Set tracesSampleRate (or a tracesSampler) instead.	9.0.0	https://docs.sentry.io/platforms/javascript/migration/v8-to-v9/	

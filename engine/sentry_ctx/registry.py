@@ -167,6 +167,42 @@ def cmd_report(args):
 
 
 # ---- knowledge ----
+def cmd_verify(args):
+    from . import verify, policy as pol
+    root = _root(args)
+    a = args.action
+    if a == "marker":
+        print(verify.new_marker(root))
+    elif a == "wait":
+        if not (args.org and args.project and args.marker):
+            raise util.EngineError("verify wait needs --org, --project and --marker")
+        r = verify.wait(root, args.org, args.project, args.marker, timeout=args.timeout, interval=args.interval)
+        util.emit(r)
+        return 0 if r["arrived"] else 1
+    elif a == "scan":
+        if not args.file:
+            raise util.EngineError("verify scan needs a path to an event JSON file")
+        ev = util.read_json(args.file)
+        if not isinstance(ev, dict):
+            raise util.EngineError("not an event JSON object: " + args.file)
+        ev = ev.get("event", ev) if isinstance(ev.get("event"), dict) else ev
+        r = verify.scan(ev, pol.load(root))
+        util.emit(r)
+        return 0 if r["ok"] else 1
+
+
+def cmd_stale(args):
+    from . import stale
+    root = _root(args)
+    det = _detect(args)
+    out = []
+    for u in det["units"]:
+        if args.unit and u["id"] != args.unit:
+            continue
+        out.append(stale.scan_unit(u, root))
+    util.emit(out)
+
+
 def cmd_clean(args):
     from . import clean
     root = _root(args)
@@ -184,10 +220,10 @@ def cmd_clean(args):
 def cmd_ref(args):
     from . import refs
     if args.name == "list":
-        util.emit(refs.list_names(args.section or ""))
+        util.emit(refs.list_names(args.target or args.section or ""))
     elif args.name == "verify":
         from . import refcheck
-        targets = [args.section] if args.section else [n for n in refs.list_names() if n.startswith(("forge/products/", "forge/platforms/"))]
+        targets = [args.target] if args.target else [n for n in refs.list_names() if n.startswith(("forge/products/", "forge/platforms/"))]
         bad = 0
         out = []
         for t in targets:
@@ -290,6 +326,21 @@ def register(sub):
     sub.add_parser("ledger", help="completeness check (exit 1 when work remains)").set_defaults(fn=cmd_ledger, action="check")
     sub.add_parser("report", help="render .sentry-plugin/report.md").set_defaults(fn=cmd_report)
 
+    vf = sub.add_parser("verify", help="R3/R5: marker, wait for a marked event, scan an event against the policy")
+    vf.add_argument("action", choices=["marker", "wait", "scan"])
+    vf.add_argument("file", nargs="?")
+    vf.add_argument("--org")
+    vf.add_argument("--project")
+    vf.add_argument("--marker")
+    vf.add_argument("--timeout", type=int, default=120)
+    vf.add_argument("--interval", type=int, default=3)
+    vf.set_defaults(fn=cmd_verify)
+
+    st = sub.add_parser("stale", help="removed/renamed SDK options in a unit's init and config files (data/stale-apis)")
+    st.add_argument("--unit")
+    st.add_argument("--include-tests", action="store_true")
+    st.set_defaults(fn=cmd_stale)
+
     cl = sub.add_parser("clean", help="remove run artifacts (dry-run unless --yes)")
     cl.add_argument("--yes", action="store_true")
     cl.add_argument("--keep", default=None, help="none | policy | all")
@@ -297,7 +348,8 @@ def register(sub):
     cl.set_defaults(fn=cmd_clean)
 
     rf = sub.add_parser("ref", help="read a reference file by name (or `list`)")
-    rf.add_argument("name")
+    rf.add_argument("name", help="a reference name, or `list [prefix]`, or `verify [name]`")
+    rf.add_argument("target", nargs="?")
     rf.add_argument("--section")
     rf.set_defaults(fn=cmd_ref)
 
