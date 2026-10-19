@@ -10,6 +10,21 @@ from . import paths, util
 PHASES = ["preamble", "auditing", "reporting", "approved", "implementing", "verifying", "done"]
 
 
+def session_marker(root):
+    import hashlib
+    d = os.path.join(os.path.expanduser("~"), ".cache", "sentry-plugin")
+    os.makedirs(d, exist_ok=True)
+    return os.path.join(d, "session-%s.txt" % hashlib.sha1(os.path.abspath(root).encode()).hexdigest()[:16])
+
+
+def current_session(root):
+    """Session id written by the SessionStart hook for this project, if any."""
+    try:
+        return open(session_marker(root), encoding="utf-8").read().strip() or None
+    except OSError:
+        return None
+
+
 def run_path(root):
     return os.path.join(paths.state_dir(root), "run.json")
 
@@ -19,6 +34,7 @@ def load(root):
 
 
 def save(root, state):
+    state["updated_at"] = util.now_iso()
     util.write_json(run_path(root), state)
 
 
@@ -28,7 +44,8 @@ def start(root, flow: str, units=None):
     run_id = "r-" + time.strftime("%Y%m%d-%H%M%S", time.gmtime())
     state = {
         "run_id": run_id, "flow": flow, "phase": "preamble", "created_at": util.now_iso(), "units": units or [],
-        "approved_writes": [], "temp_triggers": [], "stop_blocks": 0, "branch": None, "gitignore": "unasked",
+        "approved_writes": [], "approved_cli": [], "temp_triggers": [], "stop_blocks": 0, "branch": None, "gitignore": "unasked",
+        "session_id": current_session(root),
         "gitignore_added_by_plugin": False,
     }
     os.makedirs(paths.state_dir(root), exist_ok=True)
@@ -52,8 +69,22 @@ def set_phase(root, phase):
     return st
 
 
-def approve_write(root, method, path_pattern, finding=None):
+def adopt(root):
     st = require(root)
+    st["session_id"] = current_session(root)
+    st["stop_blocks"] = 0
+    save(root, st)
+    return st
+
+
+def approve_write(root, method, path_pattern, finding=None, cli=None):
+    """Record a user-approved Sentry write. Either a REST call (method + path pattern) or a CLI subcommand ("release create")."""
+    st = require(root)
+    if cli:
+        entry = {"cli": " ".join(cli.split()), "finding": finding, "approved_at": util.now_iso()}
+        st.setdefault("approved_cli", []).append(entry)
+        save(root, st)
+        return entry
     method = method.upper()
     if method not in ("POST", "PUT", "PATCH", "DELETE"):
         raise util.EngineError("approve-write is for POST|PUT|PATCH|DELETE")
@@ -61,6 +92,11 @@ def approve_write(root, method, path_pattern, finding=None):
     st["approved_writes"].append(entry)
     save(root, st)
     return entry
+
+
+def cli_is_approved(state, subcommand: str) -> bool:
+    sub = " ".join(subcommand.split())
+    return any(sub == w["cli"] or sub.startswith(w["cli"] + " ") for w in (state or {}).get("approved_cli", []))
 
 
 def write_is_approved(state, method, path) -> bool:

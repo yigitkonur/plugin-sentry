@@ -102,7 +102,9 @@ def cmd_run(args):
     elif a == "phase":
         util.emit(runstate.set_phase(root, args.value))
     elif a == "approve-write":
-        util.emit(runstate.approve_write(root, args.method, args.value, args.finding))
+        util.emit(runstate.approve_write(root, args.method, args.value, args.finding, cli=args.cli))
+    elif a == "adopt":
+        util.emit(runstate.adopt(root))
     elif a == "trigger":
         util.emit(runstate.trigger(root, args.trigger_action, args.value))
     elif a == "gitignore":
@@ -289,11 +291,12 @@ def register(sub):
     p.set_defaults(fn=cmd_policy)
 
     r = sub.add_parser("run", help="run state: phase, approved org writes, temp triggers")
-    r.add_argument("action", choices=["start", "status", "phase", "approve-write", "trigger", "gitignore", "end"])
+    r.add_argument("action", choices=["start", "status", "phase", "approve-write", "adopt", "trigger", "gitignore", "end"])
     r.add_argument("value", nargs="?")
     r.add_argument("--flow", default="audit")
     r.add_argument("--method", default="POST")
     r.add_argument("--finding", default=None)
+    r.add_argument("--cli", default=None, help='approve a CLI subcommand instead of a REST call, e.g. "release create"')
     r.add_argument("--trigger-action", choices=["add", "remove"], default="add")
     r.set_defaults(fn=cmd_run)
 
