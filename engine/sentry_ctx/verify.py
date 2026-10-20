@@ -118,7 +118,7 @@ def scan(event: dict, pol: dict | None):
     if user.get("ip_address") and user.get("ip_address") not in ("{{auto}}",) and not permissive:
         v.append("user.ip_address is set")
     if user.get("geo"):
-        (w if permissive else v if strict else w).append("user.geo is present (country/city inferred from the connecting IP at ingest; only the server-side IP-storage setting removes it)")
+        (w if permissive else v if strict else w).append("user.geo is present (country/city inferred from the connecting IP at ingest; an Advanced Data Scrubbing rule on $user.geo.** on the project removes it; IP-storage settings alone do not; project config takes about two minutes to apply)")
     for f in ("email", "username", "name"):
         if user.get(f) and not permissive:
             (v if (strict or f == "email") else w).append("user.%s is set" % f)

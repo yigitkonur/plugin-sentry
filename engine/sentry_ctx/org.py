@@ -224,6 +224,24 @@ def _fail(row, st, why):
     return _finish(row)
 
 
+GEO_RULE = "sentry_plugin_remove_geo"
+
+
+def _geo_rule_config(existing):
+    """The project's advanced data scrubbing config with a rule that removes $user.geo added, everything already there kept."""
+    try:
+        cfg = json.loads(existing) if existing else {}
+        if not isinstance(cfg, dict):
+            cfg = {}
+    except ValueError:
+        cfg = {}
+    cfg.setdefault("rules", {})[GEO_RULE] = {"type": "anything", "redaction": {"method": "remove"}}
+    names = cfg.setdefault("applications", {}).setdefault("$user.geo.**", [])
+    if GEO_RULE not in names:
+        names.append(GEO_RULE)
+    return json.dumps(cfg, sort_keys=True)
+
+
 # ---------------------------------------------------------------- probes
 def p_identity(ctx):
     row = _row(*ROWS[0])
@@ -339,10 +357,21 @@ def p_scrubbing(ctx):
             row["observations"].append("project %s: %s" % (p["slug"], why))
             continue
         row["observations"].append("project %s: " % p["slug"] + ", ".join("%s=%s" % (k, pd.get(k)) for k in ("dataScrubber", "dataScrubberDefaults", "scrubIPAddresses")) + ", sensitiveFields=%d" % len(pd.get("sensitiveFields") or []))
-        if strict and pd.get("scrubIPAddresses") is False and d.get("scrubIPAddresses") is not True:
-            _cand(row, "priv.server-scrub", "P2", "Project %s stores IP addresses although the policy is %s" % (p["slug"], ctx.preset()), "scrubIPAddresses=false",
-                  "GET /projects/%s/%s/" % (ctx.org, p["slug"]), "Turn on 'Prevent Storing of IP Addresses' in the project's Security & Privacy settings.",
-                  kind="org-write", org_write={"method": "PUT", "path": "/projects/%s/%s/" % (ctx.org, p["slug"]), "body": {"scrubIPAddresses": True}, "effect": "stop storing client IP addresses for this project"})
+        if ctx.preset() in ("strict", "standard"):
+            body, why = {}, []
+            if pd.get("scrubIPAddresses") is not True and d.get("scrubIPAddresses") is not True:
+                body["scrubIPAddresses"] = True
+                why.append("IP addresses are stored (scrubIPAddresses=%s)" % pd.get("scrubIPAddresses"))
+            if "$user.geo" not in (pd.get("relayPiiConfig") or ""):
+                body["relayPiiConfig"] = _geo_rule_config(pd.get("relayPiiConfig"))
+                why.append("no advanced data scrubbing rule removes $user.geo (geography is derived from the connecting IP even when IP storage is off)")
+            if body:
+                _cand(row, "priv.server-scrub", "P2" if ctx.preset() == "strict" else "P3", "Project %s keeps IP addresses and/or geography although the policy is %s" % (p["slug"], ctx.preset()), "; ".join(why),
+                      "GET /projects/%s/%s/ (scrubIPAddresses, relayPiiConfig)" % (ctx.org, p["slug"]),
+                      "Turn on 'Prevent Storing of IP Addresses' and add the Advanced Data Scrubbing rule [Remove] [Anything] from [$user.geo.**] (Project Settings > Security & Privacy). Project config reaches Relay within about two minutes: send the next marker event after that.",
+                      kind="org-write", org_write={"method": "PUT", "path": "/projects/%s/%s/" % (ctx.org, p["slug"]), "body": body,
+                                                   "effect": "stop storing client IP addresses and remove user.geo on this project only", "docs": ["https://docs.sentry.io/security-legal-pii/scrubbing/server-side-scrubbing/"]},
+                      docs=["https://docs.sentry.io/security-legal-pii/scrubbing/server-side-scrubbing/"])
     ctx.evidence[4] = {k: d.get(k) for k in keys}
     return _finish(row)
 

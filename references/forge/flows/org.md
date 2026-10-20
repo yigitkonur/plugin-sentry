@@ -22,7 +22,7 @@ Read `sentry-ctx ref forge/ground-rules` and `sentry-ctx ref products/org` once.
    default login does not carry; integrations install through the browser).
 7. **Org writes (only `kind: org-write` findings).** Show each exact call (`METHOD /path` + body + effect + cost, e.g. an uptime monitor
    is billed per monitor). AskUserQuestion per call: apply / skip. Headless: approve nothing.
-   For each yes: `sentry-ctx run approve-write --method <M> <exact path> --finding <id>` (or `--cli "<full command>"`; it raises a permission prompt, which is the consent), `sentry-ctx finding approve --ids <id>`,
+   For each yes, approve in the same form the finding holds (REST: `sentry-ctx run approve-write --method <M> <exact path> --finding <id>`; CLI form: `--cli "<full command>"`; it raises a permission prompt, which is the consent), `sentry-ctx finding approve --ids <id>`,
    `sentry-ctx org apply <id>` (prints the `--dry-run` of the call; read it), then `sentry-ctx org apply <id> --run`.
    The engine refuses the call unless it was approved in this run. Never improvise a different `sentry api` write.
 8. **Prove it.** Re-probe the row the finding came from: `sentry-ctx org probe <row> --record`. The candidate must be gone; then

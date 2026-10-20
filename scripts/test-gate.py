@@ -35,7 +35,7 @@ for c in ["sentry --org acme issue plan X", "sentry release create a && sentry i
           "sentry init . --yes"]:
     expect(c, "mutation")
 
-for c, why in [("sentry auth token", "token"), ("sentry event send -m x", "no-environ"), ("cat .sentryclirc", "cred file"), ('echo "$SENTRY_AUTH_TOKEN"', "echo token"),
+for c, why in [("sentry auth token", "token"), ("sentry auth status", "partial token display"), ("sentry --org a auth status --json", "partial token display"), ("sentry event send -m x", "no-environ"), ("cat .sentryclirc", "cred file"), ('echo "$SENTRY_AUTH_TOKEN"', "echo token"),
                ("echo '{}' > .sentry-plugin/run.json", "state edit"), ("python3 -c \"open('.sentry-plugin/run.json','w').write('{}')\"", "state edit via python"),
                ("sed -i 's/a/b/' .sentry-plugin/run.json", "state sed"), ("sentry release create a && sentry auth token", "deny dominates a mutation"),
                ("SENTRY_AUTH_TOKEN=sntryu_" + "a1" * 32 + " sentry release list", "token on the command line")]:
