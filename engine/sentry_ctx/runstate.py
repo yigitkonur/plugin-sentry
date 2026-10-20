@@ -86,6 +86,7 @@ def approve_write(root, method, path_pattern, finding=None, cli=None):
         save(root, st)
         return entry
     method = method.upper()
+    path_pattern = re.sub(r"^/api/0(?=/)", "", path_pattern or "")
     if method not in ("POST", "PUT", "PATCH", "DELETE"):
         raise util.EngineError("approve-write is for POST|PUT|PATCH|DELETE")
     entry = {"method": method, "path": path_pattern, "finding": finding, "approved_at": util.now_iso()}

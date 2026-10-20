@@ -819,6 +819,27 @@ def render(result):
 
 
 # ---------------------------------------------------------------- approved writes
+ORG_SCOPE_RULES = [  # (method, path regex) -> scope the login must carry
+    ("PUT", r"^/organizations/[^/]+/?$", "org:write"),
+    ("POST", r"^/organizations/[^/]+/(?!projects/|detectors|workflows|monitors|teams/)[^/]+/?$", "org:write"),
+    ("DELETE", r"^/organizations/[^/]+/?$", "org:admin"),
+]
+DRY_RUN_CLI = ("project create", "release create", "release deploy", "release finalize", "release set-commits", "monitor run")
+
+
+def _missing_scope(method, path):
+    need = None
+    for m, rx, sc in ORG_SCOPE_RULES:
+        if m == method and re.match(rx, path.split("?", 1)[0]):
+            need = sc
+    if not need:
+        return None
+    have = cli_tools.scopes()
+    if have is None:
+        return None  # cannot tell: let the API answer
+    return need if need not in have else None
+
+
 def apply_write(root, finding_id, run=False):
     """Show (dry run) or perform the org write recorded on an approved org-write finding. Performs it only if the exact call was
     approved in this run (`run approve-write`). The engine's own subprocess is not seen by the Bash gate, so it enforces approval itself."""
@@ -832,20 +853,48 @@ def apply_write(root, finding_id, run=False):
         raise util.EngineError("%s is not an org-write finding" % finding_id)
     if fm.get("status") not in ("approved", "applied"):
         raise util.EngineError("%s is %s: approve the finding first" % (finding_id, fm.get("status")))
-    method, path = str(ow["method"]).upper(), ow["path"]
+    st = runstate.load(root)
+    out = {"finding": finding_id, "effect": ow.get("effect")}
+    if ow.get("cli"):
+        import shlex
+        args = shlex.split(ow["cli"])
+        sub = " ".join(args[:2])
+        approved = runstate.cli_is_approved(st, sub)
+        out.update(cli="sentry " + ow["cli"], approved_in_run=approved)
+        binary = cli_tools.sentry_bin()
+        if not binary:
+            raise util.EngineError("no sentry v4 CLI installed", 3)
+        if sub in DRY_RUN_CLI and "--dry-run" not in args:
+            rc, o, e = util.run([binary, *args, "--dry-run"], timeout=90, env=cli_tools.env())
+            out["dry_run"] = {"rc": rc, "output": tokens.clip((o or e).strip(), 700)}
+        if not run:
+            out["next"] = "approve with: sentry-ctx run approve-write --cli \"%s\" --finding %s ; then rerun with --run" % (sub, finding_id)
+            return tokens.mask_deep(out)
+        if not approved:
+            raise util.EngineError("`sentry %s` was not approved in this run: ask the user, then `sentry-ctx run approve-write --cli \"%s\" --finding %s`" % (sub, sub, finding_id), 5)
+        rc, o, e = util.run([binary, *args], timeout=180, env=cli_tools.env())
+        out["result"] = {"rc": rc, "summary": tokens.clip((o or e).strip(), 500)}
+        if rc == 0:
+            findings.set_status(root, finding_id, "applied")
+        return tokens.mask_deep(out)
+    method, path = str(ow["method"]).upper(), re.sub(r"^/api/0(?=/)", "", ow["path"])
     if method not in ("POST", "PUT", "PATCH", "DELETE"):
         raise util.EngineError("org_write.method must be POST|PUT|PATCH|DELETE")
     body = ow.get("body")
-    st = runstate.load(root)
     approved = runstate.write_is_approved(st, method, path)
     dry = cli_tools.api(path, method, body=body, dry_run=True)
-    out = {"finding": finding_id, "method": method, "path": path, "effect": ow.get("effect"), "approved_in_run": approved,
-           "dry_run": {"rc": dry["rc"], "output": tokens.clip(json.dumps(dry["data"]) if dry["data"] is not None else (dry["raw"] or dry.get("err") or ""), 700)}}
+    out.update(method=method, path=path, approved_in_run=approved,
+               dry_run={"rc": dry["rc"], "output": tokens.clip(json.dumps(dry["data"]) if dry["data"] is not None else (dry["raw"] or dry.get("err") or ""), 700)})
+    miss = _missing_scope(method, path)
+    if miss:
+        out["preflight"] = "the CLI login does not carry the %s scope this call needs: it will be refused. Do it in the UI (Organization Settings), or `sentry auth login` again with that scope, or mark the finding skipped." % miss
     if not run:
         out["next"] = "approve with: sentry-ctx run approve-write --method %s %s --finding %s ; then rerun with --run" % (method, path, finding_id)
-        return out
+        return tokens.mask_deep(out)
     if not approved:
         raise util.EngineError("%s %s was not approved in this run: ask the user, then `sentry-ctx run approve-write --method %s %s --finding %s`" % (method, path, method, path, finding_id), 5)
+    if miss:
+        raise util.EngineError(out["preflight"], 5)
     r = cli_tools.api(path, method, body=body)
     out["result"] = {"rc": r["rc"], "label": r["label"], "summary": tokens.clip(json.dumps(r["data"]) if r["data"] is not None else (r["raw"] or r.get("err") or ""), 500)}
     if r["rc"] == 0:

@@ -181,8 +181,17 @@ def validate(root, f: dict, units):
     f["docs"] = docs
     if kind == "org-write":
         ow = f.get("org_write")
-        if not isinstance(ow, dict) or not ow.get("method") or not ow.get("path"):
-            errs.append("kind=org-write needs org_write {method, path, effect}")
+        if not isinstance(ow, dict) or not (ow.get("cli") or (ow.get("method") and ow.get("path"))):
+            errs.append("kind=org-write needs org_write {method, path, effect} for a REST call, or {cli, effect} for a CLI subcommand (e.g. cli: \"project create ORG/name:platform --team T\")")
+        elif ow.get("cli"):
+            words = str(ow["cli"]).split()
+            if words[:1] == ["sentry"]:
+                words = words[1:]
+            ow["cli"] = " ".join(words)
+            if len(words) < 2 or words[0] in ("auth", "cli", "init") or (words[0], words[1]) in (("issue", "explain"), ("issue", "plan")):
+                errs.append("org_write.cli %r is not an allowed Sentry write (Seer runs, auth and CLI self-management are never findings)" % ow["cli"])
+            if "org-write" not in f["requires"]:
+                f["requires"].append("org-write")
         elif str(ow["method"]).upper() not in ("POST", "PUT", "PATCH", "DELETE"):
             errs.append("org_write.method must be POST|PUT|PATCH|DELETE")
         else:

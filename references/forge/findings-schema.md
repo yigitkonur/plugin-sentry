@@ -37,7 +37,7 @@ Field meanings
 | `requires` | `token`, `org-write`, `deploy`, `tty`, `policy:<key>` |
 | `verify.rung` | R0..R6, the highest rung that can prove this finding |
 | `evidence` | `ran` (what you executed or read) and `saw` (what came back). Required: a finding you did not check is a guess |
-| `org_write` | required for `org-write`: `{"method":"POST|PUT|PATCH|DELETE","path":"/api/0/...","effect":"..."}` |
+| `org_write` | required for `org-write`: a REST call `{"method":"POST|PUT|PATCH|DELETE","path":"/organizations/...","body":{...},"effect":"..."}` or a CLI subcommand `{"cli":"project create ORG/name:platform --team T","effect":"..."}`. `sentry-ctx org apply <id>` shows the dry run, then `--run` performs it only if the exact call was approved in this run |
 
 The engine rejects: an unknown unit or check, missing evidence (use `"status":"unverified"` with a `reason` when access is
 missing), a file outside the repo, a docs URL outside docs.sentry.io / develop.sentry.dev / cli.sentry.dev / skills.sentry.dev /
