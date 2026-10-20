@@ -387,6 +387,7 @@ def _classify(unit, c, root, udir, fileset):
         unit["role"] = "serverless"
     if "cloudflare" in unit["overlays"] and unit["role"] in ("backend", "unknown", "fullstack") and unit["framework"] in ("hono", "node"):
         unit["role"] = "serverless"
+        unit["framework_module"], unit["docs_platform"], unit["wizard"] = "platforms/cloudflare", "javascript/guides/cloudflare", "cloudflare"
 
 
 def _clean_spec(spec):

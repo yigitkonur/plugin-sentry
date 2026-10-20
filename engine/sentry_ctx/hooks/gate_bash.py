@@ -11,7 +11,7 @@ import os
 import re
 import shlex
 
-from .. import runstate, tokens
+from .. import runstate, tokens, util
 from . import common
 
 WRAPPERS = {"env", "sudo", "command", "time", "nohup", "exec", "xargs", "npx", "pnpx", "bunx", "dlx", "exec", "--yes", "-y", "--no-install", "--"}
@@ -38,6 +38,32 @@ V3_NORMALIZE = [
 ]
 CRED_FILES = re.compile(r"(\.sentryclirc|\.env\.sentry-build-plugin|sentry\.properties|SentryCliOptions\.asset|sentry/cli\.db)")
 READERS = {"cat", "less", "more", "head", "tail", "grep", "egrep", "rg", "sed", "awk", "bat", "strings", "xxd", "hexdump", "sqlite3", "cp", "mv", "open", "code", "vim", "nano", "base64"}
+
+
+
+REDIRECT_RX = re.compile(r"""(?:^|[\s;&|(])(?:\d?>>?|&>>?)\s*(?:"([^"]+)"|'([^']+)'|([^\s;&|<>()]+))""")
+
+
+def cred_write_targets(cmd: str):
+    """Paths a command writes to that are named like a Sentry credential file (redirects, tee, cp/mv/install, sed -i, dd of=)."""
+    out = []
+    for m in REDIRECT_RX.finditer(cmd):
+        out.append(next(g for g in m.groups() if g))
+    for seg in _segments(cmd):
+        i = _program(seg)
+        if i >= len(seg):
+            continue
+        prog, args = os.path.basename(seg[i]), seg[i + 1:]
+        pos = [a for a in args if not a.startswith("-")]
+        if prog == "tee":
+            out += pos
+        elif prog in ("cp", "mv", "install", "ln") and len(pos) >= 2:
+            out.append(pos[-1])
+        elif prog in ("sed", "perl") and any(a.startswith("-i") or a.startswith("-pi") for a in args):
+            out += pos[1:]
+        elif prog == "dd":
+            out += [a[3:] for a in args if a.startswith("of=")]
+    return [t for t in out if CRED_FILES.search(t)]
 
 
 def _segments(cmd: str):
@@ -205,6 +231,19 @@ def run():
     if not cmd:
         return
     verdict, reason, key = classify(cmd)
+    if verdict != "deny":
+        root = common.project_dir(inp)
+        cwd = inp.get("cwd") or root
+        for t in cred_write_targets(cmd):
+            ap = t if os.path.isabs(t) else os.path.join(cwd, t)
+            rel = os.path.relpath(ap, root)
+            if rel.startswith("..") or not util.is_git_repo(root):
+                continue  # outside the repo (e.g. ~/.sentryclirc) or no git: nothing can commit it
+            rc, _, _ = util.git(root, "check-ignore", "-q", rel)
+            if rc != 0:
+                verdict, reason, key = "deny", ("This command writes %s, a Sentry credential file that git does not ignore: one `git add .` would commit the token. "
+                                                "Add it to .gitignore first (and `git check-ignore -v %s` must print the rule), then write it. The token itself still never goes on a command line." % (rel, rel)), None
+                break
     if verdict == "deny":
         common.decide("deny", reason)
         return

@@ -1,0 +1,18 @@
+# pkg_regex	majors	name	kind	message	since	source	when
+# majors = installed SDK majors the entry applies to. kind: removed | renamed | inert | deprecated | changed-default | platform-gated. when: optional unit predicate (platform:macos, role:library ...).
+^sentry/sentry$	4	IgnoreErrorsIntegration	removed	Removed in 4.0; use the ignore_exceptions option instead (it performs an is_a check).	4.0.0	https://github.com/getsentry/sentry-php/blob/master/UPGRADE-4.0.md	
+^sentry/sentry$	4	enable_compression	renamed	Removed in 4.0; use the http_compression option instead.	4.0.0	https://github.com/getsentry/sentry-php/blob/master/UPGRADE-4.0.md	
+^sentry/sentry$	4	send_attempts	removed	Removed in 4.0; if you relied on retries, implement a custom transport (set via the transport option).	4.0.0	https://github.com/getsentry/sentry-php/blob/master/UPGRADE-4.0.md	
+^sentry/sentry$	4	trace_propagation_targets	changed-default	Default is now null, so tracing headers go to all outgoing requests; set [] to attach none.	4.0.0	https://github.com/getsentry/sentry-php/blob/master/UPGRADE-4.0.md	
+^sentry/sentry$	4	SpanContext::fromTraceparent	removed	Removed in 4.0; use Sentry\continueTrace() instead.	4.0.0	https://github.com/getsentry/sentry-php/blob/master/UPGRADE-4.0.md	
+^sentry/sentry$	4	TransactionContext::fromSentryTrace	removed	Removed in 4.0; use Sentry\continueTrace() instead.	4.0.0	https://github.com/getsentry/sentry-php/blob/master/UPGRADE-4.0.md	
+^sentry/sentry$	4	ClientBuilder::setTransportFactory	removed	Removed in 4.0; set a custom transport with the transport option.	4.0.0	https://github.com/getsentry/sentry-php/blob/master/UPGRADE-4.0.md	
+^sentry/sentry$	3,4	Breadcrumb::LEVEL_CRITICAL	removed	Removed in 3.0; use Breadcrumb::LEVEL_FATAL instead.	3.0.0	https://github.com/getsentry/sentry-php/blob/master/UPGRADE-3.0.md	
+^(sentry/sentry|sentry/sentry-raven|raven/raven)$	0,1	Raven_Client	removed	Legacy client: Raven_Client was replaced by the Client class in 2.0; migrate to the current sentry/sentry API.	2.0.0	https://github.com/getsentry/sentry-php/blob/master/UPGRADE-2.0.md	
+^sentry/sentry-laravel$	4	IgnoreErrorsIntegration	removed	Removed in 4.0; set 'ignore_exceptions' in config/sentry.php instead.	4.0.0	https://github.com/getsentry/sentry-laravel/blob/master/CHANGELOG.md	
+^sentry/sentry-laravel$	4	trace_propagation_targets	changed-default	Default null now attaches sentry-trace and baggage headers to Http-facade requests; set [] to opt out and remove custom header-injection code.	4.0.0	https://github.com/getsentry/sentry-laravel/blob/master/CHANGELOG.md	
+^sentry/sentry-symfony$	5	IgnoreErrorsIntegration	removed	Removed in 5.0; use the sentry.options.ignore_exceptions option instead.	5.0.0	https://github.com/getsentry/sentry-symfony/blob/master/UPGRADE-5.0.md	
+^sentry/sentry-symfony$	5	sentry.transport_factory	removed	Removed in 5.0; use sentry.options.transport for a custom transport.	5.0.0	https://github.com/getsentry/sentry-symfony/blob/master/UPGRADE-5.0.md	
+^sentry/sentry-symfony$	5	sentry.options.enable_compression	renamed	Removed in 5.0; use sentry.options.http_compression instead.	5.0.0	https://github.com/getsentry/sentry-symfony/blob/master/UPGRADE-5.0.md	
+^sentry/sentry-symfony$	5	sentry.options.send_attempts	removed	Removed in 5.0; implement a custom transport if you relied on retries.	5.0.0	https://github.com/getsentry/sentry-symfony/blob/master/UPGRADE-5.0.md	
+^sentry/sentry-symfony$	5	sentry.options.trace_propagation_targets	changed-default	Default is now null (tracing headers go to all outgoing requests); set [] to attach none.	5.0.0	https://github.com/getsentry/sentry-symfony/blob/master/UPGRADE-5.0.md	

@@ -40,7 +40,7 @@
    },
    "framework": "axum",
    "framework_label": "Axum",
-   "framework_module": "platforms/axum",
+   "framework_module": "platforms/rust",
    "framework_version": "0.7.9",
    "id": "rust",
    "library": false,

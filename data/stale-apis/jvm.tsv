@@ -1,0 +1,19 @@
+# pkg_regex	majors	name	kind	message	since	source	when
+# majors = installed SDK majors the entry applies to. kind: removed | renamed | inert | deprecated | changed-default | platform-gated. when: optional unit predicate (platform:macos, role:library ...).
+^io\.sentry:(sentry|sentry-android)$	8	enableTracing	removed	Removed in 8.0.0; set tracesSampleRate to a value >= 0.0 to enable performance (null, the default, disables it).	8.0.0	https://docs.sentry.io/platforms/java/migration/7.x-to-8.0/	
+^io\.sentry:(sentry|sentry-android)$	8	shutdownTimeout	removed	Removed in 8.0.0; use shutdownTimeoutMillis instead.	8.0.0	https://docs.sentry.io/platforms/java/migration/7.x-to-8.0/	
+^io\.sentry:(sentry|sentry-android)$	8	traceOrigins	removed	Removed in 8.0.0; use tracePropagationTargets instead.	8.0.0	https://docs.sentry.io/platforms/java/migration/7.x-to-8.0/	
+^io\.sentry:(sentry|sentry-android)$	8	profilingEnabled	removed	Removed in 8.0.0; use profilesSampleRate instead (a value >= 0.0 enables profiling).	8.0.0	https://docs.sentry.io/platforms/java/migration/7.x-to-8.0/	
+^io\.sentry:(sentry|sentry-android)$	8	fromSentryTrace	removed	TransactionContext.fromSentryTrace() was removed in 8.0.0; use Sentry.continueTrace() instead.	8.0.0	https://docs.sentry.io/platforms/java/migration/7.x-to-8.0/	
+^io\.sentry:(sentry|sentry-android)$	8	traceHeaders	removed	Sentry.traceHeaders() was removed in 8.0.0; use Sentry.getTraceparent() instead.	8.0.0	https://docs.sentry.io/platforms/java/migration/7.x-to-8.0/	
+^io\.sentry:(sentry|sentry-android)$	8	popScope	deprecated	Deprecated in 8.0.0; call .close() on the token returned by Sentry.pushScope() or Sentry.pushIsolationScope() instead.	8.0.0	https://docs.sentry.io/platforms/java/migration/7.x-to-8.0/	
+^io\.sentry:(sentry|sentry-android)$	8	getCurrentHub	deprecated	Hub is deprecated since 8.0.0; use IScopes and ScopesAdapter instead.	8.0.0	https://docs.sentry.io/platforms/java/migration/7.x-to-8.0/	
+^io\.sentry:(sentry|sentry-android)$	8	IHub	deprecated	Replaced by IScopes in 8.0.0; IHub instances can be passed where IScopes is expected.	8.0.0	https://docs.sentry.io/platforms/java/migration/7.x-to-8.0/	
+^io\.sentry:(sentry|sentry-android)$	8	HubAdapter	deprecated	Replaced by ScopesAdapter.getInstance() in 8.0.0.	8.0.0	https://docs.sentry.io/platforms/java/migration/7.x-to-8.0/	
+^io\.sentry:(sentry|sentry-android)$	8	sendDefaultPii	deprecated	Deprecated in 8.59.0 ahead of removal in 9.0; use dataCollection instead.	8.59.0	https://github.com/getsentry/sentry-java/blob/main/CHANGELOG.md	
+^io\.sentry:sentry-android$	8	Sentry.init	removed	On Android, Sentry.init throws IllegalArgumentException since 8.0.0; use SentryAndroid.init instead.	8.0.0	https://docs.sentry.io/platforms/android/migration/v7-to-v8/	
+^io\.sentry:sentry-android$	8	reportFullDisplayed	removed	Sentry.reportFullDisplayed() was removed in 8.0.0; use Sentry.reportFullyDisplayed() instead.	8.0.0	https://docs.sentry.io/platforms/android/migration/v7-to-v8/	
+^io\.sentry:sentry-android$	8	profilingTracesIntervalMillis	removed	Removed in 8.0.0 with no replacement named; delete the option.	8.0.0	https://docs.sentry.io/platforms/android/migration/v7-to-v8/	
+^io\.sentry:sentry-android$	8	io.sentry.session-tracking.enable	removed	Manifest option removed in 8.0.0 with no replacement named; delete the entry.	8.0.0	https://docs.sentry.io/platforms/android/migration/v7-to-v8/	
+^io\.sentry:sentry-android$	8	io.sentry.traces.profiling.enable	removed	Manifest option removed in 8.0.0; set io.sentry.traces.profiling.sample-rate instead.	8.0.0	https://docs.sentry.io/platforms/android/migration/v7-to-v8/	
+^io\.sentry:sentry-android$	8	io.sentry.traces.tracing-origins	removed	Manifest option removed in 8.0.0; use io.sentry.traces.trace-propagation-targets instead.	8.0.0	https://docs.sentry.io/platforms/android/migration/v7-to-v8/	

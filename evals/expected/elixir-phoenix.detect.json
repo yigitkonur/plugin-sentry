@@ -40,7 +40,7 @@
    },
    "framework": "phoenix",
    "framework_label": "Phoenix",
-   "framework_module": "platforms/phoenix",
+   "framework_module": "platforms/elixir",
    "framework_version": "1.7.14",
    "id": "elixir-phoenix",
    "library": false,

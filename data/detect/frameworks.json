@@ -30,7 +30,7 @@
   "label": "Remix v2",
   "docs_platform": "javascript/guides/remix",
   "wizard": "remix",
-  "module": "platforms/remix"
+  "module": "platforms/remix-react-router"
  },
  {
   "id": "react-router",
@@ -41,7 +41,7 @@
   "label": "React Router v7 (framework mode)",
   "docs_platform": "javascript/guides/react-router",
   "wizard": "reactRouter",
-  "module": "platforms/react-router"
+  "module": "platforms/remix-react-router"
  },
  {
   "id": "sveltekit",
@@ -71,8 +71,7 @@
   "priority": 92,
   "role": "fullstack",
   "label": "TanStack Start",
-  "docs_platform": "javascript/guides/tanstackstart-react",
-  "module": "platforms/tanstack-start"
+  "docs_platform": "javascript/guides/tanstackstart-react"
  },
  {
   "id": "solid-start",
@@ -81,8 +80,7 @@
   "priority": 91,
   "role": "fullstack",
   "label": "SolidStart",
-  "docs_platform": "javascript/guides/solidstart",
-  "module": "platforms/solid-start"
+  "docs_platform": "javascript/guides/solidstart"
  },
  {
   "id": "gatsby",
@@ -92,7 +90,7 @@
   "role": "frontend",
   "label": "Gatsby",
   "docs_platform": "javascript/guides/gatsby",
-  "module": "platforms/gatsby"
+  "module": "platforms/browser-spa"
  },
  {
   "id": "electron",
@@ -154,8 +152,7 @@
   "priority": 84,
   "role": "backend",
   "label": "Hono",
-  "docs_platform": "javascript/guides/hono",
-  "module": "platforms/hono"
+  "docs_platform": "javascript/guides/hono"
  },
  {
   "id": "fastify",
@@ -259,7 +256,7 @@
   "role": "backend",
   "label": "Bun",
   "docs_platform": "javascript/guides/bun",
-  "module": "platforms/bun"
+  "module": "platforms/bun-deno"
  },
  {
   "id": "deno",
@@ -269,7 +266,7 @@
   "role": "backend",
   "label": "Deno",
   "docs_platform": "javascript/guides/deno",
-  "module": "platforms/deno"
+  "module": "platforms/bun-deno"
  },
  {
   "id": "node",
@@ -298,8 +295,7 @@
   "priority": 88,
   "role": "backend",
   "label": "FastAPI",
-  "docs_platform": "python/integrations/fastapi",
-  "module": "platforms/fastapi"
+  "docs_platform": "python/integrations/fastapi"
  },
  {
   "id": "flask",
@@ -308,8 +304,7 @@
   "priority": 88,
   "role": "backend",
   "label": "Flask",
-  "docs_platform": "python/integrations/flask",
-  "module": "platforms/flask"
+  "docs_platform": "python/integrations/flask"
  },
  {
   "id": "litestar",
@@ -318,8 +313,7 @@
   "priority": 87,
   "role": "backend",
   "label": "Litestar",
-  "docs_platform": "python/integrations/litestar",
-  "module": "platforms/litestar"
+  "docs_platform": "python/integrations/litestar"
  },
  {
   "id": "starlette",
@@ -328,8 +322,7 @@
   "priority": 80,
   "role": "backend",
   "label": "Starlette",
-  "docs_platform": "python/integrations/starlette",
-  "module": "platforms/starlette"
+  "docs_platform": "python/integrations/starlette"
  },
  {
   "id": "celery",
@@ -348,8 +341,7 @@
   "priority": 70,
   "role": "backend",
   "label": "aiohttp",
-  "docs_platform": "python/integrations/aiohttp",
-  "module": "platforms/aiohttp"
+  "docs_platform": "python/integrations/aiohttp"
  },
  {
   "id": "tornado",
@@ -358,8 +350,7 @@
   "priority": 70,
   "role": "backend",
   "label": "Tornado",
-  "docs_platform": "python/integrations/tornado",
-  "module": "platforms/tornado"
+  "docs_platform": "python/integrations/tornado"
  },
  {
   "id": "sanic",
@@ -368,8 +359,7 @@
   "priority": 70,
   "role": "backend",
   "label": "Sanic",
-  "docs_platform": "python/integrations/sanic",
-  "module": "platforms/sanic"
+  "docs_platform": "python/integrations/sanic"
  },
  {
   "id": "pyramid",
@@ -378,8 +368,7 @@
   "priority": 70,
   "role": "backend",
   "label": "Pyramid",
-  "docs_platform": "python/integrations/pyramid",
-  "module": "platforms/pyramid"
+  "docs_platform": "python/integrations/pyramid"
  },
  {
   "id": "rq",
@@ -388,8 +377,7 @@
   "priority": 60,
   "role": "worker",
   "label": "RQ",
-  "docs_platform": "python/integrations/rq",
-  "module": "platforms/rq"
+  "docs_platform": "python/integrations/rq"
  },
  {
   "id": "airflow",
@@ -398,8 +386,7 @@
   "priority": 75,
   "role": "worker",
   "label": "Airflow",
-  "docs_platform": "python/integrations/airflow",
-  "module": "platforms/airflow"
+  "docs_platform": "python/integrations/airflow"
  },
  {
   "id": "python",
@@ -419,7 +406,7 @@
   "role": "backend",
   "label": "Gin",
   "docs_platform": "go/guides/gin",
-  "module": "platforms/gin"
+  "module": "platforms/go"
  },
  {
   "id": "echo",
@@ -429,7 +416,7 @@
   "role": "backend",
   "label": "Echo",
   "docs_platform": "go/guides/echo",
-  "module": "platforms/echo"
+  "module": "platforms/go"
  },
  {
   "id": "fiber",
@@ -439,7 +426,7 @@
   "role": "backend",
   "label": "Fiber",
   "docs_platform": "go/guides/fiber",
-  "module": "platforms/fiber"
+  "module": "platforms/go"
  },
  {
   "id": "iris",
@@ -449,7 +436,7 @@
   "role": "backend",
   "label": "Iris",
   "docs_platform": "go/guides/iris",
-  "module": "platforms/iris"
+  "module": "platforms/go"
  },
  {
   "id": "negroni",
@@ -459,7 +446,7 @@
   "role": "backend",
   "label": "Negroni",
   "docs_platform": "go/guides/negroni",
-  "module": "platforms/negroni"
+  "module": "platforms/go"
  },
  {
   "id": "fasthttp",
@@ -469,7 +456,7 @@
   "role": "backend",
   "label": "FastHTTP",
   "docs_platform": "go/guides/fasthttp",
-  "module": "platforms/fasthttp"
+  "module": "platforms/go"
  },
  {
   "id": "go",
@@ -511,7 +498,7 @@
   "role": "backend",
   "label": "Ktor",
   "docs_platform": "java/guides/ktor",
-  "module": "platforms/ktor"
+  "module": "platforms/jvm"
  },
  {
   "id": "micronaut",
@@ -521,7 +508,7 @@
   "role": "backend",
   "label": "Micronaut",
   "docs_platform": "java/guides/micronaut",
-  "module": "platforms/micronaut"
+  "module": "platforms/jvm"
  },
  {
   "id": "quarkus",
@@ -531,7 +518,7 @@
   "role": "backend",
   "label": "Quarkus",
   "docs_platform": "java/guides/quarkus",
-  "module": "platforms/quarkus"
+  "module": "platforms/jvm"
  },
  {
   "id": "jvm",
@@ -581,7 +568,7 @@
   "role": "backend",
   "label": "Sinatra",
   "docs_platform": "ruby/guides/sinatra",
-  "module": "platforms/sinatra"
+  "module": "platforms/ruby"
  },
  {
   "id": "sidekiq",
@@ -591,7 +578,7 @@
   "role": "worker",
   "label": "Sidekiq",
   "docs_platform": "ruby/guides/sidekiq",
-  "module": "platforms/sidekiq"
+  "module": "platforms/ruby"
  },
  {
   "id": "rack",
@@ -601,7 +588,7 @@
   "role": "backend",
   "label": "Rack",
   "docs_platform": "ruby/guides/rack",
-  "module": "platforms/rack"
+  "module": "platforms/ruby"
  },
  {
   "id": "ruby",
@@ -631,7 +618,7 @@
   "role": "backend",
   "label": "Symfony",
   "docs_platform": "php/guides/symfony",
-  "module": "platforms/symfony"
+  "module": "platforms/php"
  },
  {
   "id": "wordpress",
@@ -641,7 +628,7 @@
   "role": "backend",
   "label": "WordPress",
   "docs_platform": "php",
-  "module": "platforms/wordpress"
+  "module": "platforms/php"
  },
  {
   "id": "php",
@@ -661,7 +648,7 @@
   "role": "mobile",
   "label": "MAUI",
   "docs_platform": "dotnet/guides/maui",
-  "module": "platforms/maui"
+  "module": "platforms/dotnet"
  },
  {
   "id": "aspnetcore",
@@ -681,7 +668,7 @@
   "role": "serverless",
   "label": "Azure Functions",
   "docs_platform": "dotnet/guides/azure-functions",
-  "module": "platforms/azure-functions"
+  "module": "platforms/dotnet"
  },
  {
   "id": "wpf",
@@ -691,7 +678,7 @@
   "role": "desktop",
   "label": "WPF",
   "docs_platform": "dotnet/guides/wpf",
-  "module": "platforms/wpf"
+  "module": "platforms/dotnet"
  },
  {
   "id": "winforms",
@@ -701,7 +688,7 @@
   "role": "desktop",
   "label": "WinForms",
   "docs_platform": "dotnet/guides/winforms",
-  "module": "platforms/winforms"
+  "module": "platforms/dotnet"
  },
  {
   "id": "dotnet",
@@ -721,7 +708,7 @@
   "role": "backend",
   "label": "Actix Web",
   "docs_platform": "rust",
-  "module": "platforms/actix"
+  "module": "platforms/rust"
  },
  {
   "id": "axum",
@@ -731,7 +718,7 @@
   "role": "backend",
   "label": "Axum",
   "docs_platform": "rust",
-  "module": "platforms/axum"
+  "module": "platforms/rust"
  },
  {
   "id": "rocket",
@@ -741,7 +728,7 @@
   "role": "backend",
   "label": "Rocket",
   "docs_platform": "rust",
-  "module": "platforms/rocket"
+  "module": "platforms/rust"
  },
  {
   "id": "rust",
@@ -761,7 +748,7 @@
   "role": "backend",
   "label": "Phoenix",
   "docs_platform": "elixir/guides/phoenix",
-  "module": "platforms/phoenix"
+  "module": "platforms/elixir"
  },
  {
   "id": "elixir",

@@ -1,0 +1,18 @@
+# pkg_regex	majors	name	kind	message	since	source	when
+# majors = installed SDK majors the entry applies to. kind: removed | renamed | inert | deprecated | changed-default | platform-gated. when: optional unit predicate (platform:macos, role:library ...).
+^sentry-ruby$	5,6,7	config.http_adapter	removed	Removed in 5.0 with the faraday removal; use config.transport.transport_class with a custom transport class if you need another HTTP client.	5.0.0	https://docs.sentry.io/platforms/ruby/migration/	
+^sentry-ruby$	5,6,7	config.faraday_builder	removed	Removed in 5.0 with the faraday removal; use config.transport.transport_class with a custom transport class instead.	5.0.0	https://docs.sentry.io/platforms/ruby/migration/	
+^sentry-ruby$	6,7	config.async	removed	Removed in 6.0.0 as a deprecated option; delete the line.	6.0.0	https://github.com/getsentry/sentry-ruby/blob/master/CHANGELOG.md	
+^sentry-ruby$	6,7	config.capture_exception_frame_locals	removed	Removed in 6.0.0; use include_local_variables instead.	6.0.0	https://github.com/getsentry/sentry-ruby/blob/master/CHANGELOG.md	
+^sentry-ruby$	6,7	config.enable_tracing	removed	Removed in 6.0.0; use config.traces_sample_rate = 1.0 instead.	6.0.0	https://github.com/getsentry/sentry-ruby/blob/master/CHANGELOG.md	
+^sentry-ruby$	6,7	config.logger	removed	Removed in 6.0.0 (the old config.logger= setter); use config.sdk_logger= instead.	6.0.0	https://github.com/getsentry/sentry-ruby/blob/master/CHANGELOG.md	
+^sentry-ruby$	6,7	config.metrics	removed	Removed in 6.0.0 together with Sentry::Metrics and all metrics code; delete the option.	6.0.0	https://github.com/getsentry/sentry-ruby/blob/master/CHANGELOG.md	
+^sentry-ruby$	6,7	Sentry::Transaction.from_sentry_trace	removed	Removed in 6.0.0; use Sentry.continue_trace instead.	6.0.0	https://github.com/getsentry/sentry-ruby/blob/master/CHANGELOG.md	
+^sentry-ruby$	6,7	Sentry::Transaction.extract_sentry_trace	removed	Removed in 6.0.0; use Sentry::PropagationContext.extract_sentry_trace instead.	6.0.0	https://github.com/getsentry/sentry-ruby/blob/master/CHANGELOG.md	
+^sentry-ruby$	6,7	monotonic_active_support_logger	removed	Removed in 6.0.0 as a config.breadcrumbs_logger value; remove it from the list.	6.0.0	https://github.com/getsentry/sentry-ruby/blob/master/CHANGELOG.md	
+^sentry-ruby$	6,7	config.enabled_environments	changed-default	Default changed in 6.0.0 from [] to nil (send to all environments); set it explicitly if you relied on the old default.	6.0.0	https://github.com/getsentry/sentry-ruby/blob/master/CHANGELOG.md	
+^sentry-ruby$	7	enable_logs	removed	Removed in 7.0.0 because logs are now on by default; delete the option.	7.0.0	https://github.com/getsentry/sentry-ruby/blob/master/CHANGELOG.md	
+^sentry-ruby$	7	enable_metrics	removed	Removed in 7.0.0 because metrics are now on by default; delete the option.	7.0.0	https://github.com/getsentry/sentry-ruby/blob/master/CHANGELOG.md	
+^sentry-ruby$	7	send_default_pii	deprecated	Deprecated in 7.0.0 (still defaults to false); migrate to config.data_collection (user_info, http_bodies and related keys).	7.0.0	https://github.com/getsentry/sentry-ruby/blob/master/CHANGELOG.md	
+^sentry-ruby$	7	trace_ignore_status_codes	changed-default	Default changed in 7.1.0: 302 and 303 are no longer in the default ignore list, so set trace_ignore_status_codes explicitly if you need them excluded.	7.1.0	https://github.com/getsentry/sentry-ruby/blob/master/CHANGELOG.md	
+^sentry-rails$	7	config.rails.structured_logging.enabled	changed-default	Default changed in 7.1.0: Rails structured logging is off unless you set config.rails.structured_logging.enabled = true.	7.1.0	https://github.com/getsentry/sentry-ruby/blob/master/CHANGELOG.md	

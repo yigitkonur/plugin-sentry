@@ -1,0 +1,23 @@
+# pkg_regex	majors	name	kind	message	since	source	when
+# majors = installed SDK majors the entry applies to. kind: removed | renamed | inert | deprecated | changed-default | platform-gated. when: optional unit predicate (platform:macos, role:library ...).
+^Sentry(\.AspNetCore|\.Maui|\.Extensions\.Logging|\.Serilog)?$	3,4,5,6	IncludeRequestPayload	removed	Removed in 3.0 (deprecated since 2.0); use MaxRequestBodySize instead.	3.0.0	https://docs.sentry.io/platforms/dotnet/migration/	
+^Sentry(\.AspNetCore|\.Maui|\.Extensions\.Logging|\.Serilog)?$	3,4,5,6	DiagnosticsLogger	renamed	Option renamed to DiagnosticLogger in 3.0; use DiagnosticLogger.	3.0.0	https://docs.sentry.io/platforms/dotnet/migration/	
+^Sentry(\.AspNetCore|\.Maui|\.Extensions\.Logging|\.Serilog)?$	4,5,6	BeforeSend	removed	Removed in 4.0 (was obsolete); use SetBeforeSend instead.	4.0.0	https://docs.sentry.io/platforms/dotnet/migration/	
+^Sentry(\.AspNetCore|\.Maui|\.Extensions\.Logging|\.Serilog)?$	4,5,6	BeforeSendTransaction	removed	Removed in 4.0; use SetBeforeSendTransaction instead.	4.0.0	https://docs.sentry.io/platforms/dotnet/migration/	
+^Sentry(\.AspNetCore|\.Maui|\.Extensions\.Logging|\.Serilog)?$	4,5,6	BeforeBreadcrumb	removed	Removed in 4.0; use SetBeforeBreadcrumb instead.	4.0.0	https://docs.sentry.io/platforms/dotnet/migration/	
+^Sentry(\.AspNetCore|\.Maui|\.Extensions\.Logging|\.Serilog)?$	4,5,6	CreateHttpClientHandler	removed	Removed in 4.0; use CreateHttpMessageHandler instead.	4.0.0	https://docs.sentry.io/platforms/dotnet/migration/	
+^Sentry(\.AspNetCore|\.Maui|\.Extensions\.Logging|\.Serilog)?$	4,5,6	ReportAssemblies	removed	Removed in 4.0; use ReportAssembliesMode instead.	4.0.0	https://docs.sentry.io/platforms/dotnet/migration/	
+^Sentry(\.AspNetCore|\.Maui|\.Extensions\.Logging|\.Serilog)?$	4,5,6	DebugDiagnosticLogger	removed	Removed in 4.0; use TraceDiagnosticLogger instead.	4.0.0	https://docs.sentry.io/platforms/dotnet/migration/	
+^Sentry(\.AspNetCore|\.Maui|\.Extensions\.Logging|\.Serilog)?$	4,5,6	DisableTaskUnobservedTaskExceptionCapture	removed	Removed in 4.0; use DisableUnobservedTaskExceptionCapture instead.	4.0.0	https://docs.sentry.io/platforms/dotnet/migration/	
+^Sentry(\.AspNetCore|\.Maui|\.Extensions\.Logging|\.Serilog)?$	6	SentrySdk.CaptureUserFeedback	removed	Removed in 6.0; use SentrySdk.CaptureFeedback instead.	6.0.0	https://docs.sentry.io/platforms/dotnet/migration/	
+^Sentry(\.AspNetCore|\.Maui|\.Extensions\.Logging|\.Serilog)?$	6	BreadcrumbLevel.Critical	renamed	Renamed to BreadcrumbLevel.Fatal in 6.0.	6.0.0	https://docs.sentry.io/platforms/dotnet/migration/	
+^Sentry\.Maui$	6	IsEnvironmentUser	changed-default	Defaults to false on MAUI from 6.0, so User.Name is no longer set to the device name; set it explicitly to restore the old behavior.	6.0.0	https://docs.sentry.io/platforms/dotnet/migration/	
+^Sentry\.Maui$	4,5,6	EnableCocoaSdkTracing	renamed	Renamed to EnableTracing in 4.0 for iOS and MacCatalyst.	4.0.0	https://docs.sentry.io/platforms/dotnet/migration/	
+^Sentry\.Maui$	4,5,6	EnableAndroidSdkTracing	renamed	Renamed to EnableTracing in 4.0 for Android.	4.0.0	https://docs.sentry.io/platforms/dotnet/migration/	
+^Sentry\.Maui$	4,5,6	EnableAndroidSdkBeforeSend	renamed	Renamed to EnableBeforeSend in 4.0 for Android.	4.0.0	https://docs.sentry.io/platforms/dotnet/migration/	
+^Sentry\.Maui$	4,5,6	ProfilingEnabled	removed	Removed in 4.0 (iOS/Android option); use ProfilesSampleRate instead.	4.0.0	https://docs.sentry.io/platforms/dotnet/migration/	
+^Sentry\.Maui$	4,5,6	EnableFileIOTracking	removed	Removed in 4.0 (iOS/Android option); use EnableFileIOTracing instead.	4.0.0	https://docs.sentry.io/platforms/dotnet/migration/	
+^Sentry\.Maui$	4,5,6	EnableCoreDataTracking	removed	Removed in 4.0 (iOS option); use EnableCoreDataTracing instead.	4.0.0	https://docs.sentry.io/platforms/dotnet/migration/	
+^Sentry\.Maui$	4,5,6	EnableOutOfMemoryTracking	removed	Removed in 4.0 (iOS option); use EnableWatchdogTerminationTracking instead.	4.0.0	https://docs.sentry.io/platforms/dotnet/migration/	
+^Sentry\.Maui$	4,5,6	EnableUIViewControllerTracking	removed	Removed in 4.0 (iOS option); use EnableUIViewControllerTracing instead.	4.0.0	https://docs.sentry.io/platforms/dotnet/migration/	
+^Sentry\.Azure\.Functions\.Worker$	6	Sentry.Azure.Functions.Worker	deprecated	Deprecated in 6.0; the integration was replaced by a sample that uses the OpenTelemetry package.	6.0.0	https://docs.sentry.io/platforms/dotnet/migration/	

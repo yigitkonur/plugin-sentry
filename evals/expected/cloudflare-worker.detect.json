@@ -31,7 +31,7 @@
  "units": [
   {
    "confidence": 0.95,
-   "docs_platform": "javascript/guides/hono",
+   "docs_platform": "javascript/guides/cloudflare",
    "ecosystem": "js",
    "evidence": {
     "framework": [
@@ -40,7 +40,7 @@
    },
    "framework": "hono",
    "framework_label": "Hono",
-   "framework_module": "platforms/hono",
+   "framework_module": "platforms/cloudflare",
    "framework_version": "4.6.14",
    "id": "cloudflare-worker",
    "library": false,
@@ -110,7 +110,7 @@
      "cloudflare-cron-trigger (wrangler.jsonc)"
     ]
    },
-   "wizard": null
+   "wizard": "cloudflare"
   }
  ]
 }

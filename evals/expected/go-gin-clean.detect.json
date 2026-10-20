@@ -49,7 +49,7 @@
    },
    "framework": "gin",
    "framework_label": "Gin",
-   "framework_module": "platforms/gin",
+   "framework_module": "platforms/go",
    "framework_version": "1.10.0",
    "id": "go-gin-clean",
    "library": false,

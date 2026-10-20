@@ -128,7 +128,7 @@
    },
    "framework": "fastapi",
    "framework_label": "FastAPI",
-   "framework_module": "platforms/fastapi",
+   "framework_module": null,
    "framework_version": "0.115.6",
    "id": "api",
    "library": false,
