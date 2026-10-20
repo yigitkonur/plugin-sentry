@@ -19,6 +19,9 @@ echo "$out" | grep -v ' ok$' || true
 echo "$(echo "$out" | grep -c ' ok$') fixtures ok"
 [ "$rc" = 0 ] || { echo "FAILED: fixtures"; fail=1; }
 
+stage "hook gate regression tests (compound commands, global options, approval provenance)"
+run $PY scripts/test-gate.py | tail -1
+
 stage "plugin manifest and component validation (claude plugin validate --strict)"
 if command -v claude >/dev/null 2>&1; then run claude plugin validate --strict .; else echo "claude CLI not installed: skipped"; fi
 

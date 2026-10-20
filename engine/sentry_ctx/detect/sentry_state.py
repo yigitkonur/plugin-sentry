@@ -62,7 +62,11 @@ def artifact_facts(root, unit, ci_files):
         window = "\n".join(lines[start:start + 60])
         opts = {}
         for m in UPLOAD_OPT_RX.finditer(window):
-            opts.setdefault(m.group(1), tokens.clip(m.group(2).strip().rstrip(")").strip(), 60))
+            val = m.group(2).strip().rstrip(")").strip()
+            if m.group(1) == "authToken":  # presence and source only; the value never enters detection output
+                em = re.search(r"process\.env\.([A-Z_][A-Z0-9_]*)|env\[['\"]([A-Z_][A-Z0-9_]*)['\"]\]", val)
+                val = "env:%s" % (em.group(1) or em.group(2)) if em else "<literal value present: not recorded>"
+            opts.setdefault(m.group(1), tokens.clip(val, 60))
         configs.append({"build": bid, "file": rel, "line": int(ln), "options": opts})
     refs = []
     for rel in ci_files:

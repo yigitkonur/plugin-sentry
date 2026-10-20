@@ -30,11 +30,22 @@ def _mask_match(m: "re.Match[str]") -> str:
     return m.group(2) + "****"
 
 
+# `name: value` / `name=value` where the name says credential and the value is long and opaque (any alphabet), e.g. a legacy
+# 64-hex auth token, a bearer value, a password. The value is masked even when truncation or quoting removed the prefix.
+CONTEXT_ANY = re.compile(
+    r"""(?i)((?:auth[_-]?token|api[_-]?key|access[_-]?token|client[_-]?secret|secret|password|passwd|bearer|authorization)["']?\s*[:=]\s*["']?(?:bearer\s+)?)"""
+    r"""([A-Za-z0-9_\-./+=]{16,})"""
+)
+# Dictionary keys that name a credential: their string value is replaced whole.
+SENSITIVE_KEY = re.compile(r"(?i)(?:^|[_.\-])(auth[_-]?token|token|secret|password|passwd|api[_-]?key|authorization|cookie|set-cookie|client[_-]?secret|private[_-]?key|credentials?)(?:$|[_.\-])")
+
+
 def mask(text: str) -> str:
     """Replace credential-shaped substrings with a short prefix and ****."""
     if not text:
         return text
-    return MASK_RE.sub(_mask_match, text)
+    text = MASK_RE.sub(_mask_match, text)
+    return CONTEXT_ANY.sub(lambda m: m.group(1) + "****", text)
 
 
 def clip(text: str, n: int) -> str:
@@ -57,11 +68,13 @@ def has_token(text: str) -> bool:
     return False
 
 
-def mask_deep(obj):
+def mask_deep(obj, _key=None):
     if isinstance(obj, str):
+        if _key and SENSITIVE_KEY.search(str(_key)) and obj and obj not in ("<masked>", "****") and not obj.startswith("<"):
+            return "<masked>"
         return mask(obj)
     if isinstance(obj, list):
-        return [mask_deep(x) for x in obj]
+        return [mask_deep(x, _key) for x in obj]
     if isinstance(obj, dict):
-        return {k: mask_deep(v) for k, v in obj.items()}
+        return {k: mask_deep(v, k) for k, v in obj.items()}
     return obj

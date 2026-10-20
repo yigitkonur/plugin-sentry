@@ -16,7 +16,7 @@
 9. **Secrets:** tokens only in CI secrets, the environment, or gitignored files. DSN from an environment variable named per
    the platform convention. Never print a token; the engine masks.
 10. **Never weaken a check** to make a verification row pass.
-11. **Temporary triggers** (a route or script that throws a marked error) are registered the moment they are created
-    (`sentry-ctx run trigger <path>`) and removed before the run can finish (delete the file, then `sentry-ctx run trigger <path> --trigger-action remove`).
+11. **Temporary triggers** (a route or script that throws a marked error) are registered before they are created
+    (`sentry-ctx run trigger <path>`; it refuses existing or tracked files, so cleanup can only ever delete what the run created) and removed before the run can finish (delete the file, then `sentry-ctx run trigger <path> --trigger-action remove`).
 12. **Build after each group** with the project's own commands (R0). Record `ran`/`saw` on the finding. If R0 fails, fix or
     revert that group before going on.

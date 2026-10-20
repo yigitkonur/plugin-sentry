@@ -27,8 +27,8 @@ a separate verifier proves the result.
 - Idempotent: if the code already satisfies a finding, mark it applied without editing.
 - Never weaken a check (no lowering masking, no wider sample rate, no `ignoreErrors` to silence a verification).
 - No push, no PR, no deploy, no `sentry` write commands. Org writes are not yours.
-- Temporary triggers: create them only if a finding's `verify` needs one, register the path immediately with
-  `sentry-ctx run trigger <path>`, and leave removal to the verifier flow unless told otherwise.
+- Temporary triggers: create them only if a finding's `verify` needs one, register the path FIRST with
+  `sentry-ctx run trigger <path>` (before the file exists), and leave removal to the verifier flow unless told otherwise.
 
 ## Per group
 1. Make the edits for the group's findings, in severity order.

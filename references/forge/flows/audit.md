@@ -29,7 +29,9 @@ Precondition: `sentry-ctx flow preamble` is done and `sentry-ctx steer --write` 
 5. **Approval gate** (AskUserQuestion; ask, do not assume):
    - "Which findings should I apply?" - All P0+P1 fixes / Also the adds your policy allows / Let me pick by product / Report only.
    - Org writes get their own question listing each exact call (`METHOD /path` and its effect). Only after a yes run
-     `sentry-ctx run approve-write --method <M> <path> --finding <id>` for that call.
+     `sentry-ctx run approve-write --method <M> <exact path> --finding <id>` (CLI form: `--cli "<full command>"`) for that call. That command raises a
+     permission prompt showing the exact line: it is the user's consent, so run it only after their yes, and never to approve something they did not ask for.
+     An approval is bound to this run, this session and the finding's exact call (method, path, body).
    Then `sentry-ctx finding approve --ids F-001,F-004` (or `--severity P0,P1`, or `--all`), and `sentry-ctx run phase approved`.
 6. **Hand-off.** If they want it now, run `sentry-ctx flow apply` and follow it. Otherwise tell them `/sentry:apply` continues later
    (the findings stay on disk).

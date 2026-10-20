@@ -32,13 +32,19 @@ def execute(root, keep, gitignore_line):
     done = {"deleted_triggers": [], "deleted": [], "gitignore": "unchanged"}
     for rel in p["temp_triggers_to_delete"]:
         safe = util.rel_inside(root, rel)
-        if safe:
-            fp = os.path.join(root, safe)
-            if os.path.isdir(fp):
-                shutil.rmtree(fp)
-            else:
-                os.remove(fp)
+        if not safe or os.path.normpath(safe) in (".", "..") or os.path.normpath(safe).split(os.sep)[0] == ".git":
+            done.setdefault("refused", []).append(rel)
+            continue
+        fp = os.path.join(root, safe)
+        if os.path.islink(fp) or os.path.isfile(fp):  # files only: a trigger is never a directory, and nothing is removed recursively
+            os.remove(fp)
             done["deleted_triggers"].append(safe)
+            parent = os.path.dirname(fp)
+            while os.path.realpath(parent) != os.path.realpath(root) and os.path.isdir(parent) and not os.listdir(parent):
+                os.rmdir(parent)  # directories the trigger left empty
+                parent = os.path.dirname(parent)
+        elif os.path.isdir(fp):
+            done.setdefault("refused", []).append(safe + " (is a directory)")
     for name in p["remove"]:
         fp = os.path.join(sd, name)
         if os.path.isdir(fp):

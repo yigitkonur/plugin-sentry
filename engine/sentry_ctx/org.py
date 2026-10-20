@@ -873,7 +873,7 @@ def apply_write(root, finding_id, run=False):
         import shlex
         args = shlex.split(ow["cli"])
         sub = " ".join(args[:2])
-        approved = runstate.cli_approved_for(st, sub, finding_id)
+        approved = runstate.cli_approved_for(st, ow["cli"], finding_id, runstate.current_session(root), ow)
         out.update(cli="sentry " + ow["cli"], approved_in_run=approved)
         binary = cli_tools.sentry_bin()
         if not binary:
@@ -882,7 +882,7 @@ def apply_write(root, finding_id, run=False):
             rc, o, e = util.run([binary, *args, "--dry-run"], timeout=90, env=cli_tools.env())
             out["dry_run"] = {"rc": rc, "output": tokens.clip((o or e).strip(), 700)}
         if not run:
-            out["next"] = "approve with: sentry-ctx run approve-write --cli \"%s\" --finding %s ; then rerun with --run" % (sub, finding_id)
+            out["next"] = "the user approves it (a permission prompt shows the command): sentry-ctx run approve-write --cli \"%s\" --finding %s ; then rerun with --run" % (ow["cli"], finding_id)
             return tokens.mask_deep(out)
         if not approved:
             raise util.EngineError("`sentry %s` was not approved in this run: ask the user, then `sentry-ctx run approve-write --cli \"%s\" --finding %s`" % (sub, sub, finding_id), 5)
@@ -895,7 +895,7 @@ def apply_write(root, finding_id, run=False):
     if method not in ("POST", "PUT", "PATCH", "DELETE"):
         raise util.EngineError("org_write.method must be POST|PUT|PATCH|DELETE")
     body = ow.get("body")
-    approved = runstate.write_is_approved(st, method, path)
+    approved = runstate.write_is_approved(st, method, path, runstate.current_session(root), finding_id, ow)
     dry = cli_tools.api(path, method, body=body, dry_run=True)
     out.update(method=method, path=path, approved_in_run=approved,
                dry_run={"rc": dry["rc"], "output": tokens.clip(json.dumps(dry["data"]) if dry["data"] is not None else (dry["raw"] or dry.get("err") or ""), 700)})

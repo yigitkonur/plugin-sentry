@@ -18,9 +18,9 @@ Read `sentry-ctx ref forge/verification-ladder` once. R0 build, R1 boot, R2 emit
 2. **R0/R1:** run the project's own build and start command for the unit. Record the command and the output tail.
 3. **R2 emit:** produce a marked event from the REAL code path of the app (never an isolated script that bypasses the init under
    test). Marker: `plugin_marker:<run-id>-<n>`, environment set to a non-production value unless told otherwise. Use a temporary
-   trigger (a route, script entry or debug-only argument the platform module describes). Create it, register it right away with
-   `sentry-ctx run trigger <path>`, trigger it, and remove it afterwards: delete the file and run
-   `sentry-ctx run trigger <path> --trigger-action remove`. The Stop gate refuses to finish while a registered trigger exists.
+   trigger (a route, script entry or debug-only argument the platform module describes). Register the path FIRST with
+   `sentry-ctx run trigger <path>` (it refuses a path that already exists, a directory or a git-tracked file), then create the file, trigger it,
+   and remove it afterwards: delete the file and run `sentry-ctx run trigger <path> --trigger-action remove`. The Stop gate refuses to finish while a registered trigger exists.
    If a marker must come from the CLI, `sentry event send ... --no-environ` is mandatory (see `sentry-ctx cli-map --intent marker_event`).
 4. **R3 arrive:** `sentry-ctx verify wait --org <o> --project <p> --marker <marker> --timeout 120`. It prints the event id and
    the release, environment and tags it saw. Wrong release or environment is a failed finding, not a pass.

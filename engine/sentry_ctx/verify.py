@@ -61,11 +61,39 @@ def wait(root, org, project, marker, timeout=120, interval=3):
         return {"arrived": False, "marker": marker, "waited_s": timeout, "polls": tries}
     r = cli_tools.api("/organizations/%s/issues/%s/events/latest/" % (org, issue["id"]))
     ev = r["data"] if isinstance(r["data"], dict) else {}
+    # The raw event is scanned in memory and never written: it can carry cookies, auth headers, a process environment or local variables.
+    # Only an allowlisted view (identifiers, tags, SDK, frame facts, which user keys were set) is kept as evidence.
+    scan_res = scan(ev, policy.load(root)) if ev else {"ok": None, "violations": [], "warnings": ["event body not available"]}
     ev_path = os.path.join(paths.state_dir(root), "evidence", "event-%s.json" % marker)
-    util.write_json(ev_path, ev)
-    out = {"arrived": True, "marker": marker, "issue": {k: issue.get(k) for k in ("id", "shortId", "title", "permalink")}, "polls": tries, "event_file": os.path.relpath(ev_path, root)}
+    util.write_json(ev_path, evidence_view(ev))
+    out = {"arrived": True, "marker": marker, "issue": {k: issue.get(k) for k in ("id", "shortId", "title", "permalink")}, "polls": tries, "event_file": os.path.relpath(ev_path, root), "privacy_scan": scan_res}
     out.update(summarize(ev))
     return out
+
+
+KEEP_TAGS = ("environment", "release", "plugin_marker", "runtime", "transaction", "level", "handled", "mechanism", "server_name")
+
+
+def evidence_view(ev: dict) -> dict:
+    """Allowlist of facts safe to keep in the repo's run folder. Never request data, headers, cookies, environ, locals, breadcrumbs or user values."""
+    frames = []
+    for ent in ev.get("entries", []) or []:
+        if ent.get("type") == "exception":
+            for val in (ent.get("data") or {}).get("values", []) or []:
+                for fr in ((val.get("stacktrace") or {}).get("frames") or [])[-12:]:
+                    frames.append({"function": fr.get("function"), "file": os.path.basename(str(fr.get("filename") or fr.get("absPath") or "")), "line": fr.get("lineNo"),
+                                   "in_app": fr.get("inApp"), "has_context": bool(fr.get("context") or fr.get("context_line")), "symbolicated": fr.get("symbolicatorStatus") or fr.get("symbolicator_status")})
+    user = ev.get("user") or {}
+    types = sorted({e.get("type") for e in ev.get("entries", []) or [] if e.get("type")})
+    return tokens.mask_deep({
+        "event_id": ev.get("eventID") or ev.get("id"), "platform": ev.get("platform"), "date": ev.get("dateCreated"),
+        "sdk": {k: (ev.get("sdk") or {}).get(k) for k in ("name", "version")},
+        "tags": {k: v for k, v in _tags(ev).items() if k in KEEP_TAGS},
+        "release": (ev.get("release") or {}).get("version") if isinstance(ev.get("release"), dict) else ev.get("release"),
+        "user_fields_set": sorted(k for k, v in user.items() if v),
+        "entry_types": types, "context_keys": sorted((ev.get("contexts") or {}).keys()), "errors": [e.get("type") for e in ev.get("errors", []) or []][:10],
+        "frames": frames,
+    })
 
 
 def _walk(o, path=""):

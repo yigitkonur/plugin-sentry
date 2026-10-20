@@ -6,8 +6,9 @@ name="${1:-}"
 [ "${CLAUDE_PLUGIN_OPTION_HOOK_MODE:-on}" = "off" ] && exit 0
 input="$(cat)"
 case "$name" in
-  guard-write) case "$input" in *sntry*|*AUTH_TOKEN*|*authToken*|*auth_token*|*client_secret*|*sentry:auditor*) ;; *) exit 0;; esac;;
-  gate-bash)   case "$input" in *[Ss]entry*|*SENTRY*|*sntry*) ;; *) exit 0;; esac;;
+  guard-write) case "$input" in *sntry*|*AUTH_TOKEN*|*authToken*|*auth_token*|*client_secret*|*sentry:auditor*|*run.json*) ;; *)
+                 { [ -n "${CLAUDE_PLUGIN_ROOT:-}" ] && case "$input" in *"$CLAUDE_PLUGIN_ROOT"*) false;; *) true;; esac; } && exit 0;; esac;;
+  gate-bash)   case "$input" in *[Ss]entry*|*SENTRY*|*sntry*|*run.json*) ;; *) exit 0;; esac;;
   stale-api)   case "$input" in *[Ss]entry*|*SENTRY*) ;; *) exit 0;; esac;;
   stop-gate)   [ -f "${CLAUDE_PROJECT_DIR:-$PWD}/.sentry-plugin/run.json" ] || exit 0;;
 esac

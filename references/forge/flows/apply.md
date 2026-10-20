@@ -20,7 +20,7 @@ Orchestrator in the main thread. Read `sentry-ctx ref forge/fix-safety` if you h
    group with `git revert --no-edit <hash>` and mark its findings `blocked` with the reason.
 4. **Org writes.** For approved `org-write` findings follow `sentry-ctx flow org` (one exact call at a time, each already approved).
    If an approved finding needs source maps or debug files uploaded to prove it (R4), the user's approval of that finding covers the upload: record it
-   once with `sentry-ctx run approve-write --cli "sourcemap upload" --finding <id>` (or `"debug-files upload"`) before the verifier runs.
+   once with `sentry-ctx run approve-write --cli "sourcemap upload" --finding <id>` (a permission prompt shows the command) (or `"debug-files upload"`) before the verifier runs.
 5. **Prove it.** `sentry-ctx run phase verifying`, then follow `sentry-ctx flow verify` for the findings whose `verify.rung` is R2 or
    higher. R0/R1 results are already on the findings.
 6. **Finish.** `sentry-ctx ledger` must pass (no pending cells, no applied-but-unverified findings, no leftover triggers); findings that

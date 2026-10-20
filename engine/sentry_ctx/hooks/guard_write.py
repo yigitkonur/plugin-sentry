@@ -29,6 +29,10 @@ def run():
     if inp.get("agent_type") == "sentry:auditor":
         common.decide("deny", "The auditor is read-only; it records findings with `sentry-ctx finding add`, not by editing files.")
         return
+    # the run state holds the user's approvals: only `sentry-ctx run approve-write` (which asks) may change it
+    if path and os.path.basename(path) == "run.json" and os.path.basename(os.path.dirname(path)) == ".sentry-plugin":
+        common.decide("deny", "The run state (.sentry-plugin/run.json) holds the user's approvals and is written only by `sentry-ctx`. Use `sentry-ctx run ...` commands.")
+        return
     # the plugin's own files (engine, references, data, hooks) are never edited by a run in a user's repo; engine bugs are reported
     plugin_root = os.environ.get("CLAUDE_PLUGIN_ROOT")
     if plugin_root and path and not os.environ.get("SENTRY_PLUGIN_DEV"):
