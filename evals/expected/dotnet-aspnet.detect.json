@@ -84,6 +84,10 @@
      {
       "file": "Program.cs",
       "line": 3,
+      "placement": {
+       "app_ctor_before": [],
+       "local_imports_before": []
+      },
       "text": "builder.WebHost.UseSentry(o =>"
      }
     ],

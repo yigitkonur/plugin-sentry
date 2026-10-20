@@ -30,6 +30,46 @@ CONFIGISH = [
 ]
 
 
+
+CTOR_RX = {
+    "python": re.compile(r"^\s*[\w.]+(?:\s*:\s*[\w.\[\], ]+)?\s*=\s*(?:[\w.]+\.)?(FastAPI|Flask|Starlette|Quart|Sanic|Litestar|Celery|Bottle|Falcon|Tornado|Application)\("),
+    "go": re.compile(r"\b(gin\.(?:Default|New)|echo\.New|fiber\.New|chi\.NewRouter|http\.NewServeMux|mux\.NewRouter)\("),
+    "js": re.compile(r"\b(?:const|let|var)\s+\w+\s*=\s*(?:new\s+)?(express|fastify|Fastify|Koa|Hono|Elysia)\s*\("),
+}
+
+
+def _local_roots(unit, eco):
+    """Top-level names a `from x import` can refer to inside this repo (Python: packages and root modules)."""
+    roots = set()
+    if eco != "python":
+        return roots
+    base = unit["root"] if unit["root"] != "." else ""
+    for rel in unit.get("_files", []):
+        if not rel.endswith(".py"):
+            continue
+        sub = rel[len(base) + 1:] if base and rel.startswith(base + "/") else rel
+        parts = sub.split("/")
+        roots.add(parts[0][:-3] if len(parts) == 1 else parts[0])
+    return roots
+
+
+def _placement(eco, lines, init_line, local_roots):
+    """Facts about what runs before Sentry.init in the same file: app constructors and imports of the repo's own modules."""
+    rx = CTOR_RX.get(eco)
+    ctors, local = [], []
+    for i, line in enumerate(lines[: max(0, init_line - 1)], 1):
+        if rx and rx.search(line) and len(ctors) < 3:
+            ctors.append({"line": i, "text": tokens.clip(line.strip(), 100)})
+        if eco == "python":
+            m = re.match(r"^\s*(?:from\s+(\.+|[A-Za-z_][\w]*)[\w.]*\s+import|import\s+([A-Za-z_][\w]*))", line)
+            if m:
+                top = m.group(1) or m.group(2)
+                if top.startswith(".") or top in local_roots:
+                    if len(local) < 5:
+                        local.append({"line": i, "text": tokens.clip(line.strip(), 100)})
+    return {"app_ctor_before": ctors, "local_imports_before": local}
+
+
 def data(name):
     if name not in _cache:
         _cache[name] = paths.load_json_data("detect", name)
@@ -118,6 +158,7 @@ def attach(unit: dict, root: str, udir: str, tracked: set) -> None:
         packages.append(pkg)
     # --- single pass over unit sources
     init_sites, dsn_literals, env_names, sig_src = [], [], {}, {}
+    local_roots = _local_roots(unit, eco)
     init_rx = re.compile("|".join("(?:%s)" % p for p in spec["init_patterns"]))
     opt_names = data("option_names.json")["options"]
     opt_rx = re.compile(r"""['"]?\b(%s)\b['"]?\s*(?:=>|[:=])\s*([^\n,;]{1,80})""" % "|".join(re.escape(o) for o in opt_names))
@@ -145,7 +186,7 @@ def attach(unit: dict, root: str, udir: str, tracked: set) -> None:
             lines = text.splitlines()
             for i, line in enumerate(lines, 1):
                 if init_rx.search(line) and len(init_sites) < 25:
-                    init_sites.append({"file": rel, "line": i, "text": tokens.clip(line.strip(), 140)})
+                    init_sites.append({"file": rel, "line": i, "text": tokens.clip(line.strip(), 140), "placement": _placement(eco, lines, i, local_roots)})
             if len(option_snapshots) < 4:
                 start = max(0, _line_of(text, m_init.start()) - 6)
                 window = "\n".join(lines[start:start + 90])

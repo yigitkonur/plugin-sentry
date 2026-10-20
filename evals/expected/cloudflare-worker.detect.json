@@ -83,6 +83,10 @@
      {
       "file": "src/index.ts",
       "line": 11,
+      "placement": {
+       "app_ctor_before": [],
+       "local_imports_before": []
+      },
       "text": "export default Sentry.withSentry("
      }
     ],

@@ -84,6 +84,10 @@
      {
       "file": "config/initializers/sentry.rb",
       "line": 1,
+      "placement": {
+       "app_ctor_before": [],
+       "local_imports_before": []
+      },
       "text": "Sentry.init do |config|"
      }
     ],

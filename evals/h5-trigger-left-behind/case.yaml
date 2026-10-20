@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: h5-trigger-left-behind
+description: A Sentry run is in progress and a temporary trigger file is still registered. The model adopts the run and is asked to wrap up; H5 must refuse the stop until the trigger is removed.
+tags: [hooks, h5]
+context:
+  scaffold_script: setup.sh

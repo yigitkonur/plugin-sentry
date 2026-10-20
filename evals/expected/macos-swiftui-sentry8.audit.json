@@ -3,13 +3,10 @@
  "must_find": [
   {
    "id": "network-entitlement",
-   "text_any": [
+   "title_any": [
     "network.client",
     "network client",
     "entitlement"
-   ],
-   "files_any": [
-    "MyApp/MyApp.entitlements"
    ]
   },
   {
@@ -62,6 +59,11 @@
    "any_check": [
     "trace.rate",
     "prof.lifecycle"
+   ],
+   "title_any": [
+    "profilesSampleRate",
+    "tracesSampleRate",
+    "profiling"
    ]
   }
  ],

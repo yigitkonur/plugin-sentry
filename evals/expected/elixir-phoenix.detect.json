@@ -83,11 +83,19 @@
      {
       "file": "config/config.exs",
       "line": 7,
+      "placement": {
+       "app_ctor_before": [],
+       "local_imports_before": []
+      },
       "text": "config :sentry,"
      },
      {
       "file": "lib/my_app_web/endpoint.ex",
       "line": 3,
+      "placement": {
+       "app_ctor_before": [],
+       "local_imports_before": []
+      },
       "text": "use Sentry.PlugCapture"
      }
     ],

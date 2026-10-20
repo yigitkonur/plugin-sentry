@@ -82,6 +82,10 @@
      {
       "file": "src/main.rs",
       "line": 6,
+      "placement": {
+       "app_ctor_before": [],
+       "local_imports_before": []
+      },
       "text": "let _guard = sentry::init(("
      }
     ],

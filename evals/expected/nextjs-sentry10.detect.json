@@ -141,16 +141,28 @@
      {
       "file": "sentry.client.config.ts",
       "line": 3,
+      "placement": {
+       "app_ctor_before": [],
+       "local_imports_before": []
+      },
       "text": "Sentry.init({"
      },
      {
       "file": "sentry.edge.config.ts",
       "line": 3,
+      "placement": {
+       "app_ctor_before": [],
+       "local_imports_before": []
+      },
       "text": "Sentry.init({ dsn: process.env.NEXT_PUBLIC_SENTRY_DSN, tracesSampleRate: 1 });"
      },
      {
       "file": "sentry.server.config.ts",
       "line": 3,
+      "placement": {
+       "app_ctor_before": [],
+       "local_imports_before": []
+      },
       "text": "Sentry.init({"
      }
     ],

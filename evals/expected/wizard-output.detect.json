@@ -118,16 +118,28 @@
      {
       "file": "src/instrumentation-client.ts",
       "line": 3,
+      "placement": {
+       "app_ctor_before": [],
+       "local_imports_before": []
+      },
       "text": "Sentry.init({"
      },
      {
       "file": "src/sentry.edge.config.ts",
       "line": 3,
+      "placement": {
+       "app_ctor_before": [],
+       "local_imports_before": []
+      },
       "text": "Sentry.init({"
      },
      {
       "file": "src/sentry.server.config.ts",
       "line": 3,
+      "placement": {
+       "app_ctor_before": [],
+       "local_imports_before": []
+      },
       "text": "Sentry.init({"
      }
     ],

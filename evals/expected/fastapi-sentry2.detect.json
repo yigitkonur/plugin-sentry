@@ -86,6 +86,24 @@
      {
       "file": "app/main.py",
       "line": 13,
+      "placement": {
+       "app_ctor_before": [
+        {
+         "line": 11,
+         "text": "app = FastAPI(title=\"acme-api\")"
+        }
+       ],
+       "local_imports_before": [
+        {
+         "line": 8,
+         "text": "from app import jobs"
+        },
+        {
+         "line": 9,
+         "text": "from app.llm import answer"
+        }
+       ]
+      },
       "text": "sentry_sdk.init("
      }
     ],

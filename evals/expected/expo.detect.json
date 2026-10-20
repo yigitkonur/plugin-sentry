@@ -97,11 +97,19 @@
      {
       "file": "App.tsx",
       "line": 4,
+      "placement": {
+       "app_ctor_before": [],
+       "local_imports_before": []
+      },
       "text": "Sentry.init({ dsn: process.env.EXPO_PUBLIC_SENTRY_DSN, tracesSampleRate: 1.0 });"
      },
      {
       "file": "App.tsx",
       "line": 14,
+      "placement": {
+       "app_ctor_before": [],
+       "local_imports_before": []
+      },
       "text": "export default Sentry.wrap(App);"
      }
     ],

@@ -32,13 +32,20 @@ def main(repo, exp_path):
     for m in exp["must_find"]:
         hit = None
         for f, t in rows:
-            if m.get("any_check") and f.get("check") not in m["any_check"] and not m.get("text_any"):
-                continue
-            ok_check = (not m.get("any_check")) or f.get("check") in m["any_check"]
-            ok_text = (not m.get("text_any")) or any(x.lower() in t for x in m["text_any"])
+            title = f.get("title", "").lower()
+            by_check = bool(m.get("any_check")) and f.get("check") in m["any_check"]
+            by_text = bool(m.get("text_any")) and any(x.lower() in t for x in m["text_any"])
+            by_title = bool(m.get("title_any")) and any(x.lower() in title for x in m["title_any"])
+            # a finding matches by its catalog id, or by naming the defect (anywhere in its text, or in its title for title_any)
+            if m.get("title_any") and not m.get("any_check") and not m.get("text_any"):
+                ok_what = by_title
+            elif m.get("any_check") and m.get("text_any"):
+                ok_what = by_check and by_text
+            else:
+                ok_what = by_check or by_text or by_title
             ok_files = (not m.get("files_any")) or any(x in f.get("files", []) for x in m["files_any"]) or any(x.lower() in t for x in m["files_any"])
             ok_sev = (not m.get("min_severity")) or SEV.index(f.get("severity", "P3")) <= SEV.index(m["min_severity"])
-            if (ok_check or (m.get("text_any") and not m.get("any_check"))) and ok_text and ok_files and ok_sev:
+            if ok_what and ok_files and ok_sev:
                 hit = f
                 break
         print("  %-5s must_find %-22s %s" % ("OK" if hit else "MISS", m["id"], ("<- %s %s %s" % (hit["id"], hit["check"], hit["severity"])) if hit else ""))

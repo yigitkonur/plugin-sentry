@@ -82,6 +82,15 @@
      {
       "file": "server.js",
       "line": 10,
+      "placement": {
+       "app_ctor_before": [
+        {
+         "line": 6,
+         "text": "const app = express();"
+        }
+       ],
+       "local_imports_before": []
+      },
       "text": "Sentry.init({"
      }
     ],

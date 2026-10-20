@@ -94,6 +94,10 @@
      {
       "file": "lib/main.dart",
       "line": 5,
+      "placement": {
+       "app_ctor_before": [],
+       "local_imports_before": []
+      },
       "text": "await SentryFlutter.init("
      }
     ],

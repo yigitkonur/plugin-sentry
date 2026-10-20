@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: h3-stale-option
+description: Next.js app on @sentry/nextjs 11.8.0. The user asks for enableLogs, which v11 removed. H3 must tell the model right after the edit; the right outcome is a file without the option.
+tags: [hooks, h3]
+context:
+  scaffold_script: setup.sh

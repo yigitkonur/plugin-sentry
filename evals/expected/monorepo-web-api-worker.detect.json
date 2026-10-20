@@ -169,6 +169,10 @@
      {
       "file": "services/api/app/main.py",
       "line": 6,
+      "placement": {
+       "app_ctor_before": [],
+       "local_imports_before": []
+      },
       "text": "sentry_sdk.init(dsn=os.environ.get(\"SENTRY_DSN\"), traces_sample_rate=0.2)"
      }
     ],
@@ -236,6 +240,10 @@
      {
       "file": "services/worker/worker/celery_app.py",
       "line": 6,
+      "placement": {
+       "app_ctor_before": [],
+       "local_imports_before": []
+      },
       "text": "sentry_sdk.init(dsn=os.environ.get(\"SENTRY_DSN\"))"
      }
     ],

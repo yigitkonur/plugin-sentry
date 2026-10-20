@@ -91,6 +91,10 @@
      {
       "file": "bootstrap/app.php",
       "line": 17,
+      "placement": {
+       "app_ctor_before": [],
+       "local_imports_before": []
+      },
       "text": "\\Sentry\\Laravel\\Integration::handles($exceptions);"
      },
      {
