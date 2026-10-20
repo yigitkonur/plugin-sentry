@@ -40,7 +40,7 @@
    },
    "framework": "express",
    "framework_label": "Express",
-   "framework_module": "platforms/express",
+   "framework_module": "platforms/node",
    "framework_version": "4.19.2",
    "id": "node-express-legacy",
    "library": false,

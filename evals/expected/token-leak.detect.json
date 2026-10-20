@@ -78,7 +78,7 @@
    },
    "framework": "express",
    "framework_label": "Express",
-   "framework_module": "platforms/express",
+   "framework_module": "platforms/node",
    "framework_version": "4.19.0",
    "id": "token-leak",
    "library": false,
