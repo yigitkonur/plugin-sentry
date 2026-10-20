@@ -24,7 +24,7 @@
    "api": [
     {
      "evidence": [
-      "services/api/src/index.ts:20"
+      "services/api/src/index.ts:32"
      ],
      "host": "www.example-co.com"
     }
@@ -106,6 +106,24 @@
     "from": "site",
     "from_role": "fullstack",
     "kind": "service-binding",
+    "receiver_sentry_wrapped": false,
+    "rpc_binding_listed": false,
+    "to": "api",
+    "to_role": "serverless"
+   },
+   {
+    "binding": "ORDERS",
+    "entrypoint": "OrdersDO",
+    "evidence": {
+     "from": [
+      "apps/site/wrangler.jsonc:8"
+     ],
+     "to": []
+    },
+    "from": "site",
+    "from_role": "fullstack",
+    "kind": "durable-object-binding",
+    "receiver_sentry_wrapped": true,
     "rpc_binding_listed": false,
     "to": "api",
     "to_role": "serverless"
@@ -124,7 +142,7 @@
    ],
    "production": [
     {
-     "evidence": "services/api/src/index.ts:40",
+     "evidence": "services/api/src/index.ts:52",
      "unit": "api"
     }
    ]
@@ -153,7 +171,7 @@
     "evidence": [
      "services/api/wrangler.jsonc:8",
      "apps/site/.env:2",
-     "apps/site/wrangler.jsonc:9"
+     "apps/site/wrangler.jsonc:10"
     ],
     "ingest_host": "o123456.ingest.de.sentry.io",
     "key_sha1_8": "b1775a78",
@@ -470,7 +488,16 @@
     "init_sites": [
      {
       "file": "services/api/src/index.ts",
-      "line": 37,
+      "line": 22,
+      "placement": {
+       "app_ctor_before": [],
+       "local_imports_before": []
+      },
+      "text": "export const OrdersDO = Sentry.instrumentDurableObjectWithSentry("
+     },
+     {
+      "file": "services/api/src/index.ts",
+      "line": 49,
       "placement": {
        "app_ctor_before": [],
        "local_imports_before": []

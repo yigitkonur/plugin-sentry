@@ -1,7 +1,7 @@
 import * as Sentry from "@sentry/cloudflare";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
-import { WorkerEntrypoint } from "cloudflare:workers";
+import { DurableObject, WorkerEntrypoint } from "cloudflare:workers";
 
 type Bindings = { SENTRY_DSN: string };
 
@@ -11,6 +11,18 @@ export class OrdersRpc extends WorkerEntrypoint<Bindings> {
     return [{ id: 1, total: 42 }];
   }
 }
+
+class OrdersDOBase extends DurableObject<Bindings> {
+  async count() {
+    return 1;
+  }
+}
+
+// Wrapped by Sentry: the site Worker reaches it through a Durable Object binding.
+export const OrdersDO = Sentry.instrumentDurableObjectWithSentry(
+  (env: Bindings) => ({ dsn: env.SENTRY_DSN, tracesSampleRate: 1.0, rpcTracePropagationBindings: [] }),
+  OrdersDOBase,
+);
 
 const app = new Hono<{ Bindings: Bindings }>();
 

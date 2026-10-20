@@ -6,5 +6,6 @@
   "routes": [{ "pattern": "www.example-co.com/*", "zone_name": "example-co.com" }],
   "assets": { "binding": "ASSETS", "directory": "./dist" },
   "services": [{ "binding": "API", "service": "edge-api", "entrypoint": "OrdersRpc" }],
+  "durable_objects": { "bindings": [{ "name": "ORDERS", "class_name": "OrdersDO", "script_name": "edge-api" }] },
   "vars": { "SENTRY_DSN": "https://0123456789abcdef0123456789abcdef@o123456.ingest.de.sentry.io/1234567" }
 }

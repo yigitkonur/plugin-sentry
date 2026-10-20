@@ -100,6 +100,15 @@ with tempfile.TemporaryDirectory() as tmp:
     flags = {e["binding"]: e["rpc_binding_listed"] for e in edges_of(links(t), "service-binding")}
     check("rpc_binding_listed true for the listed binding only", flags == {"API": True, "OTHER": False}, flags)
 
+    # 5b. a Durable Object binding to another Worker: receiver wrapped by Sentry or not, binding listed or not
+    t = os.path.join(tmp, "do")
+    repo(t, {"services/api/wrangler.jsonc": '{"name":"edge-api"}',
+             "services/api/src/index.ts": 'export const Wrapped = Sentry.instrumentDurableObjectWithSentry((env) => ({}), WrappedBase);\nexport class Plain extends DurableObject {}\n',
+             "apps/web/wrangler.jsonc": '{"name":"web","durable_objects":{"bindings":[{"name":"A","class_name":"Wrapped","script_name":"edge-api"},{"name":"B","class_name":"Plain","script_name":"edge-api"},{"name":"LOCAL","class_name":"X"}]}}',
+             "apps/web/sentry.server.config.ts": 'export const o = () => ({ rpcTracePropagationBindings: ["B"] });\n'})
+    got = {e["binding"]: (e["rpc_binding_listed"], e["receiver_sentry_wrapped"]) for e in edges_of(links(t), "durable-object-binding")}
+    check("DO binding: wrapped receiver detected, listed flag per binding, own-Worker binding ignored", got == {"A": (False, True), "B": (True, False)}, got)
+
     # 6. wildcard routes match subdomains but not the apex or a look-alike
     t = os.path.join(tmp, "wild")
     repo(t, {"services/api/wrangler.jsonc": '{"name":"edge-api","routes":[{"pattern":"*.example-co.com/*"}]}',

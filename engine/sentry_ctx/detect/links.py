@@ -28,6 +28,36 @@ ENV_LITERAL_RX = re.compile(r"""\benvironment\s*[:=]\s*["']([A-Za-z0-9_-]+)["']|
 ENV_VAR_RX = re.compile(r"""\bSENTRY_ENVIRONMENT\s*[:=]\s*["']?([A-Za-z0-9_-]+)["']?""")
 CORS_RX = re.compile(r"(?i)\borigin\b|access-control|\bcors\b|allowedorigins|trustedorigins|allowed_hosts")
 ENV_LINE_RX = re.compile(r"^\s*(?:export\s+)?([A-Z][A-Z0-9_]*)\s*=\s*[\"']?(https?://[^\s\"']+)")
+def _do_bindings(root, files):
+    """Durable Object bindings that name another Worker (`script_name`): [{binding, class_name, script_name, evidence}]."""
+    out = []
+    for rel in files:
+        base = os.path.basename(rel)
+        if base in ("wrangler.jsonc", "wrangler.json"):
+            raw, cfg = _load_wrangler(root, rel)
+            for b in [cfg] + _env_blocks(cfg):
+                do = b.get("durable_objects")
+                items = do.get("bindings") if isinstance(do, dict) else None
+                for it in items if isinstance(items, list) else []:
+                    if isinstance(it, dict) and isinstance(it.get("script_name"), str) and isinstance(it.get("class_name"), str):
+                        out.append({"binding": it.get("name") if isinstance(it.get("name"), str) else None, "class_name": it["class_name"], "script_name": it["script_name"],
+                                    "evidence": "%s:%d" % (rel, _line_of(raw, '"%s"' % it["script_name"]))})
+        elif base == "wrangler.toml":
+            raw = _read(root, rel, 100_000)
+            for m in re.finditer(r"(?ms)^\[\[(?:env\.[\w-]+\.)?durable_objects\.bindings\]\][^\n]*\n(.*?)(?=^\[|\Z)", raw):
+                blk = m.group(1)
+                sn, cn = _toml_field(blk, "script_name"), _toml_field(blk, "class_name")
+                if sn and cn:
+                    out.append({"binding": _toml_field(blk, "name"), "class_name": cn, "script_name": sn, "evidence": "%s:%d" % (rel, raw.count("\n", 0, m.start()) + 1)})
+    return out
+
+
+def _wrapped(class_name, texts):
+    """True when some file exports `class_name` through one of Sentry's instrument*WithSentry wrappers."""
+    rx = re.compile(r"export\s+(?:const|let|var|class)\s+%s\b[^;]{0,300}?instrument(?:DurableObject|Workflow|Agent)WithSentry" % re.escape(class_name), re.S)
+    return any(rx.search(t) for t in texts.values())
+
+
 RPC_LIST_RX = re.compile(r"rpcTracePropagationBindings\s*:\s*\[([^\]]*)\]")
 
 
@@ -295,7 +325,8 @@ def analyze(root, units):
         hosts, names = _server_hosts(root, files)
         origins, dsns, envs, cors, usages, texts, truncated = _scan_unit(root, files)
         per[u["id"]] = {"unit": u, "hosts": hosts, "names": names, "origins": origins, "dsns": dsns, "envs": envs, "cors": cors, "usages": usages,
-                        "truncated": truncated, "bindings": _service_bindings(root, files), "rpc_listed": _rpc_listed(texts)}
+                        "truncated": truncated, "bindings": _service_bindings(root, files), "do_bindings": _do_bindings(root, files),
+                        "rpc_listed": _rpc_listed(texts), "texts": texts}
     edges, unmatched = [], {}
     for a_id, a in per.items():
         for host, occ in sorted(a["origins"].items()):
@@ -329,7 +360,16 @@ def analyze(root, units):
                     edges.append({"kind": "service-binding", "from": a_id, "to": b_id, "binding": sv["binding"], "entrypoint": sv["entrypoint"],
                                   "from_role": a["unit"].get("role"), "to_role": b["unit"].get("role"),
                                   "rpc_binding_listed": bool(listed),
+                                  "receiver_sentry_wrapped": _wrapped(sv["entrypoint"], b["texts"]) if sv["entrypoint"] else None,
                                   "evidence": {"from": [sv["evidence"]] + [x["evidence"] for x in listed][:2], "to": []}})
+        for db in a["do_bindings"]:
+            for b_id, b in per.items():
+                if b_id != a_id and db["script_name"] in b["names"]:
+                    listed = [x for x in a["rpc_listed"] if db["binding"] in x["bindings"]]
+                    edges.append({"kind": "durable-object-binding", "from": a_id, "to": b_id, "binding": db["binding"], "entrypoint": db["class_name"],
+                                  "from_role": a["unit"].get("role"), "to_role": b["unit"].get("role"),
+                                  "rpc_binding_listed": bool(listed), "receiver_sentry_wrapped": _wrapped(db["class_name"], b["texts"]),
+                                  "evidence": {"from": [db["evidence"]] + [x["evidence"] for x in listed][:2], "to": []}})
     shared = {}
     for uid, p in per.items():
         for k, locs in p["dsns"].items():

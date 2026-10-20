@@ -1,5 +1,6 @@
 ---
 import { env } from "cloudflare:workers";
 const orders = await env.API.listOrders();
+const count = await env.ORDERS.getByName("main").count();
 ---
 <ul>{orders.map((o: { id: number; total: number }) => <li>{o.id}: {o.total}</li>)}</ul>

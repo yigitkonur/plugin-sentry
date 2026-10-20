@@ -205,7 +205,8 @@
     "link.trace-chain"
    ],
    "text_any": [
-    "rpcTracePropagationBindings"
+    "ORDERS",
+    "OrdersDO"
    ],
    "files_any": [
     "apps/site"
@@ -249,6 +250,16 @@
     "mcp",
     "crons",
     "replay"
+   ]
+  },
+  {
+   "id": "no-rpc-finding-for-unwrapped-entrypoint",
+   "check_in": [
+    "link.rpc-propagation"
+   ],
+   "text_all": [
+    "OrdersRpc",
+    "should list"
    ]
   }
  ],

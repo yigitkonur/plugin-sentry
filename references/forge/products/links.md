@@ -9,7 +9,7 @@ Applies when detect has a `links` section (two or more units that are not librar
 |---|---|---|
 | `edges` | `from`, `to`, `host`, `via_env`, evidence lines on both sides | One row of the chain table per edge |
 | `cors_allowed_origins` | origins a unit's CORS config names | A browser edge needs the client origin here |
-| `edges` with `kind: service-binding` | a Worker's wrangler `services` binding that names another Worker of this repo (`binding`, `entrypoint`, `rpc_binding_listed`) | `link.rpc-propagation` |
+| `edges` with `kind: service-binding` or `durable-object-binding` | a Worker's wrangler `services` binding, or Durable Object binding with a `script_name`, that names another Worker of this repo (`binding`, `entrypoint` = the class, `rpc_binding_listed`, `receiver_sentry_wrapped`: the class is exported through an `instrument...WithSentry` wrapper, or null when no class is named) | `link.rpc-propagation` |
 | `shared_dsns` | units sharing one project and key (key shown as an 8-char hash) | `link.dsn-reuse` |
 | `environment_names` | each `environment` value with the units and lines that set it | `link.vocab` |
 | `truncated_units` | present only when a unit was too large to scan fully (the shallowest 6,000 text files or 40 MB of them) | Search those units by hand before calling an edge absent |
@@ -38,7 +38,7 @@ Judge each edge by what kind of client it is. CORS exists only in browsers.
 | check id | read | passes when |
 |---|---|---|
 | link.trace-chain | Per edge: the client init (`tracePropagationTargets`, `propagateTraceparent`), the server entry (SDK init and wrapper), the server CORS config (`cors_allowed_origins`, allowed headers) | Browser edge: targets include the API origin and the server allows both headers. Other clients: no client change, server SDK present. Do not file CORS for mobile or server clients |
-| link.rpc-propagation | Each `kind: service-binding` edge: the caller's options (`rpcTracePropagationBindings`, `rpc_binding_listed`) and whether the receiver Worker or class is Sentry-wrapped | Listed exactly when the receiver runs Sentry; for a Vite build, only bindings to other Workers need listing |
+| link.rpc-propagation | Each binding edge: `rpc_binding_listed` against `receiver_sentry_wrapped`; read the caller's options and the receiver's export to confirm both | Listed exactly when the receiver runs Sentry (`true` and not listed: file it; `false` and listed: file it; `false` and not listed: pass; `null`: read the receiver, and if the docs pages do not cover that wrapper, say so and do not file) |
 | link.server-unwatched | `edges[].to` units with `sentry.status` absent | Every callee of a tracing client has Sentry, or the half trace is a recorded decision |
 | link.vocab | Two halves, filed as two findings. (a) Spelling: `environment_names`; two values that differ only in case or abbreviation (`prod` and `production`) for the same stage are two environments in Sentry. Title it with both spellings and the units. (b) Release matching: release setting per unit and CI | (a) One spelling per stage in every unit. (b) One deploy can be matched across units by a shared release value |
 | link.dsn-reuse | `shared_dsns` | Units that build and release separately each have a project, or the sharing is deliberate (say who decided) |
@@ -81,6 +81,7 @@ Tracing at a flat 1.0 in every unit multiplies span volume with the number of ho
 tracePropagationTargets | https://docs.sentry.io/platforms/javascript/tracing/trace-propagation/dealing-with-cors-issues/
 propagateTraceparent | https://docs.sentry.io/platforms/javascript/tracing/trace-propagation/dealing-with-cors-issues/
 rpcTracePropagationBindings | https://docs.sentry.io/platforms/javascript/guides/cloudflare/install/wrangler/
+script_name | https://docs.sentry.io/platforms/javascript/guides/cloudflare/install/vite-plugin/
 environment | https://docs.sentry.io/platforms/javascript/configuration/options/
 ```
 
