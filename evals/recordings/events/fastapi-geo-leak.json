@@ -1,0 +1,47 @@
+{
+ "event": {
+  "entries": [
+   {
+    "data": {
+     "formatted": "[Errno 48] error while attempting to bind on address ('127.0.0.1', 8010): [errno 48] address already in use"
+    },
+    "type": "message"
+   }
+  ],
+  "message": "[Errno 48] error while attempting to bind on address ('127.0.0.1', 8010): [errno 48] address already in use",
+  "tags": [
+   {
+    "key": "environment",
+    "value": "development"
+   },
+   {
+    "key": "release",
+    "value": "person@example.invalid"
+   }
+  ],
+  "user": {
+   "data": null,
+   "email": null,
+   "geo": {
+    "city": "Example City",
+    "country_code": "XX",
+    "region": "Example Region"
+   },
+   "id": null,
+   "ip_address": null,
+   "name": null,
+   "username": null
+  }
+ },
+ "expect": {
+  "ok": false,
+  "violations": [
+   "user.geo is present (country/city inferred from the connecti"
+  ],
+  "warnings": []
+ },
+ "note": "before the scrubbing rule: user.geo",
+ "preset": "strict",
+ "recorded": "2026-10-20",
+ "source": "fastapi/12afae4f"
+}

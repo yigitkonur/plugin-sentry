@@ -26,7 +26,7 @@ Orchestrator in the main thread. Read `sentry-ctx ref forge/fix-safety` if you h
    a yes record `sentry-ctx run approve-write --cli "sourcemap upload" --finding <id>` (or `"debug-files upload"`); a permission prompt shows the command.
    That two-word approval covers every upload of that kind in this run.
 5. **Prove it.** `sentry-ctx run phase verifying`, then follow `sentry-ctx flow verify` for the findings whose `verify.rung` is R2 or
-   higher. For findings whose `verify.rung` is R0 or R1, the implementer's R0 result is the proof: `sentry-ctx finding set-status <id> verified --ran "<its R0 command>" --saw "<its result>"`
+   higher. For findings whose `verify.rung` is R0 or R1, the implementer's R0 result is the proof: `sentry-ctx finding set-status <id> verified --rung R0 --ran "<its R0 command>" --saw "<its result>"`
    (or `unverified --reason "<why R0 did not run>"`).
 6. **Finish.** `sentry-ctx ledger` must pass (no pending cells, no applied-but-unverified findings, no leftover triggers); findings that
    could not be proven are `unverified` with the reason, and `waived` (from `unverified`) only with the user's reason. `sentry-ctx run phase done`.

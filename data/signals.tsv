@@ -24,3 +24,4 @@ alerts	org	org	org		UNVERIFIED: no org access
 quota	org	org	org		UNVERIFIED: no org access
 seer	org	org	org		UNVERIFIED: no org access
 org	org	org	org		UNVERIFIED: no org access
+cf-observability	cond	telemetry	fw:cloudflare	not a Cloudflare Workers, Pages or Astro/Next project on Cloudflare

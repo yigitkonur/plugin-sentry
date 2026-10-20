@@ -46,7 +46,7 @@ CommonJS). It must run before any module the SDK should wrap loads. v11 specific
 | `skipOpenTelemetrySetup` | works | `enableOpenTelemetrySetup` (default false) | SDK no longer registers a tracer provider; spans from `@opentelemetry/api` are ignored unless true |
 | `otlpIntegration()` (node-core) | `@sentry/node-core/light/otlp` | `openTelemetryIntegration()` in `@sentry/node` | no exporter; `getOtlpTracesEndpoint()` builds the Sentry OTLP URL |
 | `captureWorkerErrors` | on `childProcessIntegration` | removed | `workerThreadsIntegration()` is a separate default integration |
-| `honoIntegration` | works | removed | use the `@sentry/hono` SDK |
+| `honoIntegration` | works | the guide says removed; 11.8.0 still exports it | use the `@sentry/hono` SDK (Hono guide) |
 | `sendDefaultPii`, `enableLogs`, `beforeSendTransaction`, `profilesSampleRate` | | see stale-API table | |
 Own OpenTelemetry pipeline on v11: leave `enableOpenTelemetrySetup` off, leave `tracesSampleRate` unset, add `openTelemetryIntegration()`; `SentryContextManager`,
 `SentrySampler` and `SentrySpanProcessor` no longer exist, and `OTEL_SERVICE_NAME`/`OTEL_RESOURCE_ATTRIBUTES` are no longer read.

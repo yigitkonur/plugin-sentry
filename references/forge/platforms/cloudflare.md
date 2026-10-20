@@ -21,6 +21,7 @@ Use the manual route from the live docs. Do not paste install steps from memory.
 | Plain Wrangler (`withSentry` wrapper) | Wrangler-only build, no Vite | `.../cloudflare/install/wrangler` |
 | Pages Functions (`sentryPagesPlugin`) | Cloudflare Pages `functions/` directory | `.../cloudflare/features/pages` |
 | Hono on Workers (`sentry` middleware) | Hono app; the Hono page shows this path | `.../cloudflare/frameworks/hono` |
+| Astro on Workers | `astro` + `@astrojs/cloudflare`; the unit carries both `platforms/astro` and this module | `.../cloudflare/frameworks/astro` |
 | Source maps | Any build that should upload maps | `.../cloudflare/sourcemaps` (wizard `-i sourcemaps`) |
 
 Wizard: the docs page shows `npx @sentry/wizard@latest -i sourcemaps`, which installs packages, configures the build tool and configures CI. Confirm the wizard id `cloudflare` (engine data) with the wizard's `--help` before proposing it; see Unconfirmed.
@@ -30,6 +31,8 @@ Wizard: the docs page shows `npx @sentry/wizard@latest -i sourcemaps`, which ins
 - Plain path: the module's default export is `withSentry(optionsCallback, handler)`. Each Durable Object, Workflow or Agent class is wrapped with its own `instrument...WithSentry` call and exported under the class name the wrangler binding uses.
 - Pages: `sentryPagesPlugin` must be the first entry of the `onRequest` array in `functions/_middleware.js`. The docs say "Make sure Sentry is the first middleware".
 - Hono: `sentry(app, options)` is added with `app.use(...)` as early as possible, before the routes it should cover.
+- Astro on Workers (Astro 6.0.0+, `@astrojs/cloudflare` 13+, `@sentry/astro` and `@sentry/cloudflare` 10.40.0+; install both): wrangler `main` points at `./sentry.server.config.ts`, which default-exports `Sentry.withSentry(optionsCallback, handler)` with `handler` imported from `@astrojs/cloudflare/entrypoints/server`. `sentry()` stays in `astro.config.mjs` `integrations`; the browser `Sentry.init` is `sentry.client.config.(ts|js)` using `@sentry/astro`. A `sentry.server.config.ts` that only calls `Sentry.init` and is not the wrangler `main` is the Node guide pasted into a Worker: server errors are not reported. DSN comes from `env.SENTRY_DSN`.
+- Astro 3 to 5 with `@astrojs/cloudflare` 12: `@sentry/astro` detects the adapter and wraps the Worker itself; server config is environment variables only (`SENTRY_DSN`, `SENTRY_TRACES_SAMPLE_RATE`, `SENTRY_RELEASE`, `SENTRY_ENVIRONMENT`), and `sentry.server.config` is not supported. For Pages, the `_middleware.js` route above applies.
 
 ## Options by SDK major
 Columns: v10 is N-1, v11 is the current major (N). Only options the docs list for this platform.
@@ -106,6 +109,7 @@ For Pages, the docs give no Pages-specific verify step; place the same temporary
 - Plain Wrangler cannot patch bundled packages (database and AI clients); those spans are missing without the Vite plugin's `buildTimeInstrumentation` (install/wrangler, "What You Give Up").
 - Research note C8 said packages can only be instrumented at build time. The fetched docs say `withSentry` without Vite still instruments the handlers and `fetch`; follow the docs.
 - Pages: `sentryPagesPlugin` comes from the package root (`Sentry.sentryPagesPlugin` in the docs). Research note C1 says a `pages` subpath import does not exist; the fetched page shows only the root export. Where a project cannot add the `onRequest` middleware, the Pages page offers `wrapRequestHandler` from `@sentry/cloudflare/request`.
+- Cloudflare has its own Logs, Traces and Issues, on by default for new Workers: read `products/cf-observability` and the policy answer `cloudflare.owner` before proposing Sentry logs or tracing here.
 - Vite plugin: run `vite build` before `wrangler deploy`; use `vite dev` in place of `wrangler dev` (guide, "Add the Vite Plugin").
 - Inference, not on a page: do not wrap `app.fetch` with `withSentry` and also add the Hono `sentry` middleware in one Worker; the docs show each path on its own.
 

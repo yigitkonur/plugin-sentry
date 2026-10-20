@@ -138,7 +138,7 @@ def cmd_finding(args):
             raise util.EngineError("no such finding: " + args.id)
         print(util.read_text(p))
     elif a == "set-status":
-        util.emit(findings.set_status(root, args.id, args.value, reason=args.reason, ran=args.ran, saw=args.saw))
+        util.emit(findings.set_status(root, args.id, args.value, reason=args.reason, ran=args.ran, saw=args.saw, rung=args.rung))
     elif a == "approve":
         ids = args.ids.split(",") if args.ids else None
         sev = args.severity.split(",") if args.severity else None
@@ -373,6 +373,7 @@ def register(sub):
     f.add_argument("--reason")
     f.add_argument("--ran")
     f.add_argument("--saw")
+    f.add_argument("--rung", help="set-status verified: the highest rung reached (R0..R6); must be at least the finding's verify.rung")
     f.add_argument("--ids")
     f.add_argument("--kinds")
     f.add_argument("--all", action="store_true")

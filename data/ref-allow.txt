@@ -54,3 +54,9 @@ pyproject_toml
 requirements_txt
 applicationWillFinishLaunching
 applicationDidFinishLaunching
+# keys of the plugin's own detect output (detect.json links), not Sentry options
+via_env
+cors_allowed_origins
+shared_dsns
+environment_names
+unmatched_origins

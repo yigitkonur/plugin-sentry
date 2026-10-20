@@ -39,6 +39,8 @@ def main(repo, exp_path):
             # a finding matches by its catalog id, or by naming the defect (anywhere in its text, or in its title for title_any)
             if m.get("title_any") and not m.get("any_check") and not m.get("text_any"):
                 ok_what = by_title
+            elif m.get("any_check") and m.get("title_any") and not m.get("text_any"):
+                ok_what = by_check and by_title
             elif m.get("any_check") and m.get("text_any"):
                 ok_what = by_check and by_text
             else:
@@ -60,6 +62,10 @@ def main(repo, exp_path):
             if n.get("product_in") and f.get("product") not in n["product_in"]:
                 continue
             if n.get("kind_in") and f.get("kind") not in n["kind_in"]:
+                continue
+            if n.get("check_in") and f.get("check") not in n["check_in"]:
+                continue
+            if n.get("text_all") and not all(x.lower() in t for x in n["text_all"]):
                 continue
             bad = f
             break

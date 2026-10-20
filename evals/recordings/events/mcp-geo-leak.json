@@ -1,0 +1,106 @@
+{
+ "event": {
+  "entries": [
+   {
+    "data": {
+     "values": [
+      {
+       "stacktrace": {
+        "frames": [
+         {
+          "absPath": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-mcp/node_modules/@modelcontextprotocol/sdk/src/server/index.ts",
+          "filename": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-mcp/node_modules/@modelcontextprotocol/sdk/src/server/index.ts",
+          "function": "wrappedHandler",
+          "inApp": false,
+          "lineNo": 243,
+          "module": "@modelcontextprotocol.sdk.src.server:index.ts"
+         },
+         {
+          "absPath": "node:internal/process/task_queues",
+          "filename": "node:internal/process/task_queues",
+          "function": "process.processTicksAndRejections",
+          "inApp": false,
+          "lineNo": 104,
+          "module": "task_queues"
+         },
+         {
+          "absPath": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-mcp/node_modules/@modelcontextprotocol/sdk/dist/esm/server/mcp.js",
+          "filename": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-mcp/node_modules/@modelcontextprotocol/sdk/dist/esm/server/mcp.js",
+          "function": null,
+          "inApp": false,
+          "lineNo": 156,
+          "module": "@modelcontextprotocol.sdk.dist.esm.server:mcp"
+         },
+         {
+          "absPath": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-mcp/node_modules/@modelcontextprotocol/sdk/dist/esm/server/mcp.js",
+          "filename": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-mcp/node_modules/@modelcontextprotocol/sdk/dist/esm/server/mcp.js",
+          "function": "McpServer.executeToolHandler",
+          "inApp": false,
+          "lineNo": 241,
+          "module": "@modelcontextprotocol.sdk.dist.esm.server:mcp"
+         },
+         {
+          "absPath": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-mcp/node_modules/@sentry/core/src/integrations/mcp-server/handlers.ts",
+          "filename": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-mcp/node_modules/@sentry/core/src/integrations/mcp-server/handlers.ts",
+          "function": "<anonymous>",
+          "inApp": false,
+          "lineNo": 45,
+          "module": "@sentry.core.src.integrations.mcp-server:handlers.ts"
+         },
+         {
+          "absPath": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-mcp/src/index.ts",
+          "filename": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-mcp/src/index.ts",
+          "function": "<anonymous>",
+          "inApp": true,
+          "lineNo": 14,
+          "module": "index.ts"
+         }
+        ]
+       },
+       "type": "Error",
+       "value": "order not found: missing"
+      }
+     ]
+    },
+    "type": "exception"
+   }
+  ],
+  "message": "Error: order not found: missing",
+  "tags": [
+   {
+    "key": "environment",
+    "value": "development"
+   },
+   {
+    "key": "release",
+    "value": "person@example.invalid"
+   }
+  ],
+  "user": {
+   "data": null,
+   "email": null,
+   "geo": {
+    "city": "Example City",
+    "country_code": "XX",
+    "region": "Example Region"
+   },
+   "id": null,
+   "ip_address": null,
+   "name": null,
+   "username": null
+  }
+ },
+ "expect": {
+  "ok": false,
+  "violations": [
+   "user.geo is present (country/city inferred from the connecti"
+  ],
+  "warnings": [
+   "stack-frame file names carry a developer home path (expected"
+  ]
+ },
+ "note": "MCP server before the scrubbing rule: user.geo",
+ "preset": "strict",
+ "recorded": "2026-10-20",
+ "source": "mcp/135459f4"
+}

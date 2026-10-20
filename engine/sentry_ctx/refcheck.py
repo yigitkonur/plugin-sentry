@@ -133,7 +133,7 @@ def verify_text(text: str, label: str, kind: str, name: str = ""):
         res["errors"].append("missing ## Sources section")
     for u in re.findall(r"https?://[^\s)>\]`|]+", text):
         host = re.sub(r"^https?://([^/]+).*$", r"\1", u)
-        if host not in ("docs.sentry.io", "develop.sentry.dev", "cli.sentry.dev", "github.com", "sentry.io", "spotlightjs.com", "skills.sentry.dev", "mcp.sentry.dev", "opentelemetry.io", "docs.github.com", "developer.apple.com", "developer.android.com", "docs.unity3d.com", "dev.epicgames.com", "learn.microsoft.com", "pkg.go.dev", "docs.rs", "hexdocs.pm", "pub.dev", "docs.python.org", "nodejs.org"):
+        if host not in ("docs.sentry.io", "develop.sentry.dev", "cli.sentry.dev", "github.com", "sentry.io", "spotlightjs.com", "skills.sentry.dev", "mcp.sentry.dev", "developers.cloudflare.com", "opentelemetry.io", "docs.github.com", "developer.apple.com", "developer.android.com", "docs.unity3d.com", "dev.epicgames.com", "learn.microsoft.com", "pkg.go.dev", "docs.rs", "hexdocs.pm", "pub.dev", "docs.python.org", "nodejs.org"):
             res["warnings"].append("non-Sentry host %s: cite official Sentry pages for Sentry facts" % host)
     res["ok"] = not res["errors"]
     return res

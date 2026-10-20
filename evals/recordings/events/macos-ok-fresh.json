@@ -1,0 +1,49 @@
+{
+ "event": {
+  "entries": [
+   {
+    "data": {
+     "values": [
+      {
+       "stacktrace": {
+        "frames": []
+       },
+       "type": "plugin_marker",
+       "value": "Code: 5"
+      }
+     ]
+    },
+    "type": "exception"
+   }
+  ],
+  "message": "plugin_marker: Code: 5",
+  "tags": [
+   {
+    "key": "environment",
+    "value": "development"
+   },
+   {
+    "key": "release",
+    "value": "r5-closure@1"
+   }
+  ],
+  "user": {
+   "data": null,
+   "email": null,
+   "geo": {},
+   "id": null,
+   "ip_address": null,
+   "name": null,
+   "username": null
+  }
+ },
+ "expect": {
+  "ok": true,
+  "violations": [],
+  "warnings": []
+ },
+ "note": "post-rule native crash event",
+ "preset": "strict",
+ "recorded": "2026-10-20",
+ "source": "macos/9f18a01f"
+}

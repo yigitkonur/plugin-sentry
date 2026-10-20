@@ -136,6 +136,9 @@ def plan(detect: dict, policy: dict | None, org_access: str) -> dict:
                 mods.append("platforms/apple-ios")
         elif u.get("framework_module"):
             mods.append(u["framework_module"])
+        for rule in paths.load_json_data("detect", "frameworks.json"):  # overlays (Cloudflare) add their module next to the framework's
+            if rule.get("overlay") and rule["id"] in (u.get("overlays") or []) and rule.get("module"):
+                mods.append(rule["module"])
         mods.append("platforms/" + u["ecosystem"])
         for pid, c in cells.items():
             if c["state"] == "applicable":
@@ -157,7 +160,13 @@ def plan(detect: dict, policy: dict | None, org_access: str) -> dict:
             continue
         ok, ev = evaluate(row["when"], {"role": "backend", "ecosystem": "", "signals": {}}, ctx)
         org_cells[row["product"]] = {"state": "applicable", "group": "org", "evidence": ev} if ok else {"state": "unverified", "group": "org", "reason": row["na_reason"]}
-    return {"schema": 1, "org_access": org_access, "units": units_out, "org": org_cells}
+    out = {"schema": 1, "org_access": org_access, "units": units_out, "org": org_cells}
+    lk = detect.get("links")
+    if lk:
+        n = len([u for u in units_out if u["role"] != "library"])
+        out["links"] = {"state": "applicable", "group": "links", "modules": ["products/links"],
+                        "evidence": ["%d deployable units, %d candidate edges, %d shared DSNs" % (n, len(lk.get("edges", [])), len(lk.get("shared_dsns", [])))]}
+    return out
 
 
 def baseline_extras(detect_unit: dict) -> dict:

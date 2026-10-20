@@ -62,6 +62,10 @@ There is nothing to audit; propose the setup. Create `kind: "add"` findings, one
   docs path), a precise `fix` text built from the module and the live docs page, `requires` (token, org-write, deploy), and the
   `verify.rung` that proves it. Never invent an option: fetch the platform's install page and use what it shows.
 
+## Two special cases
+- `Unit: _links` (the whole repo, after the unit audits): your rubric is `products/links`. Judge each edge in `detect.json` `links.edges` by reading both cited sides; CORS applies to browser clients only. File with `--unit _links`, naming both units and both file:line sides. Run `sentry-ctx finding list` first: an edge problem the unit auditors already filed is not filed again.
+- A Cloudflare unit (`products/cf-observability` in your modules): the policy digest carries `cloudflare.owner`; judge against it. Unset means ask: file ONE `kind: manual` finding listing what is on in wrangler and in the Sentry init, and never pick an owner yourself.
+
 ## Recording
 - A finding: `sentry-ctx finding add` with one JSON object on stdin (schema in `forge/findings-schema`). `evidence.ran` is what you
   executed or read (a command or `file:line`), `evidence.saw` is what came back, copied. Severity follows the rubric; do not inflate.

@@ -20,6 +20,7 @@ Precondition: `sentry-ctx flow preamble` is done and `sentry-ctx steer --write` 
    Platform id: `<language>-<framework>` as Sentry names them (`javascript-nextjs`, `python-fastapi`, `go-gin`, `apple-macos`,
    `ruby-rails`); an unknown id fails the `--dry-run` with "Invalid platform" and creates nothing, so fall back to the language id
    (`node`, `javascript`, `python`, `go`, `apple`, `java`) and say so.
+   Ids that pass `--dry-run` on `sentry` 0.47.0: `node-cloudflare-workers` (Workers, also Hono on Workers), `node-hono`, `javascript-astro` (Astro, also on Cloudflare), `react-native` (Expo), `node`, `node-express`, `apple-macos`, `javascript-nextjs`. Not ids: `javascript-hono`, `javascript-cloudflare`, `astro`, `javascript-react-native`, `cocoa-swift`, `node-mcp` (an MCP server is `node`).
    `sentry project create <org>/<name>:<platform> --dry-run`, show it, then run it, then
    `sentry dsn list <org>/<name> --json`.
    Right after it exists: `sentry-ctx org focus --org <o> --project <name>` and `sentry-ctx org probe identity,keys,filters,scrubbing,spike,alerting --record`.

@@ -238,7 +238,7 @@
  {
   "id": "cloudflare",
   "eco": "js",
-  "dep": "wrangler|@cloudflare/workers-types|@cloudflare/vitest-pool-workers|@cloudflare/vite-plugin",
+  "dep": "wrangler|@cloudflare/workers-types|@cloudflare/vitest-pool-workers|@cloudflare/vite-plugin|@astrojs/cloudflare|@sentry/cloudflare",
   "priority": 96,
   "role": "serverless",
   "label": "Cloudflare Workers / Pages",

@@ -1,0 +1,19 @@
+{
+  "name": "edge-api",
+  "version": "0.3.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy"
+  },
+  "dependencies": {
+    "hono": "^4.13.13",
+    "@sentry/cloudflare": "11.8.0"
+  },
+  "devDependencies": {
+    "wrangler": "^4.151.3",
+    "typescript": "^5.7.2",
+    "@cloudflare/workers-types": "^4.20261001.0"
+  }
+}

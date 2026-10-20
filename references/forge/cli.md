@@ -60,6 +60,8 @@ the plugin, a script, a transcript or a file. Rules the plugin follows:
 
 `sentry event send` (and `send-event`) attach the **whole process environment** unless `--no-environ`. Always pass it.
 
+`--org` and `--project` are accepted by every command, before or after the subcommand, although a command's own `--help` usage and the CLI docs' "Global Options" omit them. Do not conclude from `--help` that they do not exist. Tested on 0.47.0: `sentry dsn list --org <o> --project <p>` returns that project's DSN, a wrong org answers 404, with no flags and no DSN in the directory it fails with "Organization and project are required", and an invented flag is rejected. The documented routes are `SENTRY_ORG`, `SENTRY_PROJECT` (which may be `org/project`), the DSN, and an `ORG/` prefix; prefer them in CI files.
+
 ## Accelerators (all followed by the same audit)
 
 - **`sentry init`** (experimental): hosted setup wizard. `sentry init <org>/<project> . --dry-run --yes --features errors,tracing,logs --no-tui`

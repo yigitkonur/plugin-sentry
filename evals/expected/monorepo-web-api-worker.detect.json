@@ -10,6 +10,15 @@
  "iac": {
   "terraform_sentry_files": []
  },
+ "links": {
+  "cors_allowed_origins": {},
+  "edges": [],
+  "environment_names": {},
+  "hosts": {},
+  "note": "static candidates; the links auditor confirms each edge by reading the cited lines",
+  "shared_dsns": [],
+  "unmatched_origins": {}
+ },
  "repo": {
   "default_branch": "main",
   "dirty": false,

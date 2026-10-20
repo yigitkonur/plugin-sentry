@@ -1,0 +1,41 @@
+{
+ "event": {
+  "entries": [
+   {
+    "data": {
+     "formatted": "geo-probe C"
+    },
+    "type": "message"
+   }
+  ],
+  "message": "geo-probe C",
+  "tags": [
+   {
+    "key": "environment",
+    "value": "development"
+   },
+   {
+    "key": "release",
+    "value": "geo-probe@1"
+   }
+  ],
+  "user": {
+   "data": null,
+   "email": null,
+   "geo": {},
+   "id": null,
+   "ip_address": null,
+   "name": null,
+   "username": null
+  }
+ },
+ "expect": {
+  "ok": true,
+  "violations": [],
+  "warnings": []
+ },
+ "note": "post-rule marker event: nothing leaks",
+ "preset": "strict",
+ "recorded": "2026-10-20",
+ "source": "fastapi/427686a0"
+}

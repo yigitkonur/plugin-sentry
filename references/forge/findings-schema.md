@@ -45,7 +45,7 @@ mcp.sentry.dev / spotlightjs.com / sentry.io / github.com/getsentry, `org-write`
 open finding (same unit, check and files).
 
 Statuses: `open -> approved -> applied -> verified`, plus `skipped`, `blocked`, `waived`, `unverified`. Change them with
-`sentry-ctx finding set-status <id> <status> --reason ... [--ran ... --saw ...]` (`verified` requires `--ran` and `--saw`).
+`sentry-ctx finding set-status <id> <status> --reason ... [--ran ... --saw ... --rung R0..R6]` (`verified` requires `--ran`, `--saw` and `--rung`, the highest rung the proof reached; a rung below the finding's `verify.rung` is refused, record `unverified` with the reason instead).
 
 Coverage is its own ledger, one cell per unit x product: `clean | findings | n/a | unverified | pending`.
 `sentry-ctx coverage set --unit U --product P --state clean --note "..."` (clean is refused while open findings exist;

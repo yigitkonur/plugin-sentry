@@ -1,6 +1,6 @@
 # Astro (module: platforms/astro)
 
-Applies to `@sentry/astro` 11 (current major; the options page and migration page state 11.0.0 defaults). Astro 4.0.0+ per the guide prerequisites. Node runtimes only.
+Applies to `@sentry/astro` 11 (current major; the options page and migration page state 11.0.0 defaults). Astro 4.0.0+ per the guide prerequisites. Server init below is for Node runtimes. On Cloudflare (the unit has the `cloudflare` overlay, usually `@astrojs/cloudflare`) the browser side and the `sentry()` integration stay as here, but the server side is a Worker: read `platforms/cloudflare` (Init placement, Astro on Workers) first and ignore the Node server rows.
 
 ## Detect
 
@@ -11,7 +11,8 @@ Applies to `@sentry/astro` 11 (current major; the options page and migration pag
 | `sentry(` in `integrations`, `import sentry from "@sentry/astro"` | `astro.config.mjs` (or .ts/.js) at root | Integration registered. Config files without this entry are not loaded |
 | `sentry.client.config.(ts|js)`, `sentry.server.config.(ts|js)` | project root, or the paths in `clientInitPath` / `serverInitPath` | Browser and server init. Auto-detected at root with these exact names |
 | `@sentry/profiling-node` | package.json | Only needed for server profiling |
-| Node adapter, `@astrojs/netlify` 5.0.0+, Vercel with Lambda functions | astro config, deploy config | Supported runtimes. Cloudflare Workers/Pages use the Cloudflare Astro guide, not this module |
+| Node adapter, `@astrojs/netlify` 5.0.0+, Vercel with Lambda functions | astro config, deploy config | Runtimes this module's server rows cover |
+| `@astrojs/cloudflare`, a wrangler config, or the `cloudflare` overlay | package.json, `wrangler.jsonc` | Cloudflare Workers: server init is a wrapped Worker entry (`platforms/cloudflare`); a `sentry.server.config` that is not the wrangler `main` does nothing there |
 
 Read first: the `sentry()` entry in `astro.config.mjs`, then both `sentry.*.config` files. Missing `sentry.server.config` on a Node adapter build means server errors are not captured.
 
@@ -102,7 +103,7 @@ Goal: one marked error from the real server path, then removal.
 
 | Trap | What the docs say | Source |
 |---|---|---|
-| Non-Node runtime | SDK works only on Node runtimes; Vercel Edge and Cloudflare Workers/Pages are not covered here | guide, "What runtime do you use?" |
+| Non-Node runtime | The Astro guide says the SDK works on Node runtimes only and sends Cloudflare Workers and Pages to the Astro on Cloudflare guide, which installs `@sentry/astro` and `@sentry/cloudflare`; Vercel Edge is not covered | guide, "What runtime do you use?"; `platforms/cloudflare` |
 | Netlify adapter version | `@astrojs/netlify` must be 5.0.0 or above | guide, Prerequisites |
 | Renamed init files | auto-detected only at root with exact names; move via `clientInitPath` / `serverInitPath` | guide, Configure Client-side Sentry |
 | Sample rates copied from the guide | guide values `tracesSampleRate: 1.0` and `profileSessionSampleRate: 1.0` are examples; "adjust this value in production" | guide, both init snippets |

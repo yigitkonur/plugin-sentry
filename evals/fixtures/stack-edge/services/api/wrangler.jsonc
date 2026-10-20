@@ -1,0 +1,15 @@
+{
+  "name": "edge-api",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-09-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "routes": [{ "pattern": "api.example-co.com/*", "zone_name": "example-co.com" }],
+  "triggers": { "crons": ["*/15 * * * *"] },
+  "vars": { "SENTRY_DSN": "https://0123456789abcdef0123456789abcdef@o123456.ingest.de.sentry.io/1234567" },
+  "observability": {
+    "enabled": true,
+    "logs": { "enabled": true, "destinations": ["sentry-logs"] },
+    "traces": { "enabled": true, "destinations": ["sentry-traces"], "head_sampling_rate": 1 },
+    "issues": { "enabled": true }
+  }
+}
