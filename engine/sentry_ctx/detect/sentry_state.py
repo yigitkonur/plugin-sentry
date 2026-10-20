@@ -38,6 +38,46 @@ CTOR_RX = {
 }
 
 
+
+UPLOAD_OPTS = ["org", "project", "authToken", "release", "sourcemaps", "silent", "widenClientFileUpload", "telemetry", "url", "disable", "errorHandler"]
+UPLOAD_OPT_RX = re.compile(r"""['"]?\b(%s)\b['"]?\s*(?:=>|[:=])\s*([^\n,;]{1,70})""" % "|".join(UPLOAD_OPTS))
+TOKEN_ENV_RX = re.compile(r"SENTRY_AUTH_TOKEN|SENTRY_AUTH|SENTRY_TOKEN")
+
+
+def artifact_facts(root, unit, ci_files):
+    """Facts about whether a build can upload source maps / debug files: the options passed to the bundler plugin or
+    withSentryConfig, and where a token could come from (CI files, build-plugin env file). Absence is the finding material."""
+    sentry = unit["sentry"]
+    build = {k: v for k, v in sentry.get("build", {}).items() if k != "xcode-run-script"}
+    if not build:
+        return None
+    configs = []
+    for bid, loc in build.items():
+        rel, _, ln = loc.rpartition(":")
+        text = _readable(root, rel, 400_000)
+        if not text:
+            continue
+        lines = text.splitlines()
+        start = max(0, int(ln) - 1)
+        window = "\n".join(lines[start:start + 60])
+        opts = {}
+        for m in UPLOAD_OPT_RX.finditer(window):
+            opts.setdefault(m.group(1), tokens.clip(m.group(2).strip().rstrip(")").strip(), 60))
+        configs.append({"build": bid, "file": rel, "line": int(ln), "options": opts})
+    refs = []
+    for rel in ci_files:
+        text = _readable(root, rel, 200_000)
+        if text and TOKEN_ENV_RX.search(text):
+            refs.append({"kind": "ci-file", "file": rel})
+    udir = unit["root"] if unit["root"] != "." else ""
+    for name in (".env.sentry-build-plugin", ".sentryclirc", "sentry.properties"):
+        p = os.path.join(udir, name) if udir else name
+        if os.path.exists(os.path.join(root, p)):
+            refs.append({"kind": "file", "file": p})
+    return {"configs": configs, "token_sources": refs,
+            "note": "token_sources empty and no org/project/authToken in options means the build has no way to authenticate an upload"}
+
+
 def _local_roots(unit, eco):
     """Top-level names a `from x import` can refer to inside this repo (Python: packages and root modules)."""
     roots = set()

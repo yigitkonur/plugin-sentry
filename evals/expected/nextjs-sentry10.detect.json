@@ -76,6 +76,25 @@
     "tracked_token_hits": 1
    },
    "sentry": {
+    "artifacts": {
+     "configs": [
+      {
+       "build": "next-with-sentry-config",
+       "file": "next.config.mjs",
+       "line": 1,
+       "options": {
+        "silent": "true"
+       }
+      }
+     ],
+     "note": "token_sources empty and no org/project/authToken in options means the build has no way to authenticate an upload",
+     "token_sources": [
+      {
+       "file": ".sentryclirc",
+       "kind": "file"
+      }
+     ]
+    },
     "build": {
      "next-with-sentry-config": "next.config.mjs:1"
     },

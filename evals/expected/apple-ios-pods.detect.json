@@ -69,6 +69,18 @@
     "tracked_token_hits": 0
    },
    "sentry": {
+    "artifacts": {
+     "configs": [
+      {
+       "build": "sentry-cli-v3",
+       "file": "MyApp.xcodeproj/project.pbxproj",
+       "line": 31,
+       "options": {}
+      }
+     ],
+     "note": "token_sources empty and no org/project/authToken in options means the build has no way to authenticate an upload",
+     "token_sources": []
+    },
     "build": {
      "sentry-cli-v3": "MyApp.xcodeproj/project.pbxproj:31",
      "xcode-run-script": "MyApp.xcodeproj/project.pbxproj:31"

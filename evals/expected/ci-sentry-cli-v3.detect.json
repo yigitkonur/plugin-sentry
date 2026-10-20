@@ -183,6 +183,23 @@
     "tracked_token_hits": 0
    },
    "sentry": {
+    "artifacts": {
+     "configs": [
+      {
+       "build": "sentry-cli-v3",
+       "file": "Makefile",
+       "line": 2,
+       "options": {}
+      }
+     ],
+     "note": "token_sources empty and no org/project/authToken in options means the build has no way to authenticate an upload",
+     "token_sources": [
+      {
+       "file": ".github/workflows/release.yml",
+       "kind": "ci-file"
+      }
+     ]
+    },
     "build": {
      "sentry-cli-v3": "Makefile:2",
      "xcode-run-script": "Makefile:2"

@@ -68,6 +68,21 @@
     "tracked_token_hits": 0
    },
    "sentry": {
+    "artifacts": {
+     "configs": [
+      {
+       "build": "dart-plugin",
+       "file": "pubspec.yaml",
+       "line": 17,
+       "options": {
+        "org": "acme",
+        "project": "app"
+       }
+      }
+     ],
+     "note": "token_sources empty and no org/project/authToken in options means the build has no way to authenticate an upload",
+     "token_sources": []
+    },
     "build": {
      "dart-plugin": "pubspec.yaml:17"
     },

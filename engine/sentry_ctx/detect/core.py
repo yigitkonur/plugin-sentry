@@ -240,6 +240,9 @@ def detect(root: str, include_tests: bool = False) -> dict:
     # ---- 6. repo-level facts
     provider, remote = _scm(root)
     repo_level = sentry_state.repo_signals(root, files, outside, result_units, tracked)
+    for u in result_units:
+        if u["sentry"]["status"] != "absent":
+            u["sentry"]["artifacts"] = sentry_state.artifact_facts(root, u, repo_level["ci"].get("files", []))
     dirty = False
     if util.is_git_repo(root):
         rc, out, _ = util.git(root, "status", "--porcelain")

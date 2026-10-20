@@ -146,6 +146,7 @@
     "tracked_token_hits": 0
    },
    "sentry": {
+    "artifacts": null,
     "build": {},
     "config_files": [],
     "config_snapshot": [
@@ -219,6 +220,7 @@
     "tracked_token_hits": 0
    },
    "sentry": {
+    "artifacts": null,
     "build": {},
     "config_files": [],
     "config_snapshot": [

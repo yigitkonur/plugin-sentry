@@ -65,6 +65,7 @@
     "tracked_token_hits": 1
    },
    "sentry": {
+    "artifacts": null,
     "build": {},
     "config_files": [
      "Assets/Plugins/Sentry/SentryCliOptions.asset",

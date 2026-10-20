@@ -58,6 +58,22 @@
     "tracked_token_hits": 0
    },
    "sentry": {
+    "artifacts": {
+     "configs": [
+      {
+       "build": "next-with-sentry-config",
+       "file": "next.config.ts",
+       "line": 2,
+       "options": {
+        "org": "\"acme\"",
+        "project": "\"web\"",
+        "silent": "!process.env.CI"
+       }
+      }
+     ],
+     "note": "token_sources empty and no org/project/authToken in options means the build has no way to authenticate an upload",
+     "token_sources": []
+    },
     "build": {
      "next-with-sentry-config": "next.config.ts:2"
     },

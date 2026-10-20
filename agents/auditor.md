@@ -17,6 +17,10 @@ Org access / CLI / login, and the coverage Cells you own. Everything you need be
    platform (`sentry-ctx docs page <path> --list`, then `--section`), and lower your confidence accordingly.
 3. The unit's detection facts (init sites, resolved SDK version, DSN sources, config snapshot, build wiring, CI references, tracked
    secret hits) are in `.sentry-plugin/detect.json`. Read your unit's entry first; it tells you where to look.
+   Upload facts are computed too: `sentry.artifacts.configs[].options` are the options passed to the bundler plugin or `withSentryConfig`
+   (`org`, `project`, `authToken`, `sourcemaps`, `silent`, ...) and `sentry.artifacts.token_sources` lists where an auth token could come from
+   (CI files naming SENTRY_AUTH_TOKEN, build-plugin env files). With no `org`/`project` option, no environment equivalent and an empty
+   `token_sources`, source maps are never uploaded: that is `rel.sourcemaps` (P1), not a detail to mention in passing.
 4. The check ids you may use, with default severity and the passing condition: `sentry-ctx checks --product <your products, comma
    separated>`. Removed or renamed options for the installed SDK major: `sentry-ctx stale --unit <unit id>` (it scans the unit's
    init and config files against the stale-API tables and prints each hit with its docs page; read the hit's file before you

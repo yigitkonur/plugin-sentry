@@ -58,6 +58,18 @@
     "tracked_token_hits": 0
    },
    "sentry": {
+    "artifacts": {
+     "configs": [
+      {
+       "build": "msbuild-upload",
+       "file": "Api.csproj",
+       "line": 8,
+       "options": {}
+      }
+     ],
+     "note": "token_sources empty and no org/project/authToken in options means the build has no way to authenticate an upload",
+     "token_sources": []
+    },
     "build": {
      "msbuild-upload": "Api.csproj:8"
     },
