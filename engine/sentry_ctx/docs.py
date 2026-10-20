@@ -21,6 +21,24 @@ MAX_CHARS = 14000
 UA = "sentry-plugin-docs/0.1 (+https://github.com/yigitkonur/plugin-sentry)"
 
 
+class _Redirect(urllib.request.HTTPRedirectHandler):
+    """docs.sentry.io answers some pages with 308, which urllib follows only from Python 3.11 (the plugin runs on 3.9).
+    Redirects are followed only to the same allow-listed hosts: fetched text is untrusted, and so is where it comes from."""
+
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        if (urllib.parse.urlparse(newurl).hostname or "") not in HOSTS:
+            raise urllib.error.HTTPError(req.full_url, code, "redirect to a host outside the docs allow-list", headers, fp)
+        if code == 308 and req.get_method() in ("GET", "HEAD"):
+            code = 307
+        return super().redirect_request(req, fp, code, msg, headers, newurl)
+
+    http_error_308 = urllib.request.HTTPRedirectHandler.http_error_302
+
+
+def open_url(req, timeout=25):
+    return urllib.request.build_opener(_Redirect).open(req, timeout=timeout)
+
+
 def normalize(page: str) -> str:
     if page.startswith("http://") or page.startswith("https://"):
         u = urllib.parse.urlparse(page)
@@ -66,7 +84,7 @@ def fetch(page: str, refresh=False):
         return url, util.read_text(cf, 3_000_000), True
     req = urllib.request.Request(url, headers={"User-Agent": UA, "Accept": "text/markdown, text/plain;q=0.9, */*;q=0.5"})
     try:
-        with urllib.request.urlopen(req, timeout=25) as r:
+        with open_url(req) as r:
             body = r.read(3_000_000).decode("utf-8", errors="replace")
     except urllib.error.HTTPError as e:
         raise util.EngineError("docs fetch failed: HTTP %s for %s" % (e.code, url), 5)

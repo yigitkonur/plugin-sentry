@@ -51,7 +51,7 @@ def check(u):
             return str(e)
     req = urllib.request.Request(u, headers={"User-Agent": docs.UA}, method="GET")
     try:
-        with urllib.request.urlopen(req, timeout=25) as r:
+        with docs.open_url(req) as r:
             return None if r.status < 400 else "HTTP %d" % r.status
     except urllib.error.HTTPError as e:
         return "HTTP %d" % e.code if e.code not in (401, 403, 429) else None
