@@ -74,16 +74,36 @@ def declared(text):
     return out
 
 
-def verify(name: str):
-    p = refs._resolve(name)
-    if not p:
-        raise util.EngineError("no reference named %r" % name, 6)
-    text = util.read_text(p, 400_000)
-    rel = os.path.relpath(p, paths.ref_root())
-    res = {"name": name, "file": rel, "errors": [], "warnings": [], "declared": 0, "checked_urls": 0}
-    if "/upstream/" in "/" + rel or rel.startswith("upstream/"):
-        res["note"] = "vendored upstream content is not verified here"
-        return res
+PRODUCT_SECTIONS = ["Fit", "Properly configured", "Checks", "Common mistakes", "Volume, cost and overhead", "Verify (R6)", "Sources", "Identifiers", "Unconfirmed"]
+PLATFORM_SECTIONS = ["Detect", "Install route", "Init placement", "Options by SDK major", "Product support matrix", "Release and artifacts", "Privacy", "Verify recipe", "Gotchas", "Sources", "Identifiers", "Unconfirmed"]
+MAX_LINES = 200
+
+
+def _check_ids():
+    from . import findings
+    return set(findings.checks())
+
+
+def verify_text(text: str, label: str, kind: str, name: str = ""):
+    """kind: 'product' | 'platform' | None (no structural checks)."""
+    res = {"name": name or label, "file": label, "errors": [], "warnings": [], "declared": 0, "checked_urls": 0}
+    if kind in ("product", "platform"):
+        want = PRODUCT_SECTIONS if kind == "product" else PLATFORM_SECTIONS
+        have = {m.strip().lower() for m in re.findall(r"(?m)^##\s+(.+?)\s*$", text)}
+        for sec in want:
+            if not any(h == sec.lower() or h.startswith(sec.lower() + " (") for h in have):
+                res["errors"].append("missing section ## %s" % sec)
+        n = text.count("\n") + 1
+        if n > MAX_LINES:
+            res["errors"].append("%d lines; keep a module under %d (cut, do not compress)" % (n, MAX_LINES))
+        if not re.match(r"# .+\((product id|module): [a-z0-9/-]+\)\s*\n", text):
+            res["errors"].append("first line must be '# <Title> (product id: <id>)' or '# <Title> (module: platforms/<id>)'")
+    if kind == "product":
+        ids = _check_ids()
+        for row in _section(text, "Checks").splitlines():
+            m = re.match(r"\|\s*`?([a-z][a-z0-9-]*\.[a-z0-9.-]+)`?\s*\|", row)
+            if m and m.group(1) not in ids and not m.group(1).startswith("x."):
+                res["errors"].append("check id %r is not in data/checks.tsv (use x.<slug> for an unlisted check)" % m.group(1))
     decl = declared(text)
     res["declared"] = len(decl)
     unconfirmed = set(re.findall(r"`([A-Za-z_][A-Za-z0-9_]*)`", _section(text, "Unconfirmed")))
@@ -111,5 +131,34 @@ def verify(name: str):
             res["errors"].append("option-shaped token `%s` is neither declared (with a URL), listed under Unconfirmed, nor allowlisted" % tok)
     if not re.search(r"(?im)^##\s+Sources\s*$", text):
         res["errors"].append("missing ## Sources section")
+    for u in re.findall(r"https?://[^\s)>\]`|]+", text):
+        host = re.sub(r"^https?://([^/]+).*$", r"\1", u)
+        if host not in ("docs.sentry.io", "develop.sentry.dev", "cli.sentry.dev", "github.com", "sentry.io", "spotlightjs.com", "skills.sentry.dev", "mcp.sentry.dev", "opentelemetry.io", "docs.github.com", "developer.apple.com", "developer.android.com", "docs.unity3d.com", "dev.epicgames.com", "learn.microsoft.com", "pkg.go.dev", "docs.rs", "hexdocs.pm", "pub.dev", "docs.python.org", "nodejs.org"):
+            res["warnings"].append("non-Sentry host %s: cite official Sentry pages for Sentry facts" % host)
     res["ok"] = not res["errors"]
     return res
+
+
+def _kind_of(rel: str):
+    r = rel.replace("\\", "/")
+    if "/products/" in "/" + r:
+        return "product"
+    if "/platforms/" in "/" + r:
+        return "platform"
+    return None
+
+
+def verify_file(path: str, kind: str = None):
+    text = util.read_text(path, 400_000)
+    return verify_text(text, path, kind or _kind_of(path), name=os.path.basename(path))
+
+
+def verify(name: str):
+    p = refs._resolve(name)
+    if not p:
+        raise util.EngineError("no reference named %r" % name, 6)
+    text = util.read_text(p, 400_000)
+    rel = os.path.relpath(p, paths.ref_root())
+    if "/upstream/" in "/" + rel or rel.startswith("upstream/"):
+        return {"name": name, "file": rel, "errors": [], "warnings": [], "declared": 0, "checked_urls": 0, "note": "vendored upstream content is not verified here", "ok": True}
+    return verify_text(text, rel, _kind_of(rel), name=name)

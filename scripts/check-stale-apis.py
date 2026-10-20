@@ -11,10 +11,10 @@ from sentry_ctx import docs, util  # noqa: E402
 D = os.path.join(ROOT, "data", "stale-apis")
 bad = 0
 cache = {}
-for fn in sorted(os.listdir(D)):
-    if not fn.endswith(".tsv"):
-        continue
-    for ln, line in enumerate(open(os.path.join(D, fn), encoding="utf-8"), 1):
+# `check-stale-apis.py [file.tsv ...]` checks the given files (e.g. a staged table); no argument checks data/stale-apis/*.tsv
+files = [(os.path.basename(a), a) for a in sys.argv[1:]] or [(fn, os.path.join(D, fn)) for fn in sorted(os.listdir(D)) if fn.endswith(".tsv")]
+for fn, path in files:
+    for ln, line in enumerate(open(path, encoding="utf-8"), 1):
         if line.startswith("#") or not line.strip():
             continue
         cols = line.rstrip("\n").split("\t")

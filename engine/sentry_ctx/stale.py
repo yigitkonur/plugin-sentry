@@ -7,7 +7,7 @@ import re
 
 from . import paths, util
 
-ECO_FILE = {"js": "js.tsv", "python": "python.tsv", "apple": "cocoa.tsv"}
+ECO_FILE = {"js": "js.tsv", "python": "python.tsv", "apple": "cocoa.tsv", "jvm": "jvm.tsv", "dotnet": "dotnet.tsv", "ruby": "ruby.tsv", "php": "php.tsv", "go": "go.tsv", "dart": "dart.tsv", "rust": "rust.tsv", "elixir": "elixir.tsv"}
 _cache: dict = {}
 
 

@@ -171,6 +171,8 @@ def classify(cmd: str):
         # a sentry / sentry-cli invocation
         if args[:1] == ["auth"] and (args[1:2] == ["token"] or _flag(args, "--show-token")):
             return "deny", "That prints the raw Sentry token into the transcript. The plugin reuses the CLI login through `sentry api`; it never needs the token itself.", None
+        if _flag(args, "--help", "-h", "--version"):
+            continue  # help and version output never change state
         sub = _norm_sub(args)
         if sub.startswith("event send") or sub.startswith("send-event"):
             if not _flag(args, "--no-environ"):

@@ -95,7 +95,7 @@ def cmd_run(args):
     root = _root(args)
     a = args.action
     if a == "start":
-        util.emit(runstate.start(root, args.flow, units=sorted(_units(root))))
+        util.emit(runstate.start(root, args.flow, units=sorted(u["id"] for u in _detect(args)["units"])))
     elif a == "status":
         st = runstate.load(root)
         util.emit(st if st else {"active": False})
@@ -238,6 +238,10 @@ def cmd_ref(args):
         util.emit(refs.list_names(args.target or args.section or ""))
     elif args.name == "verify":
         from . import refcheck
+        if args.file:
+            r = refcheck.verify_file(args.file, args.kind)
+            util.emit([r])
+            return 0 if r["ok"] else 1
         targets = [args.target] if args.target else [n for n in refs.list_names() if n.startswith(("forge/products/", "forge/platforms/"))]
         bad = 0
         out = []
@@ -372,6 +376,8 @@ def register(sub):
     rf.add_argument("name", help="a reference name, or `list [prefix]`, or `verify [name]`")
     rf.add_argument("target", nargs="?")
     rf.add_argument("--section")
+    rf.add_argument("--file", help="verify: check a staged module file by path (needs --kind product|platform)")
+    rf.add_argument("--kind", choices=["product", "platform"])
     rf.set_defaults(fn=cmd_ref)
 
     fl = sub.add_parser("flow", help="print a flow's instructions (audit, init, apply, verify, org, policy, clean)")
