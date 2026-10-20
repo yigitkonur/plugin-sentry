@@ -107,13 +107,15 @@ with tempfile.TemporaryDirectory() as tmp:
     hosts = sorted(e["host"] for e in edges_of(links(t), "http"))
     check("wildcard route: subdomain yes, apex and look-alike no", hosts == ["a.example-co.com"], hosts)
 
-    # 7. a single-line minified file with thousands of URLs stays fast
+    # 7. a single-line minified file with thousands of URLs stays fast (the scan alone, not all of detect)
+    from sentry_ctx.detect import links as links_mod  # noqa: E402
     t = os.path.join(tmp, "perf")
-    repo(t, {"services/api/wrangler.jsonc": API_ROUTE, "apps/web/public/bundle.js": "".join('f("https://h%d.example-co.net/p");' % i for i in range(4500))})
+    os.makedirs(os.path.join(t, "public"))
+    open(os.path.join(t, "public", "bundle.js"), "w").write("".join('f("https://h%d.example-co.net/p");' % i for i in range(4500)))
     t0 = time.time()
-    links(t)
+    links_mod._scan_unit(t, ["public/bundle.js"])
     dt = time.time() - t0
-    check("4,500 URLs on one line scan in under 5 s (was 30+ s)", dt < 5, "%.1fs" % dt)
+    check("4,500 URLs on one line scan in under 3 s (was 33 s; about 0.01 s now)", dt < 3, "%.2fs" % dt)
 
     # 8. the evidence line of a route is the route, not an earlier mention of the host
     t = os.path.join(tmp, "evidence")

@@ -249,7 +249,7 @@ def _scan_unit(root, files):
             if any(host == s or host.endswith("." + s) for s in SKIP_HOST_SUFFIX) or DSN_RX.match(t, m.start()):
                 continue
             ln = lines.no(m.start())
-            if CORS_RX.search(lines.line(ln)):  # an allow-list of origins, not a call
+            if CORS_RX.search(t[max(0, m.start() - 160):m.end() + 80]):  # an allow-list of origins, not a call (a window: a minified file is one huge line)
                 cors.setdefault(host, []).append("%s:%d" % (rel, ln))
                 continue
             ent = origins.setdefault(host, [])
