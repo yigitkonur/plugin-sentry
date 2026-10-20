@@ -66,6 +66,17 @@ The ledger lives in `.sentry-plugin/` (gitignored on your say-so): `policy.md`, 
 | Bash gate | denies token paste, `auth token`, `event send` without `--no-environ`, a credential file written where git would track it, and hand edits of the run state; asks before every Sentry mutation not approved in this run and session (every segment of a compound command is checked), and before an approval is recorded. CI and eval harnesses opt in with `SENTRY_PLUGIN_APPROVE_WRITES=1` in their own environment |
 | Stop gate | refuses to finish while the run you own has unproven applied findings or leftover trigger files (max two blocks) |
 
+## Headless runs (CI, evals, `claude -p`)
+
+No question tool is available there, so two environment variables stand in for the human, both set by whoever runs the session (the model cannot set them for the hooks):
+
+| Variable | Meaning |
+|---|---|
+| `SENTRY_PLUGIN_POLICY_ANSWERS=/path/answers.json` | the policy answers (`{"privacy.preset": "strict", "org_access": "read-only", ...}`, keys as in `sentry-ctx policy questions`). Without it a headless run stops at the policy step |
+| `SENTRY_PLUGIN_APPROVE_WRITES=1` | lets `sentry-ctx run approve-write` pass without a permission prompt. Leave it unset and a headless run can read and report but never change Sentry |
+
+Without these a headless run is report-only: it audits, writes `.sentry-plugin/report.md`, approves nothing and cleans nothing.
+
 ## Requirements
 
 `python3` 3.9+, `git`, and the `sentry` CLI v4 (`curl https://cli.sentry.dev/install -fsS | bash`, or `npm install -g sentry`, or `brew install getsentry/tools/sentry`) with `sentry auth login` (`--read-only` is enough for audits). Without the CLI the repo-side audit still runs; every org-side row is reported UNVERIFIED, never skipped or called clean. Node/Go/Swift/etc. are needed only to build and run the code being verified.
