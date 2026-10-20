@@ -30,6 +30,12 @@ echo "$out" | tail -1
 stage "finding status: verified needs the rung reached and refuses one below what the finding requires"
 run $PY scripts/test-status.py
 
+stage "cross-unit scan: stays inside the repo, records no credentials, survives malformed configs"
+run $PY scripts/test-links.py
+
+stage "credential masking, including URL credentials in detection output"
+run $PY scripts/test-mask.py
+
 stage "recorded events: the privacy scan says today what it said when each real event was recorded, and notices when one gets worse"
 run $PY scripts/replay-events.py
 

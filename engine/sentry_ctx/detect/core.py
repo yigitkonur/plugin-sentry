@@ -248,7 +248,10 @@ def detect(root: str, include_tests: bool = False) -> dict:
         rc, out, _ = util.git(root, "status", "--porcelain")
         dirty = bool(out.strip())
     from . import links as links_mod
-    cross = links_mod.analyze(root, result_units)
+    try:
+        cross = links_mod.analyze(root, result_units)
+    except Exception as e:  # a relation scan must never take detection down with it
+        cross = {"error": "links scan failed: %s: %s" % (type(e).__name__, str(e)[:120])}
     for u in result_units:
         for k in ("_deps", "_meta", "_files", "_spec"):
             u.pop(k, None)

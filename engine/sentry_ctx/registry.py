@@ -125,6 +125,10 @@ def cmd_finding(args):
     a = args.action
     if a == "add":
         obj = _read_stdin_json()
+        if args.unit and isinstance(obj, dict):  # `--unit` fills a missing unit; a different one in the body is a mistake worth stopping on
+            if obj.get("unit") and obj["unit"] != args.unit:
+                raise util.EngineError("--unit %s conflicts with the finding's unit %s" % (args.unit, obj["unit"]))
+            obj["unit"] = args.unit
         util.emit(findings.add(root, obj, _units(root), force=args.force))
     elif a == "list":
         rows = findings.load_all(root)

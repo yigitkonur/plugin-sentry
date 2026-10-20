@@ -40,10 +40,15 @@ CONTEXT_ANY = re.compile(
 SENSITIVE_KEY = re.compile(r"(?i)(?:^|[_.\-])(auth[_-]?token|token|secret|password|passwd|api[_-]?key|authorization|cookie|set-cookie|client[_-]?secret|private[_-]?key|credentials?)(?:$|[_.\-])")
 
 
+# `scheme://user:password@host` and `scheme://longtoken@host`: the userinfo is a credential. A Sentry DSN key (32 hex) is public and stays.
+URL_CRED = re.compile(r"""(?i)\b([a-z][a-z0-9+.-]*://)(?:[^/\s:@"'`]+:[^/\s@"'`]+|(?![0-9a-f]{32}@)[^/\s:@"'`]{6,})@""")
+
+
 def mask(text: str) -> str:
     """Replace credential-shaped substrings with a short prefix and ****."""
     if not text:
         return text
+    text = URL_CRED.sub(lambda m: m.group(1) + "****@", text)
     text = MASK_RE.sub(_mask_match, text)
     return CONTEXT_ANY.sub(lambda m: m.group(1) + "****", text)
 

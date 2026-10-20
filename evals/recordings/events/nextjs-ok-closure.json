@@ -8,16 +8,16 @@
        "stacktrace": {
         "frames": [
          {
-          "absPath": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-nextjs/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.prod.js",
-          "filename": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-nextjs/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.prod.js",
+          "absPath": "/home/dev/sentry-plugin-test-nextjs/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.prod.js",
+          "filename": "/home/dev/sentry-plugin-test-nextjs/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.prod.js",
           "function": "r0.executeRequest",
           "inApp": false,
           "lineNo": 5,
           "module": "next.dist.compiled.next-server:app-route-turbo.runtime.prod"
          },
          {
-          "absPath": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-nextjs/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.prod.js",
-          "filename": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-nextjs/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.prod.js",
+          "absPath": "/home/dev/sentry-plugin-test-nextjs/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.prod.js",
+          "filename": "/home/dev/sentry-plugin-test-nextjs/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.prod.js",
           "function": "r0.renderToResponse",
           "inApp": false,
           "lineNo": 5,

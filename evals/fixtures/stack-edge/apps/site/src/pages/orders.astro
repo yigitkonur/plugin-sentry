@@ -1,0 +1,5 @@
+---
+import { env } from "cloudflare:workers";
+const orders = await env.API.listOrders();
+---
+<ul>{orders.map((o: { id: number; total: number }) => <li>{o.id}: {o.total}</li>)}</ul>

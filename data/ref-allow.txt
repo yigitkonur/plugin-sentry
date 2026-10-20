@@ -60,3 +60,5 @@ cors_allowed_origins
 shared_dsns
 environment_names
 unmatched_origins
+rpc_binding_listed
+truncated_units

@@ -1,8 +1,16 @@
 import * as Sentry from "@sentry/cloudflare";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
+import { WorkerEntrypoint } from "cloudflare:workers";
 
 type Bindings = { SENTRY_DSN: string };
+
+// Called by the site Worker through a service binding (RPC).
+export class OrdersRpc extends WorkerEntrypoint<Bindings> {
+  async listOrders() {
+    return [{ id: 1, total: 42 }];
+  }
+}
 
 const app = new Hono<{ Bindings: Bindings }>();
 

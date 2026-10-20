@@ -29,7 +29,7 @@ def worse(ev):
     f = copy.deepcopy(ev); f["message"] = "token " + "sntry" + "u_" + "0123456789abcdef" * 4; out["sentry token"] = f
     g = copy.deepcopy(ev)
     g["tags"] = [t for t in g.get("tags", []) if t.get("key") != "environment"] + [{"key": "environment", "value": "production"}]
-    g["message"] = "failed to open /Users/dev/projects/app/config.json"; out["home path in a production event"] = g
+    g["message"] = "failed to open /home/dev/projects/app/config.json"; out["home path in a production event"] = g
     return out
 
 

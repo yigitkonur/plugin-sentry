@@ -9,8 +9,10 @@ Applies when detect has a `links` section (two or more units that are not librar
 |---|---|---|
 | `edges` | `from`, `to`, `host`, `via_env`, evidence lines on both sides | One row of the chain table per edge |
 | `cors_allowed_origins` | origins a unit's CORS config names | A browser edge needs the client origin here |
+| `edges` with `kind: service-binding` | a Worker's wrangler `services` binding that names another Worker of this repo (`binding`, `entrypoint`, `rpc_binding_listed`) | `link.rpc-propagation` |
 | `shared_dsns` | units sharing one project and key (key shown as an 8-char hash) | `link.dsn-reuse` |
 | `environment_names` | each `environment` value with the units and lines that set it | `link.vocab` |
+| `truncated_units` | present only when a unit was too large to scan fully (the shallowest 6,000 text files or 40 MB of them) | Search those units by hand before calling an edge absent |
 | `unmatched_origins` | hosts a unit calls that no unit in this repo serves | Third parties or units the detector could not match |
 
 Also look for relations the detector cannot see, with one grep each: service bindings in wrangler config, MCP client config (`.mcp.json`, `claude_desktop_config.json`), API URLs held in Swift or Kotlin constants. Add them to your table and say they were found by hand.
@@ -24,9 +26,11 @@ Judge each edge by what kind of client it is. CORS exists only in browsers.
 |---|---|---|---|
 | Browser, cross-origin API | `tracePropagationTargets` lists the API origin. The default is `['localhost', /^\//]`, so a cross-origin API gets no trace headers. `propagateTraceparent` only when the server is OpenTelemetry-instrumented | The server SDK continues the trace; CORS `Access-Control-Allow-Headers` includes `sentry-trace, baggage` (and `traceparent` when `propagateTraceparent` is on) | Dealing with CORS Issues |
 | Browser, same origin | Default is enough | Server SDK present | JS options |
-| React Native or other app | Default sends trace data to every outgoing request; set `tracePropagationTargets` only to limit it | Server SDK present. No CORS | React Native options |
+| React Native app | Default sends trace data to every outgoing request; set `tracePropagationTargets` only to limit it | Server SDK present. No CORS | React Native options |
+| macOS or iOS app (Cocoa) | Default attaches trace data to every outgoing request of the instrumented client; a list limits it | Server SDK present. No CORS | Apple options |
 | Server to server (Node) | Default propagates all outgoing requests | Callee SDK present | Node options |
 
+- Worker to Worker over a service binding or Durable Object binding (RPC): a binding named in `rpcTracePropagationBindings` carries the trace, and the receiver must strip the trailing trace argument. A Vite build derives this for classes it wrapped itself; bindings to *other* Workers stay opt-in "because their receivers may not run Sentry", and "a plain wrangler build still has to list its bindings" (Cloudflare Vite plugin and wrangler install pages). So: caller and receiver both run Sentry and the binding is not listed = the trace stops at the call; the binding is listed but the receiver does not run Sentry = the receiver gets an argument it does not strip.
 - `environment` is case-sensitive; Sentry creates an environment the first time it sees a new name; names cannot hold spaces, newlines or forward slashes, cannot be `None`, max 64 characters. `prod` and `production` are two environments. Same stage, same spelling, in every unit (JS options page, `environment`).
 - A project represents a service or application; separate projects for an API server and a frontend client are the documented example (Projects page). A release can link to several projects (Releases page), so one deploy can share a release name across units.
 
@@ -34,6 +38,7 @@ Judge each edge by what kind of client it is. CORS exists only in browsers.
 | check id | read | passes when |
 |---|---|---|
 | link.trace-chain | Per edge: the client init (`tracePropagationTargets`, `propagateTraceparent`), the server entry (SDK init and wrapper), the server CORS config (`cors_allowed_origins`, allowed headers) | Browser edge: targets include the API origin and the server allows both headers. Other clients: no client change, server SDK present. Do not file CORS for mobile or server clients |
+| link.rpc-propagation | Each `kind: service-binding` edge: the caller's options (`rpcTracePropagationBindings`, `rpc_binding_listed`) and whether the receiver Worker or class is Sentry-wrapped | Listed exactly when the receiver runs Sentry; for a Vite build, only bindings to other Workers need listing |
 | link.server-unwatched | `edges[].to` units with `sentry.status` absent | Every callee of a tracing client has Sentry, or the half trace is a recorded decision |
 | link.vocab | Two halves, filed as two findings. (a) Spelling: `environment_names`; two values that differ only in case or abbreviation (`prod` and `production`) for the same stage are two environments in Sentry. Title it with both spellings and the units. (b) Release matching: release setting per unit and CI | (a) One spelling per stage in every unit. (b) One deploy can be matched across units by a shared release value |
 | link.dsn-reuse | `shared_dsns` | Units that build and release separately each have a project, or the sharing is deliberate (say who decided) |
@@ -48,6 +53,7 @@ File each edge problem as its own finding on `_links`, naming both units and bot
 | Two environments for one stage | `prod` here, `production` there | One spelling | JS options, `environment` |
 | Issues from two apps in one project | One DSN used by both | A project per unit that releases separately | Projects page |
 | Client traces end at the edge | The callee has no Sentry | Add it, or accept and record | Tracing docs |
+| Trace stops at a Worker-to-Worker RPC call | Plain wrangler build and the binding is missing from `rpcTracePropagationBindings` | List the binding in the caller's options | Wrangler install page |
 | CORS finding on a mobile or MCP edge | CORS applies to browsers only | Do not file it | Dealing with CORS Issues |
 
 ## Volume, cost and overhead
@@ -63,6 +69,9 @@ Tracing at a flat 1.0 in every unit multiplies span volume with the number of ho
 - https://docs.sentry.io/platforms/javascript/tracing/trace-propagation/dealing-with-cors-issues/
 - https://docs.sentry.io/platforms/javascript/configuration/options/
 - https://docs.sentry.io/platforms/react-native/configuration/options/
+- https://docs.sentry.io/platforms/apple/configuration/options/
+- https://docs.sentry.io/platforms/javascript/guides/cloudflare/install/wrangler/
+- https://docs.sentry.io/platforms/javascript/guides/cloudflare/install/vite-plugin/
 - https://docs.sentry.io/platforms/javascript/guides/node/configuration/options/
 - https://docs.sentry.io/product/projects/
 - https://docs.sentry.io/product/releases/
@@ -71,9 +80,10 @@ Tracing at a flat 1.0 in every unit multiplies span volume with the number of ho
 ```identifiers
 tracePropagationTargets | https://docs.sentry.io/platforms/javascript/tracing/trace-propagation/dealing-with-cors-issues/
 propagateTraceparent | https://docs.sentry.io/platforms/javascript/tracing/trace-propagation/dealing-with-cors-issues/
+rpcTracePropagationBindings | https://docs.sentry.io/platforms/javascript/guides/cloudflare/install/wrangler/
 environment | https://docs.sentry.io/platforms/javascript/configuration/options/
 ```
 
 ## Unconfirmed
 - Whether a Sentry-instrumented Worker continues a trace from a browser SDK without extra setup: the Cloudflare pages read for this module do not say. Test it (Verify 1).
-- Service bindings and RPC between Workers: `platforms/cloudflare` covers `rpcTracePropagationBindings`; not re-read here.
+- Whether a default-export `fetch` Worker reached through a service binding needs listing: the pages describe RPC calls only. Judge only RPC (a named entrypoint called as a method).

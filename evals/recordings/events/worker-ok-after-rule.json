@@ -8,80 +8,80 @@
        "stacktrace": {
         "frames": [
          {
-          "absPath": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-worker/.wrangler/tmp/dev-ViTxOM/index.js",
-          "filename": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-worker/.wrangler/tmp/dev-ViTxOM/index.js",
+          "absPath": "/home/dev/sentry-plugin-test-worker/.wrangler/tmp/dev-ViTxOM/index.js",
+          "filename": "/home/dev/sentry-plugin-test-worker/.wrangler/tmp/dev-ViTxOM/index.js",
           "function": null,
           "inApp": true,
           "lineNo": 16684,
           "module": "index"
          },
          {
-          "absPath": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-worker/.wrangler/tmp/dev-ViTxOM/index.js",
-          "filename": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-worker/.wrangler/tmp/dev-ViTxOM/index.js",
+          "absPath": "/home/dev/sentry-plugin-test-worker/.wrangler/tmp/dev-ViTxOM/index.js",
+          "filename": "/home/dev/sentry-plugin-test-worker/.wrangler/tmp/dev-ViTxOM/index.js",
           "function": "Hono3.fetch",
           "inApp": true,
           "lineNo": 3277,
           "module": "index"
          },
          {
-          "absPath": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-worker/.wrangler/tmp/dev-ViTxOM/index.js",
-          "filename": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-worker/.wrangler/tmp/dev-ViTxOM/index.js",
+          "absPath": "/home/dev/sentry-plugin-test-worker/.wrangler/tmp/dev-ViTxOM/index.js",
+          "filename": "/home/dev/sentry-plugin-test-worker/.wrangler/tmp/dev-ViTxOM/index.js",
           "function": "#dispatch",
           "inApp": true,
           "lineNo": 3263,
           "module": "index"
          },
          {
-          "absPath": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-worker/.wrangler/tmp/dev-ViTxOM/index.js",
-          "filename": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-worker/.wrangler/tmp/dev-ViTxOM/index.js",
+          "absPath": "/home/dev/sentry-plugin-test-worker/.wrangler/tmp/dev-ViTxOM/index.js",
+          "filename": "/home/dev/sentry-plugin-test-worker/.wrangler/tmp/dev-ViTxOM/index.js",
           "function": null,
           "inApp": true,
           "lineNo": 3257,
           "module": "index"
          },
          {
-          "absPath": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-worker/.wrangler/tmp/dev-ViTxOM/index.js",
-          "filename": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-worker/.wrangler/tmp/dev-ViTxOM/index.js",
+          "absPath": "/home/dev/sentry-plugin-test-worker/.wrangler/tmp/dev-ViTxOM/index.js",
+          "filename": "/home/dev/sentry-plugin-test-worker/.wrangler/tmp/dev-ViTxOM/index.js",
           "function": null,
           "inApp": true,
           "lineNo": 2926,
           "module": "index"
          },
          {
-          "absPath": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-worker/.wrangler/tmp/dev-ViTxOM/index.js",
-          "filename": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-worker/.wrangler/tmp/dev-ViTxOM/index.js",
+          "absPath": "/home/dev/sentry-plugin-test-worker/.wrangler/tmp/dev-ViTxOM/index.js",
+          "filename": "/home/dev/sentry-plugin-test-worker/.wrangler/tmp/dev-ViTxOM/index.js",
           "function": "dispatch",
           "inApp": true,
           "lineNo": 2938,
           "module": "index"
          },
          {
-          "absPath": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-worker/.wrangler/tmp/dev-ViTxOM/index.js",
-          "filename": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-worker/.wrangler/tmp/dev-ViTxOM/index.js",
+          "absPath": "/home/dev/sentry-plugin-test-worker/.wrangler/tmp/dev-ViTxOM/index.js",
+          "filename": "/home/dev/sentry-plugin-test-worker/.wrangler/tmp/dev-ViTxOM/index.js",
           "function": "middleware",
           "inApp": true,
           "lineNo": 14095,
           "module": "index"
          },
          {
-          "absPath": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-worker/.wrangler/tmp/dev-ViTxOM/index.js",
-          "filename": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-worker/.wrangler/tmp/dev-ViTxOM/index.js",
+          "absPath": "/home/dev/sentry-plugin-test-worker/.wrangler/tmp/dev-ViTxOM/index.js",
+          "filename": "/home/dev/sentry-plugin-test-worker/.wrangler/tmp/dev-ViTxOM/index.js",
           "function": null,
           "inApp": true,
           "lineNo": 2938,
           "module": "index"
          },
          {
-          "absPath": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-worker/.wrangler/tmp/dev-ViTxOM/index.js",
-          "filename": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-worker/.wrangler/tmp/dev-ViTxOM/index.js",
+          "absPath": "/home/dev/sentry-plugin-test-worker/.wrangler/tmp/dev-ViTxOM/index.js",
+          "filename": "/home/dev/sentry-plugin-test-worker/.wrangler/tmp/dev-ViTxOM/index.js",
           "function": "dispatch",
           "inApp": true,
           "lineNo": 2938,
           "module": "index"
          },
          {
-          "absPath": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-worker/.wrangler/tmp/dev-ViTxOM/index.js",
-          "filename": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-worker/.wrangler/tmp/dev-ViTxOM/index.js",
+          "absPath": "/home/dev/sentry-plugin-test-worker/.wrangler/tmp/dev-ViTxOM/index.js",
+          "filename": "/home/dev/sentry-plugin-test-worker/.wrangler/tmp/dev-ViTxOM/index.js",
           "function": null,
           "inApp": true,
           "lineNo": 17483,

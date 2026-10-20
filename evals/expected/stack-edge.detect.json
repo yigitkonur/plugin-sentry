@@ -24,7 +24,7 @@
    "api": [
     {
      "evidence": [
-      "services/api/src/index.ts:12"
+      "services/api/src/index.ts:20"
      ],
      "host": "www.example-co.com"
     }
@@ -44,6 +44,8 @@
     "from": "mobile",
     "from_role": "mobile",
     "host": "api.example-co.com",
+    "kind": "http",
+    "match": "route",
     "to": "api",
     "to_role": "serverless",
     "via_env": [
@@ -63,6 +65,8 @@
     "from": "site",
     "from_role": "fullstack",
     "host": "api.example-co.com",
+    "kind": "http",
+    "match": "route",
     "to": "api",
     "to_role": "serverless",
     "via_env": [
@@ -82,11 +86,29 @@
     "from": "mcp",
     "from_role": "backend",
     "host": "api.example-co.com",
+    "kind": "http",
+    "match": "route",
     "to": "api",
     "to_role": "serverless",
     "via_env": [
      "API_URL"
     ]
+   },
+   {
+    "binding": "API",
+    "entrypoint": "OrdersRpc",
+    "evidence": {
+     "from": [
+      "apps/site/wrangler.jsonc:8"
+     ],
+     "to": []
+    },
+    "from": "site",
+    "from_role": "fullstack",
+    "kind": "service-binding",
+    "rpc_binding_listed": false,
+    "to": "api",
+    "to_role": "serverless"
    }
   ],
   "environment_names": {
@@ -102,7 +124,7 @@
    ],
    "production": [
     {
-     "evidence": "services/api/src/index.ts:32",
+     "evidence": "services/api/src/index.ts:40",
      "unit": "api"
     }
    ]
@@ -131,7 +153,7 @@
     "evidence": [
      "services/api/wrangler.jsonc:8",
      "apps/site/.env:2",
-     "apps/site/wrangler.jsonc:8"
+     "apps/site/wrangler.jsonc:9"
     ],
     "ingest_host": "o123456.ingest.de.sentry.io",
     "key_sha1_8": "b1775a78",
@@ -441,14 +463,14 @@
      {
       "file": "services/api/src/index.ts",
       "kind": "code",
-      "line": 5,
+      "line": 6,
       "name": "SENTRY_DSN"
      }
     ],
     "init_sites": [
      {
       "file": "services/api/src/index.ts",
-      "line": 29,
+      "line": 37,
       "placement": {
        "app_ctor_before": [],
        "local_imports_before": []

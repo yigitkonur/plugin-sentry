@@ -8,104 +8,104 @@
        "stacktrace": {
         "frames": [
          {
-          "absPath": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-nextjs/node_modules/next/dist/server/lib/start-server.js",
-          "filename": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-nextjs/node_modules/next/dist/server/lib/start-server.js",
+          "absPath": "/home/dev/sentry-plugin-test-nextjs/node_modules/next/dist/server/lib/start-server.js",
+          "filename": "/home/dev/sentry-plugin-test-nextjs/node_modules/next/dist/server/lib/start-server.js",
           "function": "Server.requestListener",
           "inApp": false,
           "lineNo": 210,
           "module": "next.dist.server.lib:start-server"
          },
          {
-          "absPath": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-nextjs/node_modules/next/dist/server/lib/router-server.js",
-          "filename": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-nextjs/node_modules/next/dist/server/lib/router-server.js",
+          "absPath": "/home/dev/sentry-plugin-test-nextjs/node_modules/next/dist/server/lib/router-server.js",
+          "filename": "/home/dev/sentry-plugin-test-nextjs/node_modules/next/dist/server/lib/router-server.js",
           "function": "requestHandlerImpl",
           "inApp": false,
           "lineNo": 636,
           "module": "next.dist.server.lib:router-server"
          },
          {
-          "absPath": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-nextjs/node_modules/next/dist/server/lib/router-server.js",
-          "filename": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-nextjs/node_modules/next/dist/server/lib/router-server.js",
+          "absPath": "/home/dev/sentry-plugin-test-nextjs/node_modules/next/dist/server/lib/router-server.js",
+          "filename": "/home/dev/sentry-plugin-test-nextjs/node_modules/next/dist/server/lib/router-server.js",
           "function": "handleRequest",
           "inApp": false,
           "lineNo": 567,
           "module": "next.dist.server.lib:router-server"
          },
          {
-          "absPath": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-nextjs/node_modules/next/dist/server/lib/router-server.js",
-          "filename": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-nextjs/node_modules/next/dist/server/lib/router-server.js",
+          "absPath": "/home/dev/sentry-plugin-test-nextjs/node_modules/next/dist/server/lib/router-server.js",
+          "filename": "/home/dev/sentry-plugin-test-nextjs/node_modules/next/dist/server/lib/router-server.js",
           "function": "invokeRender",
           "inApp": false,
           "lineNo": 363,
           "module": "next.dist.server.lib:router-server"
          },
          {
-          "absPath": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-nextjs/node_modules/next/dist/server/dev/next-dev-server.js",
-          "filename": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-nextjs/node_modules/next/dist/server/dev/next-dev-server.js",
+          "absPath": "/home/dev/sentry-plugin-test-nextjs/node_modules/next/dist/server/dev/next-dev-server.js",
+          "filename": "/home/dev/sentry-plugin-test-nextjs/node_modules/next/dist/server/dev/next-dev-server.js",
           "function": "DevServer.handleRequest",
           "inApp": false,
           "lineNo": 380,
           "module": "next.dist.server.dev:next-dev-server"
          },
          {
-          "absPath": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-nextjs/node_modules/next/dist/trace/trace.js",
-          "filename": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-nextjs/node_modules/next/dist/trace/trace.js",
+          "absPath": "/home/dev/sentry-plugin-test-nextjs/node_modules/next/dist/trace/trace.js",
+          "filename": "/home/dev/sentry-plugin-test-nextjs/node_modules/next/dist/trace/trace.js",
           "function": "Span.traceAsyncFn",
           "inApp": false,
           "lineNo": 168,
           "module": "next.dist.trace:trace"
          },
          {
-          "absPath": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-nextjs/node_modules/next/dist/server/dev/next-dev-server.js",
-          "filename": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-nextjs/node_modules/next/dist/server/dev/next-dev-server.js",
+          "absPath": "/home/dev/sentry-plugin-test-nextjs/node_modules/next/dist/server/dev/next-dev-server.js",
+          "filename": "/home/dev/sentry-plugin-test-nextjs/node_modules/next/dist/server/dev/next-dev-server.js",
           "function": null,
           "inApp": false,
           "lineNo": 384,
           "module": "next.dist.server.dev:next-dev-server"
          },
          {
-          "absPath": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-nextjs/node_modules/next/dist/server/base-server.js",
-          "filename": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-nextjs/node_modules/next/dist/server/base-server.js",
+          "absPath": "/home/dev/sentry-plugin-test-nextjs/node_modules/next/dist/server/base-server.js",
+          "filename": "/home/dev/sentry-plugin-test-nextjs/node_modules/next/dist/server/base-server.js",
           "function": "DevServer.handleRequestImpl",
           "inApp": false,
           "lineNo": 974,
           "module": "next.dist.server:base-server"
          },
          {
-          "absPath": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-nextjs/node_modules/next/dist/server/next-server.js",
-          "filename": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-nextjs/node_modules/next/dist/server/next-server.js",
+          "absPath": "/home/dev/sentry-plugin-test-nextjs/node_modules/next/dist/server/next-server.js",
+          "filename": "/home/dev/sentry-plugin-test-nextjs/node_modules/next/dist/server/next-server.js",
           "function": "NextNodeServer.handleCatchallRenderRequest",
           "inApp": false,
           "lineNo": 340,
           "module": "next.dist.server:next-server"
          },
          {
-          "absPath": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-nextjs/node_modules/next/dist/server/base-server.js",
-          "filename": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-nextjs/node_modules/next/dist/server/base-server.js",
+          "absPath": "/home/dev/sentry-plugin-test-nextjs/node_modules/next/dist/server/base-server.js",
+          "filename": "/home/dev/sentry-plugin-test-nextjs/node_modules/next/dist/server/base-server.js",
           "function": "DevServer.pipeImpl",
           "inApp": false,
           "lineNo": 1252,
           "module": "next.dist.server:base-server"
          },
          {
-          "absPath": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-nextjs/node_modules/next/dist/server/base-server.js",
-          "filename": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-nextjs/node_modules/next/dist/server/base-server.js",
+          "absPath": "/home/dev/sentry-plugin-test-nextjs/node_modules/next/dist/server/base-server.js",
+          "filename": "/home/dev/sentry-plugin-test-nextjs/node_modules/next/dist/server/base-server.js",
           "function": "DevServer.renderToResponseImpl",
           "inApp": false,
           "lineNo": 1833,
           "module": "next.dist.server:base-server"
          },
          {
-          "absPath": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-nextjs/node_modules/next/dist/server/base-server.js",
-          "filename": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-nextjs/node_modules/next/dist/server/base-server.js",
+          "absPath": "/home/dev/sentry-plugin-test-nextjs/node_modules/next/dist/server/base-server.js",
+          "filename": "/home/dev/sentry-plugin-test-nextjs/node_modules/next/dist/server/base-server.js",
           "function": "DevServer.renderPageComponent",
           "inApp": false,
           "lineNo": 1790,
           "module": "next.dist.server:base-server"
          },
          {
-          "absPath": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-nextjs/node_modules/next/dist/server/base-server.js",
-          "filename": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-nextjs/node_modules/next/dist/server/base-server.js",
+          "absPath": "/home/dev/sentry-plugin-test-nextjs/node_modules/next/dist/server/base-server.js",
+          "filename": "/home/dev/sentry-plugin-test-nextjs/node_modules/next/dist/server/base-server.js",
           "function": "DevServer.renderToResponseWithComponentsImpl",
           "inApp": false,
           "lineNo": 1731,
@@ -128,8 +128,8 @@
           "module": "node_modules_next_0ww4edtujzzwp._"
          },
          {
-          "absPath": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-nextjs/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.dev.js",
-          "filename": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-nextjs/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.dev.js",
+          "absPath": "/home/dev/sentry-plugin-test-nextjs/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.dev.js",
+          "filename": "/home/dev/sentry-plugin-test-nextjs/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.dev.js",
           "function": "AppRouteRouteModule.handleResponse",
           "inApp": false,
           "lineNo": 1,
@@ -144,16 +144,16 @@
           "module": "node_modules_next_0ww4edtujzzwp._"
          },
          {
-          "absPath": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-nextjs/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.dev.js",
-          "filename": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-nextjs/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.dev.js",
+          "absPath": "/home/dev/sentry-plugin-test-nextjs/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.dev.js",
+          "filename": "/home/dev/sentry-plugin-test-nextjs/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.dev.js",
           "function": "AppRouteRouteModule.handle",
           "inApp": false,
           "lineNo": 5,
           "module": "next.dist.compiled.next-server:app-route-turbo.runtime.dev"
          },
          {
-          "absPath": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-nextjs/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.dev.js",
-          "filename": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-nextjs/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.dev.js",
+          "absPath": "/home/dev/sentry-plugin-test-nextjs/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.dev.js",
+          "filename": "/home/dev/sentry-plugin-test-nextjs/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.dev.js",
           "function": "AppRouteRouteModule.executeRequest",
           "inApp": false,
           "lineNo": 5,
@@ -168,8 +168,8 @@
           "module": "async_context_frame"
          },
          {
-          "absPath": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-nextjs/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.dev.js",
-          "filename": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-nextjs/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.dev.js",
+          "absPath": "/home/dev/sentry-plugin-test-nextjs/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.dev.js",
+          "filename": "/home/dev/sentry-plugin-test-nextjs/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.dev.js",
           "function": null,
           "inApp": false,
           "lineNo": 5,
@@ -184,8 +184,8 @@
           "module": "async_context_frame"
          },
          {
-          "absPath": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-nextjs/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.dev.js",
-          "filename": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-nextjs/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.dev.js",
+          "absPath": "/home/dev/sentry-plugin-test-nextjs/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.dev.js",
+          "filename": "/home/dev/sentry-plugin-test-nextjs/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.dev.js",
           "function": null,
           "inApp": false,
           "lineNo": 5,
@@ -200,24 +200,24 @@
           "module": "async_context_frame"
          },
          {
-          "absPath": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-nextjs/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.dev.js",
-          "filename": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-nextjs/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.dev.js",
+          "absPath": "/home/dev/sentry-plugin-test-nextjs/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.dev.js",
+          "filename": "/home/dev/sentry-plugin-test-nextjs/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.dev.js",
           "function": null,
           "inApp": false,
           "lineNo": 5,
           "module": "next.dist.compiled.next-server:app-route-turbo.runtime.dev"
          },
          {
-          "absPath": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-nextjs/node_modules/next/dist/server/lib/trace/tracer.js",
-          "filename": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-nextjs/node_modules/next/dist/server/lib/trace/tracer.js",
+          "absPath": "/home/dev/sentry-plugin-test-nextjs/node_modules/next/dist/server/lib/trace/tracer.js",
+          "filename": "/home/dev/sentry-plugin-test-nextjs/node_modules/next/dist/server/lib/trace/tracer.js",
           "function": "NextTracerImpl.trace",
           "inApp": false,
           "lineNo": 218,
           "module": "next.dist.server.lib.trace:tracer"
          },
          {
-          "absPath": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-nextjs/node_modules/@opentelemetry/api/build/src/api/context.js",
-          "filename": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-nextjs/node_modules/@opentelemetry/api/build/src/api/context.js",
+          "absPath": "/home/dev/sentry-plugin-test-nextjs/node_modules/@opentelemetry/api/build/src/api/context.js",
+          "filename": "/home/dev/sentry-plugin-test-nextjs/node_modules/@opentelemetry/api/build/src/api/context.js",
           "function": "ContextAPI.with",
           "inApp": false,
           "lineNo": 51,
@@ -240,24 +240,24 @@
           "module": "async_context_frame"
          },
          {
-          "absPath": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-nextjs/node_modules/next/dist/server/lib/trace/tracer.js",
-          "filename": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-nextjs/node_modules/next/dist/server/lib/trace/tracer.js",
+          "absPath": "/home/dev/sentry-plugin-test-nextjs/node_modules/next/dist/server/lib/trace/tracer.js",
+          "filename": "/home/dev/sentry-plugin-test-nextjs/node_modules/next/dist/server/lib/trace/tracer.js",
           "function": null,
           "inApp": false,
           "lineNo": 218,
           "module": "next.dist.server.lib.trace:tracer"
          },
          {
-          "absPath": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-nextjs/node_modules/next/dist/server/lib/trace/tracer.js",
-          "filename": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-nextjs/node_modules/next/dist/server/lib/trace/tracer.js",
+          "absPath": "/home/dev/sentry-plugin-test-nextjs/node_modules/next/dist/server/lib/trace/tracer.js",
+          "filename": "/home/dev/sentry-plugin-test-nextjs/node_modules/next/dist/server/lib/trace/tracer.js",
           "function": "NextTracerImpl.runWithActiveSpan",
           "inApp": false,
           "lineNo": 281,
           "module": "next.dist.server.lib.trace:tracer"
          },
          {
-          "absPath": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-nextjs/node_modules/next/dist/server/lib/router-utils/instrumentation-node-extensions.js",
-          "filename": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-nextjs/node_modules/next/dist/server/lib/router-utils/instrumentation-node-extensions.js",
+          "absPath": "/home/dev/sentry-plugin-test-nextjs/node_modules/next/dist/server/lib/router-utils/instrumentation-node-extensions.js",
+          "filename": "/home/dev/sentry-plugin-test-nextjs/node_modules/next/dist/server/lib/router-utils/instrumentation-node-extensions.js",
           "function": "tracer.startActiveSpan",
           "inApp": false,
           "lineNo": 97,
@@ -280,8 +280,8 @@
           "module": "async_context_frame"
          },
          {
-          "absPath": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-nextjs/node_modules/next/dist/server/lib/router-utils/instrumentation-node-extensions.js",
-          "filename": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-nextjs/node_modules/next/dist/server/lib/router-utils/instrumentation-node-extensions.js",
+          "absPath": "/home/dev/sentry-plugin-test-nextjs/node_modules/next/dist/server/lib/router-utils/instrumentation-node-extensions.js",
+          "filename": "/home/dev/sentry-plugin-test-nextjs/node_modules/next/dist/server/lib/router-utils/instrumentation-node-extensions.js",
           "function": null,
           "inApp": false,
           "lineNo": 99,
@@ -328,8 +328,8 @@
           "module": "[root-of-the-server]__089ivr9z320jo._"
          },
          {
-          "absPath": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-nextjs/node_modules/next/dist/server/lib/router-utils/instrumentation-node-extensions.js",
-          "filename": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-nextjs/node_modules/next/dist/server/lib/router-utils/instrumentation-node-extensions.js",
+          "absPath": "/home/dev/sentry-plugin-test-nextjs/node_modules/next/dist/server/lib/router-utils/instrumentation-node-extensions.js",
+          "filename": "/home/dev/sentry-plugin-test-nextjs/node_modules/next/dist/server/lib/router-utils/instrumentation-node-extensions.js",
           "function": null,
           "inApp": false,
           "lineNo": 107,
@@ -344,32 +344,32 @@
           "module": "async_context_frame"
          },
          {
-          "absPath": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-nextjs/node_modules/next/dist/server/lib/trace/tracer.js",
-          "filename": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-nextjs/node_modules/next/dist/server/lib/trace/tracer.js",
+          "absPath": "/home/dev/sentry-plugin-test-nextjs/node_modules/next/dist/server/lib/trace/tracer.js",
+          "filename": "/home/dev/sentry-plugin-test-nextjs/node_modules/next/dist/server/lib/trace/tracer.js",
           "function": null,
           "inApp": false,
           "lineNo": 281,
           "module": "next.dist.server.lib.trace:tracer"
          },
          {
-          "absPath": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-nextjs/node_modules/next/dist/server/lib/trace/tracer.js",
-          "filename": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-nextjs/node_modules/next/dist/server/lib/trace/tracer.js",
+          "absPath": "/home/dev/sentry-plugin-test-nextjs/node_modules/next/dist/server/lib/trace/tracer.js",
+          "filename": "/home/dev/sentry-plugin-test-nextjs/node_modules/next/dist/server/lib/trace/tracer.js",
           "function": null,
           "inApp": false,
           "lineNo": 255,
           "module": "next.dist.server.lib.trace:tracer"
          },
          {
-          "absPath": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-nextjs/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.dev.js",
-          "filename": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-nextjs/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.dev.js",
+          "absPath": "/home/dev/sentry-plugin-test-nextjs/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.dev.js",
+          "filename": "/home/dev/sentry-plugin-test-nextjs/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.dev.js",
           "function": null,
           "inApp": false,
           "lineNo": 5,
           "module": "next.dist.compiled.next-server:app-route-turbo.runtime.dev"
          },
          {
-          "absPath": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-nextjs/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.dev.js",
-          "filename": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-nextjs/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.dev.js",
+          "absPath": "/home/dev/sentry-plugin-test-nextjs/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.dev.js",
+          "filename": "/home/dev/sentry-plugin-test-nextjs/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.dev.js",
           "function": "AppRouteRouteModule.renderToResponse",
           "inApp": false,
           "lineNo": 5,

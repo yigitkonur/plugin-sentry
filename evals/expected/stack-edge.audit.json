@@ -67,13 +67,29 @@
    ]
   },
   {
-   "id": "link-environment-spelling",
+   "id": "environment-spelling-mobile",
    "any_check": [
-    "link.vocab"
+    "link.vocab",
+    "core.environment"
    ],
-   "title_any": [
-    "environment",
-    "spelling"
+   "text_any": [
+    "\"prod\""
+   ],
+   "files_any": [
+    "apps/mobile"
+   ]
+  },
+  {
+   "id": "environment-spelling-site",
+   "any_check": [
+    "link.vocab",
+    "core.environment"
+   ],
+   "text_any": [
+    "\"prod\""
+   ],
+   "files_any": [
+    "apps/site"
    ]
   },
   {
@@ -180,6 +196,19 @@
    "id": "trace-rate",
    "any_check": [
     "trace.rate"
+   ]
+  },
+  {
+   "id": "link-rpc-binding",
+   "any_check": [
+    "link.rpc-propagation",
+    "link.trace-chain"
+   ],
+   "text_any": [
+    "rpcTracePropagationBindings"
+   ],
+   "files_any": [
+    "apps/site"
    ]
   }
  ],

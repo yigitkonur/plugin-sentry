@@ -21,7 +21,8 @@ OUT = os.path.join(ROOT, "evals", "recordings", "events")
 
 
 def clean_str(s):
-    s = re.sub(r"/(Users|home)/[A-Za-z0-9._-]+", r"/\1/dev", s)
+    s = re.sub(r"/(?:Users|home)/[A-Za-z0-9._-]+/(?:[^\"'\s]*?/)?(sentry-plugin-test-[a-z0-9-]+)/", r"/home/dev/\1/", s)  # drop the machine's directory layout
+    s = re.sub(r"/(?:Users|home)/[A-Za-z0-9._-]+", "/home/dev", s)
     s = re.sub(r"[\w.+-]+@[\w-]+\.[\w.-]+", "person@example.invalid", s)
     s = re.sub(r"zeo-?h1", "example-org", s)
     return s

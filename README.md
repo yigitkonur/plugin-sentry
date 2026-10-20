@@ -47,7 +47,7 @@ Or in one step on Claude Code 2.1.275+: `/plugin install sentry --marketplace yi
 
 ### Several projects in one repo
 
-When a repo holds more than one deployable unit (a site, a mobile app, an API, an MCP server), detect also records how they relate (`links` in `detect.json`: which unit calls which, CORS allow-lists, DSNs shared between units, `environment` spellings), and one extra auditor judges the relations as the pseudo-unit `_links`: the trace chain from client to server (browser `tracePropagationTargets` and CORS headers, not asked of mobile or server clients), `prod` vs `production`, one project per app. Every edge is a static candidate that the auditor confirms by reading both sides.
+When a repo holds more than one deployable unit (a site, a mobile app, an API, an MCP server), detect also records how they relate (`links` in `detect.json`: which unit calls which, CORS allow-lists, DSNs shared between units, `environment` spellings, Cloudflare service bindings between Workers), and one extra auditor judges the relations as the pseudo-unit `_links`: the trace chain from client to server (browser `tracePropagationTargets` and CORS headers, not asked of mobile or server clients), Worker-to-Worker RPC trace propagation, `prod` vs `production`, one project per app. Every edge is a static candidate that the auditor confirms by reading both sides.
 
 ### Cloudflare
 

@@ -8,8 +8,8 @@
        "stacktrace": {
         "frames": [
          {
-          "absPath": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-mcp/node_modules/@modelcontextprotocol/sdk/src/server/index.ts",
-          "filename": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-mcp/node_modules/@modelcontextprotocol/sdk/src/server/index.ts",
+          "absPath": "/home/dev/sentry-plugin-test-mcp/node_modules/@modelcontextprotocol/sdk/src/server/index.ts",
+          "filename": "/home/dev/sentry-plugin-test-mcp/node_modules/@modelcontextprotocol/sdk/src/server/index.ts",
           "function": "wrappedHandler",
           "inApp": false,
           "lineNo": 243,
@@ -24,32 +24,32 @@
           "module": "task_queues"
          },
          {
-          "absPath": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-mcp/node_modules/@modelcontextprotocol/sdk/dist/esm/server/mcp.js",
-          "filename": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-mcp/node_modules/@modelcontextprotocol/sdk/dist/esm/server/mcp.js",
+          "absPath": "/home/dev/sentry-plugin-test-mcp/node_modules/@modelcontextprotocol/sdk/dist/esm/server/mcp.js",
+          "filename": "/home/dev/sentry-plugin-test-mcp/node_modules/@modelcontextprotocol/sdk/dist/esm/server/mcp.js",
           "function": null,
           "inApp": false,
           "lineNo": 156,
           "module": "@modelcontextprotocol.sdk.dist.esm.server:mcp"
          },
          {
-          "absPath": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-mcp/node_modules/@modelcontextprotocol/sdk/dist/esm/server/mcp.js",
-          "filename": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-mcp/node_modules/@modelcontextprotocol/sdk/dist/esm/server/mcp.js",
+          "absPath": "/home/dev/sentry-plugin-test-mcp/node_modules/@modelcontextprotocol/sdk/dist/esm/server/mcp.js",
+          "filename": "/home/dev/sentry-plugin-test-mcp/node_modules/@modelcontextprotocol/sdk/dist/esm/server/mcp.js",
           "function": "McpServer.executeToolHandler",
           "inApp": false,
           "lineNo": 241,
           "module": "@modelcontextprotocol.sdk.dist.esm.server:mcp"
          },
          {
-          "absPath": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-mcp/node_modules/@sentry/core/src/integrations/mcp-server/handlers.ts",
-          "filename": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-mcp/node_modules/@sentry/core/src/integrations/mcp-server/handlers.ts",
+          "absPath": "/home/dev/sentry-plugin-test-mcp/node_modules/@sentry/core/src/integrations/mcp-server/handlers.ts",
+          "filename": "/home/dev/sentry-plugin-test-mcp/node_modules/@sentry/core/src/integrations/mcp-server/handlers.ts",
           "function": "<anonymous>",
           "inApp": false,
           "lineNo": 45,
           "module": "@sentry.core.src.integrations.mcp-server:handlers.ts"
          },
          {
-          "absPath": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-mcp/src/index.ts",
-          "filename": "/Users/dev/plugins/sentry-live-fixtures/sentry-plugin-test-mcp/src/index.ts",
+          "absPath": "/home/dev/sentry-plugin-test-mcp/src/index.ts",
+          "filename": "/home/dev/sentry-plugin-test-mcp/src/index.ts",
           "function": "<anonymous>",
           "inApp": true,
           "lineNo": 14,
