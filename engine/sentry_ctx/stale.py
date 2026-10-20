@@ -11,22 +11,32 @@ ECO_FILE = {"js": "js.tsv", "python": "python.tsv", "apple": "cocoa.tsv", "jvm":
 _cache: dict = {}
 
 
-def load(eco: str):
+def _files_for(eco: str):
     fn = ECO_FILE.get(eco)
     if not fn:
         return []
-    if fn not in _cache:
+    d = paths.data_path("stale-apis")
+    base = fn[:-4]
+    names = [fn] + sorted(f for f in (os.listdir(d) if os.path.isdir(d) else []) if f.startswith(base + "-") and f.endswith(".tsv"))
+    return names
+
+
+def load(eco: str):
+    key = eco
+    if key not in _cache:
         rows = []
-        p = paths.data_path("stale-apis", fn)
-        if os.path.isfile(p):
+        for fn in _files_for(eco):
+            p = paths.data_path("stale-apis", fn)
+            if not os.path.isfile(p):
+                continue
             for line in open(p, encoding="utf-8"):
                 if line.startswith("#") or not line.strip():
                     continue
                 c = line.rstrip("\n").split("\t")
                 if len(c) == 8:
                     rows.append({"pkg": re.compile(c[0]), "majors": c[1].split(","), "name": c[2], "kind": c[3], "message": c[4], "since": c[5], "source": c[6], "when": c[7]})
-        _cache[fn] = rows
-    return _cache[fn]
+        _cache[key] = rows
+    return _cache[key]
 
 
 def _when_ok(when: str, unit: dict) -> bool:

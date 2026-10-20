@@ -15,7 +15,7 @@ Serves framework ids `react-native` and `expo`; `cordova` falls back here (no Co
 | `ios/sentry.properties`, `android/sentry.properties`, `.env.local` | native projects, repo root | build credentials the wizard writes; a committed token is a finding |
 | `sentry-expo`, `react-native-sentry` | package.json, app.json | legacy and retired (see Gotchas) |
 
-Fixture `/Users/mac/plugins/plugin-sentry/evals/fixtures/expo` (expo 52.0.20, yarn): init in `App.tsx` with the DSN read from an env var, Expo plugin in `app.json`, role `mobile`, native subprojects `android` and `ios`. The engine's expected output is `/Users/mac/plugins/plugin-sentry/evals/expected/expo.detect.json`.
+Fixture `evals/fixtures/expo` (expo 52.0.20, yarn): init in `App.tsx` with the DSN read from an env var, Expo plugin in `app.json`, role `mobile`, native subprojects `android` and `ios`. The engine's expected output is `evals/expected/expo.detect.json`.
 
 Read, in this order: `App.tsx` or `app/_layout.tsx`, `app.json` or `app.config.*`, `metro.config.js`, then the `ios/` and `android/` build files.
 
