@@ -1,0 +1,84 @@
+{
+ "policy": "strict-no-org",
+ "must_find": [
+  {
+   "id": "network-entitlement",
+   "text_any": [
+    "network.client",
+    "network client",
+    "entitlement"
+   ],
+   "files_any": [
+    "MyApp/MyApp.entitlements"
+   ]
+  },
+  {
+   "id": "ios-only-options",
+   "any_check": [
+    "core.removed-api"
+   ],
+   "text_any": [
+    "attachScreenshot",
+    "attachViewHierarchy",
+    "waitForFullDisplay"
+   ]
+  },
+  {
+   "id": "release-name",
+   "any_check": [
+    "core.release"
+   ],
+   "text_any": [
+    "releaseName"
+   ]
+  },
+  {
+   "id": "data-collection",
+   "any_check": [
+    "priv.data-collection"
+   ]
+  },
+  {
+   "id": "dsym",
+   "any_check": [
+    "rel.debug-files"
+   ]
+  },
+  {
+   "id": "nsexception",
+   "text_any": [
+    "enableUncaughtNSExceptionReporting",
+    "NSException"
+   ]
+  },
+  {
+   "id": "sdk-version",
+   "any_check": [
+    "core.sdk-version"
+   ]
+  },
+  {
+   "id": "sample-rate",
+   "any_check": [
+    "trace.rate",
+    "prof.lifecycle"
+   ]
+  }
+ ],
+ "must_not": [
+  {
+   "id": "no-replay-proposal",
+   "desc": "replay is n/a on native macOS: no finding may propose adding replay",
+   "product_in": [
+    "replay"
+   ],
+   "kind_in": [
+    "add"
+   ]
+  }
+ ],
+ "coverage_states_required": [
+  "n/a",
+  "unverified"
+ ]
+}

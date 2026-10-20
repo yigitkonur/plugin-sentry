@@ -16,8 +16,10 @@ Org access / CLI / login, and the coverage Cells you own. Everything you need be
    platform (`sentry-ctx docs page <path> --list`, then `--section`), and lower your confidence accordingly.
 3. The unit's detection facts (init sites, resolved SDK version, DSN sources, config snapshot, build wiring, CI references, tracked
    secret hits) are in `.sentry-plugin/detect.json`. Read your unit's entry first; it tells you where to look.
-4. Removed or renamed options for the installed SDK major are in `data/stale-apis/` (`sentry-ctx ref` does not serve them; they are
-   applied by the `core.removed-api` check: read the TSV for the unit's ecosystem and grep the init files for each `name`).
+4. The check ids you may use, with default severity and the passing condition: `sentry-ctx checks --product <your products, comma
+   separated>`. Removed or renamed options for the installed SDK major: `sentry-ctx stale --unit <unit id>` (it scans the unit's
+   init and config files against the stale-API tables and prints each hit with its docs page; read the hit's file before you
+   record it). A real defect that fits no listed check gets an `x.<slug>` id. Do not look for plugin files by path: everything you need is served by `sentry-ctx`.
 
 ## What you may do
 - Read files (Read, Grep, Glob).

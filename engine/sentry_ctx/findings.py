@@ -222,9 +222,14 @@ def add(root, f: dict, units, force=False):
     order = ["id", "unit", "product", "check", "severity", "confidence", "status", "kind", "title", "files", "requires", "fix_ref", "verify", "docs", "sdk", "org_write", "evidence", "reason", "severity_default", "created_at"]
     fm = {k: f[k] for k in order if k in f and f[k] is not None}
     fm.setdefault("org_write", None)
+    ev, vf = f.get("evidence") or {}, f.get("verify") or {}
+    derived = {
+        "evidence_text": "ran: %s\nsaw: %s" % (ev.get("ran", ""), ev.get("saw", "")) if ev else "",
+        "verify_text": "%s: %s -> expect %s" % (vf.get("rung", ""), vf.get("how", ""), vf.get("expect", "")) if vf else "",
+    }
     body = ""
     for key in SECTIONS:
-        body += "## %s\n%s\n\n" % (SECTION_TITLES[key], (f.get(key) or "").strip() or "(none)")
+        body += "## %s\n%s\n\n" % (SECTION_TITLES[key], (f.get(key) or derived.get(key) or "").strip() or "(none)")
     d = os.path.join(fdir(root), f["unit"])
     p = os.path.join(d, "%s-%s-%s.md" % (fid, f["product"], _slug(f["check"].split(".", 1)[-1] if "." in f["check"] else f["check"])))
     util.write_text(p, miniyaml.join_front_matter(fm, body))

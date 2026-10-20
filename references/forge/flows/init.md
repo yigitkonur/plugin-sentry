@@ -15,7 +15,11 @@ Precondition: `sentry-ctx flow preamble` is done and `sentry-ctx steer --write` 
      line to run themselves, prefixed with `!`: `! npx @sentry/wizard@latest -i <integration> --disable-telemetry`.
    Wizard routes require: git clean (or a new branch), `node`/`npx` for the wizard, a greenfield unit. Never `--force-install`.
 3. **Provision the project** (needs `org_access: read-write`, a login with project:write): this is an `org-write` finding the user
-   approves first. `sentry project create <org>/<name>:<platform> --dry-run`, show it, then run it, then
+   approves first. Name: the unit's directory name, lowercase with hyphens (show it as the default; a human can change it).
+   Platform id: `<language>-<framework>` as Sentry names them (`javascript-nextjs`, `python-fastapi`, `go-gin`, `apple-macos`,
+   `ruby-rails`); an unknown id fails the `--dry-run` with "Invalid platform" and creates nothing, so fall back to the language id
+   (`node`, `javascript`, `python`, `go`, `apple`, `java`) and say so.
+   `sentry project create <org>/<name>:<platform> --dry-run`, show it, then run it, then
    `sentry dsn list <org>/<name> --json`. The DSN goes into an environment variable named per the platform's convention, never a
    literal. With no org access: ask the user for a DSN and use the same variable.
 4. **Dispatch auditors in baseline mode** (same dispatch as `sentry-ctx flow audit`, `Mode: baseline`). They create `add` findings:

@@ -1,0 +1,77 @@
+{
+ "policy": "strict-no-org",
+ "must_find": [
+  {
+   "id": "data-collection",
+   "any_check": [
+    "priv.data-collection"
+   ]
+  },
+  {
+   "id": "local-vars",
+   "any_check": [
+    "priv.local-vars"
+   ]
+  },
+  {
+   "id": "sample-rate",
+   "any_check": [
+    "trace.rate"
+   ]
+  },
+  {
+   "id": "legacy-profiling",
+   "any_check": [
+    "prof.lifecycle",
+    "core.removed-api"
+   ],
+   "text_any": [
+    "profiles_sample_rate"
+   ]
+  },
+  {
+   "id": "init-placement",
+   "any_check": [
+    "core.init-placement"
+   ]
+  },
+  {
+   "id": "environment-release",
+   "any_check": [
+    "core.environment",
+    "core.release"
+   ]
+  },
+  {
+   "id": "crons",
+   "any_check": [
+    "cron.coverage"
+   ]
+  },
+  {
+   "id": "ai",
+   "any_check": [
+    "ai.integration",
+    "priv.ai-io"
+   ]
+  },
+  {
+   "id": "log-noise",
+   "any_check": [
+    "err.noise",
+    "log.hooks",
+    "log.enabled"
+   ],
+   "text_any": [
+    "LoggingIntegration",
+    "event_level",
+    "logging"
+   ]
+  }
+ ],
+ "must_not": [],
+ "coverage_states_required": [
+  "n/a",
+  "unverified"
+ ]
+}

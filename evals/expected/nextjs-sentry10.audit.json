@@ -1,0 +1,107 @@
+{
+ "policy": "strict-no-org",
+ "must_find": [
+  {
+   "id": "token-in-repo",
+   "any_check": [
+    "priv.token-in-repo"
+   ],
+   "min_severity": "P0"
+  },
+  {
+   "id": "token-files-ignored",
+   "any_check": [
+    "priv.token-files-ignored",
+    "priv.token-in-repo"
+   ],
+   "files_any": [
+    ".sentryclirc"
+   ]
+  },
+  {
+   "id": "data-collection",
+   "any_check": [
+    "priv.data-collection"
+   ],
+   "files_any": [
+    "sentry.client.config.ts",
+    "sentry.server.config.ts"
+   ]
+  },
+  {
+   "id": "sample-rate",
+   "any_check": [
+    "trace.rate"
+   ]
+  },
+  {
+   "id": "replay",
+   "any_check": [
+    "priv.replay-mask",
+    "replay.rates"
+   ]
+  },
+  {
+   "id": "environment",
+   "any_check": [
+    "core.environment"
+   ]
+  },
+  {
+   "id": "release-artifacts",
+   "any_check": [
+    "rel.sourcemaps",
+    "core.release",
+    "ci.release-step"
+   ]
+  },
+  {
+   "id": "removed-api",
+   "any_check": [
+    "core.removed-api"
+   ],
+   "text_any": [
+    "enableTracing",
+    "hideSourceMaps",
+    "disableLogger"
+   ]
+  },
+  {
+   "id": "error-boundaries",
+   "any_check": [
+    "err.boundaries"
+   ]
+  },
+  {
+   "id": "crons",
+   "any_check": [
+    "cron.coverage"
+   ]
+  },
+  {
+   "id": "ai",
+   "any_check": [
+    "ai.integration",
+    "priv.ai-io"
+   ]
+  }
+ ],
+ "must_not": [
+  {
+   "id": "dsn-is-public",
+   "desc": "no P0/P1 finding that treats the public DSN in .env.production as a secret",
+   "files_any": [
+    ".env.production"
+   ],
+   "severity_in": [
+    "P0",
+    "P1"
+   ]
+  }
+ ],
+ "coverage_states_required": [
+  "clean|findings",
+  "n/a",
+  "unverified"
+ ]
+}

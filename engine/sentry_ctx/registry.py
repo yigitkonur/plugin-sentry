@@ -193,6 +193,19 @@ def cmd_verify(args):
         return 0 if r["ok"] else 1
 
 
+def cmd_checks(args):
+    from . import findings
+    want = {x for v in (args.product or []) for x in v.split(",") if x}
+    rows = [c for c in findings.checks().values() if not want or c["product"] in want]
+    if args.json:
+        util.emit(rows)
+        return
+    for c in rows:
+        print("%s\t%s\t%s\t[%s]\t%s" % (c["id"], c["severity"].strip("*"), c["applies"], c["method"], c["passes"]))
+    if not rows:
+        print("no checks for: %s (products with checks: %s)" % (", ".join(sorted(want)), ", ".join(sorted({c["product"] for c in findings.checks().values()}))))
+
+
 def cmd_stale(args):
     from . import stale
     root = _root(args)
@@ -338,6 +351,11 @@ def register(sub):
     vf.add_argument("--timeout", type=int, default=120)
     vf.add_argument("--interval", type=int, default=3)
     vf.set_defaults(fn=cmd_verify)
+
+    ck = sub.add_parser("checks", help="check ids with default severity, applicability and the passing condition (data/checks.tsv)")
+    ck.add_argument("--product", action="append", help="product id(s), comma separated or repeated")
+    ck.add_argument("--json", action="store_true")
+    ck.set_defaults(fn=cmd_checks)
 
     st = sub.add_parser("stale", help="removed/renamed SDK options in a unit's init and config files (data/stale-apis)")
     st.add_argument("--unit")
