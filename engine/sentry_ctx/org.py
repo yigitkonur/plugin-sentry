@@ -88,6 +88,12 @@ class Ctx:
         self.root = root
         self.saved = util.read_json(os.path.join(paths.state_dir(root), "org.json"), {}) or {}
         self.detect = util.read_json(os.path.join(paths.state_dir(root), "detect.json"), {}) or {}
+        if not self.detect.get("units"):
+            try:
+                from .detect import core
+                self.detect = core.detect(root)
+            except Exception:
+                self.detect = {}
         self.policy = {}
         try:
             from . import policy as _p
@@ -151,8 +157,16 @@ class Ctx:
         for i in dict.fromkeys(ids):
             if i in by_id:
                 self.focus.append(by_id[i])
-        self.focus_how = "matched %d project(s) from DSN literals in the repo" % len(self.focus) if self.focus else \
-            "no project could be matched (no DSN literal in the repo points into this org): pass --project <slug>"
+        if self.focus:
+            self.focus_how = "matched %d project(s) from DSN literals in the repo" % len(self.focus)
+            return self.focus
+        # `init` names the project after the unit directory, so a project with the unit's id (or the repo name) as slug is this app's
+        names = [u.get("id") for u in self.detect.get("units", [])] + [(self.detect.get("repo") or {}).get("name")]
+        for n in dict.fromkeys(x for x in names if x):
+            if n in by_slug and by_slug[n] not in self.focus:
+                self.focus.append(by_slug[n])
+        self.focus_how = ("matched project(s) %s by the unit/repo name (DSNs in this repo come from the environment)" % ",".join(p["slug"] for p in self.focus)) if self.focus else \
+            "no project could be matched (no DSN literal in the repo, no project named like the unit): pass --project <slug>"
         return self.focus
 
     def dsn_hosts(self):
