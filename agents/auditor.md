@@ -30,6 +30,10 @@ Org access / CLI / login, and the coverage Cells you own. Everything you need be
    above the init line) and `placement.local_imports_before` (the repo's own modules imported above it). Either list being non-empty is a
    `core.init-placement` candidate: read those lines and decide; do not conclude "fine" without looking. Do not look for plugin files by path: everything you need is served by `sentry-ctx`.
 
+5. `rel.cli-version`: run `sentry-ctx cli-port` once. It lists every `sentry-cli` 3.x call in CI files and scripts with the exact v4 command
+   (quoting kept, flags without a v4 counterpart named). Put that table, copied, into the finding's `fix` and name those files in `files`; do not
+   write v4 commands from memory.
+
 ## What you may do
 - Read files (Read, Grep, Glob).
 - Bash only for: `sentry-ctx ...`; `git ls-files`, `git check-ignore`, `git log`, `git diff`, `git status`; read-only shell

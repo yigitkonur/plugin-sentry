@@ -193,6 +193,21 @@ def cmd_verify(args):
         return 0 if r["ok"] else 1
 
 
+def cmd_cli_port(args):
+    from . import cliport
+    det = _detect(args)
+    res = cliport.port_repo(det)
+    if args.json:
+        util.emit(res)
+        return
+    print("%d sentry-cli 3.x call(s) found" % res["count"])
+    for r in res["rows"]:
+        print("%s:%s\n  v3: %s\n  v4: %s" % (r["file"], r["line"], r["v3"], r["v4"] or "(no known counterpart)"))
+        for n in r["notes"]:
+            print("      - " + n)
+    print(res["also"] + "; reference: " + res["reference"])
+
+
 def cmd_checks(args):
     from . import findings
     want = {x for v in (args.product or []) for x in v.split(",") if x}
@@ -387,6 +402,10 @@ def register(sub):
     og.add_argument("--run", action="store_true", help="apply: perform the write (only if approved in this run)")
     og.add_argument("--json", action="store_true")
     og.set_defaults(fn=cmd_org)
+
+    cp = sub.add_parser("cli-port", help="port sentry-cli 3.x calls found in CI files and scripts to the sentry v4 CLI (exact commands)")
+    cp.add_argument("--json", action="store_true")
+    cp.set_defaults(fn=cmd_cli_port)
 
     ck = sub.add_parser("checks", help="check ids with default severity, applicability and the passing condition (data/checks.tsv)")
     ck.add_argument("--product", action="append", help="product id(s), comma separated or repeated")
