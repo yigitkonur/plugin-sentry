@@ -110,6 +110,7 @@ Data-collected reference (linked from the init comment, not fetched): `platforms
 - Native init split: `autoInitializeNativeSdk: false` means JS `Sentry.init()` is still required, `dsn` must be set on both sides, and options are not merged.
 - Replay with manual native init before JS: replay page asks for SDK 6.15.1+ (GH-4853 linked there).
 - Metro: without `getSentryExpoConfig(` the Debug ID serializer is missing (docs: it ensures unique Debug IDs).
+- Observed, not a Sentry docs page (Expo CLI 58.0.16 `expo export --help`, 2026-10-20): `expo export` emits no source maps by default (`--source-maps` defaults to false) and writes Hermes bytecode. For an upload from an export run `npx expo export --platform ios --source-maps true --no-bytecode`; with the Sentry Metro config the one `.js.map` had the same Debug ID as the bundle's `sentry-dbid` marker, and `sentry sourcemap resolve dist` found 1 pair. Without those flags `dist` holds no map to upload.
 - Replay and Expo Router docs call Expo Go unsupported for some features; follow the `isRunningInExpoGo()` gate, not a memory of it.
 - Research notes disagree with the pages on the Expo Updates tag names (docs win). Other research claims (masking components, OTA upload commands, `eas secret`) are not confirmed on any fetched page; see Unconfirmed.
 

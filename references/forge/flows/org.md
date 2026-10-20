@@ -26,7 +26,7 @@ Read `sentry-ctx ref forge/ground-rules` and `sentry-ctx ref products/org` once.
    `sentry-ctx org apply <id>` (prints the `--dry-run` of the call; read it), then `sentry-ctx org apply <id> --run`.
    The engine refuses the call unless it was approved in this run. Never improvise a different `sentry api` write.
 8. **Prove it.** Re-probe the row the finding came from: `sentry-ctx org probe <row> --record`. The candidate must be gone; then
-   `sentry-ctx finding set-status <id> verified --ran "<probe command>" --saw "<row state and observation, copied>"`. If the row still shows it,
+   `sentry-ctx finding set-status <id> verified --rung R3 --ran "<probe command>" --saw "<row state and observation, copied>"`. If the row still shows it,
    the finding stays `applied` and the reason goes in the report.
 9. **Finish.** `sentry-ctx ledger` must pass. Only resources named `sentry-plugin-test-*` are ever created or removed by this plugin's own tests; for
    a user's org, every write is the user's decision. When the run is done, clean up as the end of the apply flow does: `sentry-ctx clean` (dry run), ask what to keep, then `sentry-ctx clean --yes [--keep policy|all]`.

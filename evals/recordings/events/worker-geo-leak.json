@@ -1,0 +1,145 @@
+{
+ "event": {
+  "entries": [
+   {
+    "data": {
+     "values": [
+      {
+       "stacktrace": {
+        "frames": [
+         {
+          "absPath": "/home/dev/sentry-plugin-test-worker/.wrangler/tmp/dev-Fp4gfX/index.js",
+          "filename": "/home/dev/sentry-plugin-test-worker/.wrangler/tmp/dev-Fp4gfX/index.js",
+          "function": null,
+          "inApp": true,
+          "lineNo": 16684,
+          "module": "index"
+         },
+         {
+          "absPath": "/home/dev/sentry-plugin-test-worker/.wrangler/tmp/dev-Fp4gfX/index.js",
+          "filename": "/home/dev/sentry-plugin-test-worker/.wrangler/tmp/dev-Fp4gfX/index.js",
+          "function": "Hono3.fetch",
+          "inApp": true,
+          "lineNo": 3277,
+          "module": "index"
+         },
+         {
+          "absPath": "/home/dev/sentry-plugin-test-worker/.wrangler/tmp/dev-Fp4gfX/index.js",
+          "filename": "/home/dev/sentry-plugin-test-worker/.wrangler/tmp/dev-Fp4gfX/index.js",
+          "function": "#dispatch",
+          "inApp": true,
+          "lineNo": 3263,
+          "module": "index"
+         },
+         {
+          "absPath": "/home/dev/sentry-plugin-test-worker/.wrangler/tmp/dev-Fp4gfX/index.js",
+          "filename": "/home/dev/sentry-plugin-test-worker/.wrangler/tmp/dev-Fp4gfX/index.js",
+          "function": null,
+          "inApp": true,
+          "lineNo": 3257,
+          "module": "index"
+         },
+         {
+          "absPath": "/home/dev/sentry-plugin-test-worker/.wrangler/tmp/dev-Fp4gfX/index.js",
+          "filename": "/home/dev/sentry-plugin-test-worker/.wrangler/tmp/dev-Fp4gfX/index.js",
+          "function": null,
+          "inApp": true,
+          "lineNo": 2926,
+          "module": "index"
+         },
+         {
+          "absPath": "/home/dev/sentry-plugin-test-worker/.wrangler/tmp/dev-Fp4gfX/index.js",
+          "filename": "/home/dev/sentry-plugin-test-worker/.wrangler/tmp/dev-Fp4gfX/index.js",
+          "function": "dispatch",
+          "inApp": true,
+          "lineNo": 2938,
+          "module": "index"
+         },
+         {
+          "absPath": "/home/dev/sentry-plugin-test-worker/.wrangler/tmp/dev-Fp4gfX/index.js",
+          "filename": "/home/dev/sentry-plugin-test-worker/.wrangler/tmp/dev-Fp4gfX/index.js",
+          "function": "middleware",
+          "inApp": true,
+          "lineNo": 14095,
+          "module": "index"
+         },
+         {
+          "absPath": "/home/dev/sentry-plugin-test-worker/.wrangler/tmp/dev-Fp4gfX/index.js",
+          "filename": "/home/dev/sentry-plugin-test-worker/.wrangler/tmp/dev-Fp4gfX/index.js",
+          "function": null,
+          "inApp": true,
+          "lineNo": 2938,
+          "module": "index"
+         },
+         {
+          "absPath": "/home/dev/sentry-plugin-test-worker/.wrangler/tmp/dev-Fp4gfX/index.js",
+          "filename": "/home/dev/sentry-plugin-test-worker/.wrangler/tmp/dev-Fp4gfX/index.js",
+          "function": "dispatch",
+          "inApp": true,
+          "lineNo": 2938,
+          "module": "index"
+         },
+         {
+          "absPath": "/home/dev/sentry-plugin-test-worker/.wrangler/tmp/dev-Fp4gfX/index.js",
+          "filename": "/home/dev/sentry-plugin-test-worker/.wrangler/tmp/dev-Fp4gfX/index.js",
+          "function": null,
+          "inApp": true,
+          "lineNo": 17483,
+          "module": "index"
+         }
+        ]
+       },
+       "type": "Error",
+       "value": "worker boom"
+      }
+     ]
+    },
+    "type": "exception"
+   },
+   {
+    "data": {
+     "cookies": [],
+     "data": null,
+     "headers": [],
+     "method": "GET",
+     "url": "http://localhost:49863/boom"
+    },
+    "type": "request"
+   }
+  ],
+  "message": "Error: worker boom",
+  "tags": [
+   {
+    "key": "environment",
+    "value": "development"
+   }
+  ],
+  "user": {
+   "data": null,
+   "email": null,
+   "geo": {
+    "city": "Example City",
+    "country_code": "XX",
+    "region": "Example Region"
+   },
+   "id": null,
+   "ip_address": "203.0.113.9",
+   "name": null,
+   "username": null
+  }
+ },
+ "expect": {
+  "ok": false,
+  "violations": [
+   "user.geo is present (country/city inferred from the connecti",
+   "user.ip_address is set"
+  ],
+  "warnings": [
+   "stack-frame file names carry a developer home path (expected"
+  ]
+ },
+ "note": "Cloudflare Worker before the scrubbing rule: user.geo",
+ "preset": "strict",
+ "recorded": "2026-10-20",
+ "source": "worker/8825dbf5"
+}

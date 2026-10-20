@@ -1,0 +1,86 @@
+{
+ "event": {
+  "entries": [
+   {
+    "data": {
+     "values": [
+      {
+       "stacktrace": {
+        "frames": [
+         {
+          "absPath": "/home/dev/sentry-plugin-test-astro/dist/server/chunks/sentry.server.config_CoP4_dj1.mjs",
+          "filename": "/home/dev/sentry-plugin-test-astro/dist/server/chunks/sentry.server.config_CoP4_dj1.mjs",
+          "function": "handlePages",
+          "inApp": true,
+          "lineNo": 8550,
+          "module": "sentry.server.config_CoP4_dj1.mjs"
+         },
+         {
+          "absPath": "/home/dev/sentry-plugin-test-astro/dist/server/chunks/sequence_CnpFEzJu.mjs",
+          "filename": "/home/dev/sentry-plugin-test-astro/dist/server/chunks/sequence_CnpFEzJu.mjs",
+          "function": "renderEndpoint",
+          "inApp": true,
+          "lineNo": 9742,
+          "module": "sequence_CnpFEzJu.mjs"
+         },
+         {
+          "absPath": "/home/dev/sentry-plugin-test-astro/dist/server/chunks/boom_1uYpY4Ge.mjs",
+          "filename": "/home/dev/sentry-plugin-test-astro/dist/server/chunks/boom_1uYpY4Ge.mjs",
+          "function": "Module.GET",
+          "inApp": true,
+          "lineNo": 10,
+          "module": "boom_1uYpY4Ge.mjs"
+         }
+        ]
+       },
+       "type": "Error",
+       "value": "astro boom"
+      }
+     ]
+    },
+    "type": "exception"
+   },
+   {
+    "data": {
+     "cookies": [],
+     "data": null,
+     "headers": [],
+     "method": "GET",
+     "url": "http://localhost:8811/api/boom"
+    },
+    "type": "request"
+   }
+  ],
+  "message": "Error: astro boom",
+  "tags": [
+   {
+    "key": "environment",
+    "value": "development"
+   },
+   {
+    "key": "release",
+    "value": "49f6cc28e3b63b5bb3e935e2d496ba367b4531ff"
+   }
+  ],
+  "user": {
+   "data": null,
+   "email": null,
+   "geo": {},
+   "id": null,
+   "ip_address": null,
+   "name": null,
+   "username": null
+  }
+ },
+ "expect": {
+  "ok": true,
+  "violations": [],
+  "warnings": [
+   "stack-frame file names carry a developer home path (expected"
+  ]
+ },
+ "note": "Astro 7 on Cloudflare (Worker-wrapped entry) after the project scrubbing rule: nothing leaks",
+ "preset": "strict",
+ "recorded": "2026-10-20",
+ "source": "astro/dcd140c4"
+}

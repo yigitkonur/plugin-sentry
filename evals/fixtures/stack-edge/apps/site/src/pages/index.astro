@@ -1,0 +1,17 @@
+---
+const title = "Example Co";
+---
+<html lang="en">
+  <head><title>{title}</title></head>
+  <body>
+    <h1>{title}</h1>
+    <button id="load">Load orders</button>
+    <script>
+      const api = import.meta.env.PUBLIC_API_URL;
+      document.getElementById("load")?.addEventListener("click", async () => {
+        const res = await fetch(`${api}/api/orders`);
+        console.log(await res.json());
+      });
+    </script>
+  </body>
+</html>

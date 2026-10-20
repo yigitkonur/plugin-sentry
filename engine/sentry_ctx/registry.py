@@ -125,6 +125,10 @@ def cmd_finding(args):
     a = args.action
     if a == "add":
         obj = _read_stdin_json()
+        if args.unit and isinstance(obj, dict):  # `--unit` fills a missing unit; a different one in the body is a mistake worth stopping on
+            if obj.get("unit") and obj["unit"] != args.unit:
+                raise util.EngineError("--unit %s conflicts with the finding's unit %s" % (args.unit, obj["unit"]))
+            obj["unit"] = args.unit
         util.emit(findings.add(root, obj, _units(root), force=args.force))
     elif a == "list":
         rows = findings.load_all(root)
@@ -138,7 +142,7 @@ def cmd_finding(args):
             raise util.EngineError("no such finding: " + args.id)
         print(util.read_text(p))
     elif a == "set-status":
-        util.emit(findings.set_status(root, args.id, args.value, reason=args.reason, ran=args.ran, saw=args.saw))
+        util.emit(findings.set_status(root, args.id, args.value, reason=args.reason, ran=args.ran, saw=args.saw, rung=args.rung))
     elif a == "approve":
         ids = args.ids.split(",") if args.ids else None
         sev = args.severity.split(",") if args.severity else None
@@ -373,6 +377,7 @@ def register(sub):
     f.add_argument("--reason")
     f.add_argument("--ran")
     f.add_argument("--saw")
+    f.add_argument("--rung", help="set-status verified: the highest rung reached (R0..R6); must be at least the finding's verify.rung")
     f.add_argument("--ids")
     f.add_argument("--kinds")
     f.add_argument("--all", action="store_true")

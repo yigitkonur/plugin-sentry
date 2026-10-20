@@ -90,5 +90,13 @@
  "org": {
   "label": "Organization, projects, integrations",
   "group": "org"
+ },
+ "cf-observability": {
+  "label": "Cloudflare observability next to Sentry (Workers Logs, Traces, Issues, export)",
+  "group": "telemetry"
+ },
+ "links": {
+  "label": "Links between units (trace chain, environments, projects)",
+  "group": "links"
  }
 }

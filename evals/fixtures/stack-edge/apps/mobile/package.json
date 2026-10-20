@@ -1,0 +1,22 @@
+{
+  "name": "example-co-mobile",
+  "version": "1.2.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "expo start",
+    "ios": "expo run:ios",
+    "android": "expo run:android"
+  },
+  "dependencies": {
+    "expo": "~58.0.16",
+    "react": "19.3.1",
+    "react-native": "0.88.0",
+    "@sentry/react-native": "~8.31.0"
+  },
+  "devDependencies": {
+    "typescript": "~5.9.2",
+    "@babel/core": "^7.25.2"
+  },
+  "main": "expo/AppEntry.js"
+}

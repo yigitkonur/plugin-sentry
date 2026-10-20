@@ -66,7 +66,7 @@ Privacy, by SDK family:
 - Recording inputs and outputs puts argument and result values on the spans. The fetched pages do not say whether that changes billed size.
 
 ## Verify (R6)
-1. Run the server from its real entry point, call one tool through a real MCP client, then open the trace in Sentry. The tool span should carry `mcp.tool.name` (Python) and `mcp.method.name` with `tools/call`, plus `mcp.transport` (`stdio`, `sse` or `http`). Node names this span "Tool Execution Span".
+1. Run the server from its real entry point, call one tool through a real MCP client, then open the trace in Sentry. The tool span should carry `mcp.tool.name` (Python) and `mcp.method.name` with `tools/call`, plus `mcp.transport` naming the transport. The Python page lists transport types stdio and HTTP without literal values; in a live run the JS SDK 11.8.0 set it to the transport's class name (StdioServerTransport) for stdio. Check that the attribute is present, not a literal. Node names this span "Tool Execution Span".
 2. Privacy proof: call one tool with a marker string in an argument (for example `probe-<random>`) under the settings you plan to ship. With recording off, the marker must not appear in any MCP span attribute. Then stop using the marker.
 3. A CLI or API proof of span attributes is not on the fetched pages; use the Sentry UI and mark the result UNVERIFIED for CLI use.
 

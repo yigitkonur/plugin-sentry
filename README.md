@@ -39,11 +39,19 @@ Or in one step on Claude Code 2.1.275+: `/plugin install sentry --marketplace yi
 ## How it works
 
 1. **Detect** (`sentry-ctx detect`, pure Python 3.9+ standard library): units, ecosystem, framework and resolved versions, Sentry packages, init sites, DSN sources, release and CI wiring, secrets in tracked files. Libraries are never told to initialize Sentry.
-2. **Steer**: which of 23 products apply to each unit, and why — `applicable`, `n/a` (with the reason) or `unknown`. Three different states are never merged: **clean**, **n/a**, **UNVERIFIED**.
+2. **Steer**: which of 25 products apply to each unit, and why — `applicable`, `n/a` (with the reason) or `unknown`. Three different states are never merged: **clean**, **n/a**, **UNVERIFIED**.
 3. **Audit / init**: read-only `auditor` agents (one per unit × product group) apply the module rubrics and the check catalog, and record findings with `ran`/`saw` evidence. The engine validates every finding; an unlisted check, a file outside the repo, a doc link off the allow-list or an org write without its exact call is rejected.
 4. **Approve**: you pick findings by severity (P0–P3) or product. Org writes are listed as exact calls.
 5. **Apply**: `implementer` edits only the files a finding names, builds, commits per group. Nothing is pushed.
 6. **Verify**: a separate `verifier` sends a marked event from the real code path, waits for it, checks release, environment, stack-trace readability and privacy. A change is **verified** only up to the rung it reached (R0 build … R6 product).
+
+### Several projects in one repo
+
+When a repo holds more than one deployable unit (a site, a mobile app, an API, an MCP server), detect also records how they relate (`links` in `detect.json`: which unit calls which, CORS allow-lists, DSNs shared between units, `environment` spellings, Cloudflare service bindings between Workers), and one extra auditor judges the relations as the pseudo-unit `_links`: the trace chain from client to server (browser `tracePropagationTargets` and CORS headers, not asked of mobile or server clients), Worker-to-Worker RPC trace propagation, `prod` vs `production`, one project per app. Every edge is a static candidate that the auditor confirms by reading both sides.
+
+### Cloudflare
+
+Workers has its own Logs, Traces and Issues (Workers Logs is on by default for new Workers). If a unit runs on Cloudflare, one extra policy question (`cloudflare.owner`) decides which system owns which signal (Cloudflare logs and Sentry errors and traces, everything in Sentry, both on purpose, or Cloudflare exporting to Sentry over OTLP), and the `cf-observability` checks hold the configuration to that answer instead of adding a second copy of everything. Astro on Cloudflare is handled as a Worker (`@sentry/astro` plus `@sentry/cloudflare`, wrangler `main` pointing at the wrapped entry), not as a Node app.
 
 The ledger lives in `.sentry-plugin/` (gitignored on your say-so): `policy.md`, `detect.json`, `plan.json`, `findings/`, `coverage.json`, `report.md`, `evidence/`.
 
@@ -106,6 +114,8 @@ Sentry documentation and SDK releases as of **2026-10-20**: JavaScript SDK v11 (
 scripts/check.sh --offline     # compile (3.9 and current), fixtures, plugin validation, secret scan
 scripts/check.sh               # + identifiers, stale-API rows and links against the live docs
 scripts/run-hook-evals.sh      # hook A/B evals (needs a logged-in claude CLI)
+scripts/replay-events.py       # recorded real events through the privacy scan (also in check.sh)
+scripts/check-sdk-types.py     # every removed/renamed JS stale-API row against the real @sentry packages (in check.sh, weekly in CI)
 ```
 
 See `AGENTS.md`. `PORT.md` maps every file of the earlier `use-sentry`, `build-sentry-macos-swift` and `plugin-sentry-cli` material to its new home.

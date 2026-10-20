@@ -1,0 +1,616 @@
+{
+ "ci": {
+  "deploy": [
+   {
+    "file": ".github/workflows/deploy.yml",
+    "value": "cloudflare"
+   }
+  ],
+  "files": [
+   ".github/workflows/deploy.yml"
+  ],
+  "providers": [
+   "github-actions"
+  ],
+  "scheduler": [],
+  "script_files_scanned": 0,
+  "sentry_refs": []
+ },
+ "iac": {
+  "terraform_sentry_files": []
+ },
+ "links": {
+  "cors_allowed_origins": {
+   "api": [
+    {
+     "evidence": [
+      "services/api/src/index.ts:32"
+     ],
+     "host": "www.example-co.com"
+    }
+   ]
+  },
+  "edges": [
+   {
+    "evidence": {
+     "from": [
+      "apps/mobile/.env:1",
+      "apps/mobile/App.tsx:15"
+     ],
+     "to": [
+      "services/api/wrangler.jsonc:6"
+     ]
+    },
+    "from": "mobile",
+    "from_role": "mobile",
+    "host": "api.example-co.com",
+    "kind": "http",
+    "match": "route",
+    "to": "api",
+    "to_role": "serverless",
+    "via_env": [
+     "EXPO_PUBLIC_API_URL"
+    ]
+   },
+   {
+    "evidence": {
+     "from": [
+      "apps/site/.env:1",
+      "apps/site/src/pages/index.astro:10"
+     ],
+     "to": [
+      "services/api/wrangler.jsonc:6"
+     ]
+    },
+    "from": "site",
+    "from_role": "fullstack",
+    "host": "api.example-co.com",
+    "kind": "http",
+    "match": "route",
+    "to": "api",
+    "to_role": "serverless",
+    "via_env": [
+     "PUBLIC_API_URL"
+    ]
+   },
+   {
+    "evidence": {
+     "from": [
+      "services/mcp/.env.example:1",
+      "services/mcp/src/index.ts:12"
+     ],
+     "to": [
+      "services/api/wrangler.jsonc:6"
+     ]
+    },
+    "from": "mcp",
+    "from_role": "backend",
+    "host": "api.example-co.com",
+    "kind": "http",
+    "match": "route",
+    "to": "api",
+    "to_role": "serverless",
+    "via_env": [
+     "API_URL"
+    ]
+   },
+   {
+    "binding": "API",
+    "entrypoint": "OrdersRpc",
+    "evidence": {
+     "from": [
+      "apps/site/wrangler.jsonc:8"
+     ],
+     "to": []
+    },
+    "from": "site",
+    "from_role": "fullstack",
+    "kind": "service-binding",
+    "receiver_sentry_wrapped": false,
+    "rpc_binding_listed": false,
+    "to": "api",
+    "to_role": "serverless"
+   },
+   {
+    "binding": "ORDERS",
+    "entrypoint": "OrdersDO",
+    "evidence": {
+     "from": [
+      "apps/site/wrangler.jsonc:8"
+     ],
+     "to": []
+    },
+    "from": "site",
+    "from_role": "fullstack",
+    "kind": "durable-object-binding",
+    "receiver_sentry_wrapped": true,
+    "rpc_binding_listed": false,
+    "to": "api",
+    "to_role": "serverless"
+   }
+  ],
+  "environment_names": {
+   "prod": [
+    {
+     "evidence": "apps/mobile/App.tsx:7",
+     "unit": "mobile"
+    },
+    {
+     "evidence": "apps/site/sentry.client.config.ts:5",
+     "unit": "site"
+    }
+   ],
+   "production": [
+    {
+     "evidence": "services/api/src/index.ts:52",
+     "unit": "api"
+    }
+   ]
+  },
+  "hosts": {
+   "api": [
+    {
+     "evidence": "services/api/wrangler.jsonc:6",
+     "host": "api.example-co.com"
+    }
+   ],
+   "site": [
+    {
+     "evidence": "apps/site/astro.config.mjs:7",
+     "host": "www.example-co.com"
+    },
+    {
+     "evidence": "apps/site/wrangler.jsonc:6",
+     "host": "www.example-co.com"
+    }
+   ]
+  },
+  "note": "static candidates; the links auditor confirms each edge by reading the cited lines",
+  "shared_dsns": [
+   {
+    "evidence": [
+     "services/api/wrangler.jsonc:8",
+     "apps/site/.env:2",
+     "apps/site/wrangler.jsonc:10"
+    ],
+    "ingest_host": "o123456.ingest.de.sentry.io",
+    "key_sha1_8": "b1775a78",
+    "project": "1234567",
+    "units": [
+     "api",
+     "site"
+    ]
+   }
+  ],
+  "unmatched_origins": {}
+ },
+ "repo": {
+  "default_branch": "main",
+  "dirty": false,
+  "file_source": "git",
+  "git": true,
+  "name": "<fixture>",
+  "remote": null,
+  "root": ".",
+  "scm": null,
+  "truncated": false,
+  "workspace_files": []
+ },
+ "schema": 1,
+ "secrets": {
+  "token_hits": [],
+  "token_hits_total": 0,
+  "tracked_token_hits": 0
+ },
+ "units": [
+  {
+   "confidence": 0.95,
+   "docs_platform": "react-native/manual-setup/expo",
+   "ecosystem": "js",
+   "evidence": {
+    "framework": [
+     "apps/mobile/package.json:deps:expo"
+    ]
+   },
+   "framework": "expo",
+   "framework_label": "Expo / React Native",
+   "framework_module": "platforms/react-native",
+   "framework_version": "58.0.16",
+   "id": "mobile",
+   "library": false,
+   "manifests": [
+    "apps/mobile/package.json"
+   ],
+   "overlays": [],
+   "package_manager": "npm",
+   "platforms": [],
+   "role": "mobile",
+   "root": "apps/mobile",
+   "secrets": {
+    "sensitive_files": {},
+    "token_hits": 0,
+    "tracked_token_hits": 0
+   },
+   "sentry": {
+    "artifacts": null,
+    "build": {},
+    "config_files": [],
+    "config_snapshot": [
+     {
+      "file": "apps/mobile/App.tsx",
+      "options": {
+       "environment": "\"prod\"",
+       "sendDefaultPii": "true",
+       "tracesSampleRate": "1.0"
+      }
+     }
+    ],
+    "dsn_literals": [
+     {
+      "file": "apps/mobile/.env",
+      "host": "o123456.ingest.de.sentry.io",
+      "line": 2,
+      "project_id": "1234568",
+      "region": "de"
+     }
+    ],
+    "dsn_sources": [
+     {
+      "file": "apps/mobile/App.tsx",
+      "kind": "code",
+      "line": 6,
+      "name": "EXPO_PUBLIC_SENTRY_DSN"
+     }
+    ],
+    "init_sites": [
+     {
+      "file": "apps/mobile/App.tsx",
+      "line": 5,
+      "placement": {
+       "app_ctor_before": [],
+       "local_imports_before": []
+      },
+      "text": "Sentry.init({"
+     },
+     {
+      "file": "apps/mobile/App.tsx",
+      "line": 26,
+      "placement": {
+       "app_ctor_before": [],
+       "local_imports_before": []
+      },
+      "text": "export default Sentry.wrap(App);"
+     }
+    ],
+    "legacy": [],
+    "notes": [],
+    "packages": [
+     {
+      "declared": "~8.31.0",
+      "name": "@sentry/react-native",
+      "resolved": "8.31.0"
+     }
+    ],
+    "status": "present"
+   },
+   "signals": {},
+   "wizard": null
+  },
+  {
+   "confidence": 0.95,
+   "docs_platform": "javascript/guides/astro",
+   "ecosystem": "js",
+   "evidence": {
+    "framework": [
+     "apps/site/package.json:deps:astro"
+    ]
+   },
+   "framework": "astro",
+   "framework_label": "Astro",
+   "framework_module": "platforms/astro",
+   "framework_version": "7.4.1",
+   "id": "site",
+   "library": false,
+   "manifests": [
+    "apps/site/package.json"
+   ],
+   "overlays": [
+    "cloudflare"
+   ],
+   "package_manager": "npm",
+   "platforms": [],
+   "role": "fullstack",
+   "root": "apps/site",
+   "secrets": {
+    "sensitive_files": {},
+    "token_hits": 0,
+    "tracked_token_hits": 0
+   },
+   "sentry": {
+    "artifacts": {
+     "configs": [
+      {
+       "build": "astro-integration",
+       "file": "apps/site/astro.config.mjs",
+       "line": 3,
+       "options": {}
+      }
+     ],
+     "note": "token_sources empty and no org/project/authToken in options means the build has no way to authenticate an upload",
+     "token_sources": []
+    },
+    "build": {
+     "astro-integration": "apps/site/astro.config.mjs:3"
+    },
+    "config_files": [
+     "apps/site/sentry.client.config.ts",
+     "apps/site/sentry.server.config.ts"
+    ],
+    "config_snapshot": [
+     {
+      "file": "apps/site/sentry.client.config.ts",
+      "options": {
+       "environment": "\"prod\"",
+       "integrations": "[Sentry.browserTracingIntegration(",
+       "replaysOnErrorSampleRate": "1.0",
+       "replaysSessionSampleRate": "1.0",
+       "sendDefaultPii": "true",
+       "tracesSampleRate": "1.0"
+      }
+     },
+     {
+      "file": "apps/site/sentry.server.config.ts",
+      "options": {
+       "tracesSampleRate": "1.0"
+      }
+     }
+    ],
+    "dsn_literals": [
+     {
+      "file": "apps/site/.env",
+      "host": "o123456.ingest.de.sentry.io",
+      "line": 2,
+      "project_id": "1234567",
+      "region": "de"
+     }
+    ],
+    "dsn_sources": [
+     {
+      "file": "apps/site/sentry.client.config.ts",
+      "kind": "code",
+      "line": 4,
+      "name": "PUBLIC_SENTRY_DSN"
+     },
+     {
+      "file": "apps/site/sentry.server.config.ts",
+      "kind": "code",
+      "line": 4,
+      "name": "SENTRY_DSN"
+     }
+    ],
+    "init_sites": [
+     {
+      "file": "apps/site/sentry.client.config.ts",
+      "line": 3,
+      "placement": {
+       "app_ctor_before": [],
+       "local_imports_before": []
+      },
+      "text": "Sentry.init({"
+     },
+     {
+      "file": "apps/site/sentry.server.config.ts",
+      "line": 3,
+      "placement": {
+       "app_ctor_before": [],
+       "local_imports_before": []
+      },
+      "text": "Sentry.init({"
+     }
+    ],
+    "legacy": [],
+    "notes": [],
+    "packages": [
+     {
+      "declared": "11.8.0",
+      "name": "@sentry/astro",
+      "resolved": "11.8.0"
+     },
+     {
+      "declared": "11.8.0",
+      "name": "@sentry/cloudflare",
+      "resolved": "11.8.0"
+     }
+    ],
+    "status": "present"
+   },
+   "signals": {
+    "deploy": [
+     "cloudflare (apps/site/wrangler.jsonc)"
+    ]
+   },
+   "wizard": null
+  },
+  {
+   "confidence": 0.95,
+   "docs_platform": "javascript/guides/cloudflare",
+   "ecosystem": "js",
+   "evidence": {
+    "framework": [
+     "services/api/package.json:deps:hono"
+    ]
+   },
+   "framework": "hono",
+   "framework_label": "Hono",
+   "framework_module": "platforms/cloudflare",
+   "framework_version": "4.13.13",
+   "id": "api",
+   "library": false,
+   "manifests": [
+    "services/api/package.json"
+   ],
+   "overlays": [
+    "cloudflare"
+   ],
+   "package_manager": "npm",
+   "platforms": [],
+   "role": "serverless",
+   "root": "services/api",
+   "secrets": {
+    "sensitive_files": {},
+    "token_hits": 0,
+    "tracked_token_hits": 0
+   },
+   "sentry": {
+    "artifacts": null,
+    "build": {},
+    "config_files": [],
+    "config_snapshot": [
+     {
+      "file": "services/api/src/index.ts",
+      "options": {
+       "environment": "\"production\"",
+       "integrations": "[Sentry.consoleLoggingIntegration({ levels: [\"log\"",
+       "sendDefaultPii": "true",
+       "tracesSampleRate": "1.0"
+      }
+     }
+    ],
+    "dsn_literals": [],
+    "dsn_sources": [
+     {
+      "file": "services/api/src/index.ts",
+      "kind": "code",
+      "line": 6,
+      "name": "SENTRY_DSN"
+     }
+    ],
+    "init_sites": [
+     {
+      "file": "services/api/src/index.ts",
+      "line": 22,
+      "placement": {
+       "app_ctor_before": [],
+       "local_imports_before": []
+      },
+      "text": "export const OrdersDO = Sentry.instrumentDurableObjectWithSentry("
+     },
+     {
+      "file": "services/api/src/index.ts",
+      "line": 49,
+      "placement": {
+       "app_ctor_before": [],
+       "local_imports_before": []
+      },
+      "text": "export default Sentry.withSentry("
+     }
+    ],
+    "legacy": [],
+    "notes": [],
+    "packages": [
+     {
+      "declared": "11.8.0",
+      "name": "@sentry/cloudflare",
+      "resolved": "11.8.0"
+     }
+    ],
+    "status": "present"
+   },
+   "signals": {
+    "deploy": [
+     "cloudflare (services/api/wrangler.jsonc)"
+    ],
+    "scheduler": [
+     "cloudflare-cron-trigger (services/api/wrangler.jsonc)"
+    ]
+   },
+   "wizard": "cloudflare"
+  },
+  {
+   "confidence": 0.7,
+   "docs_platform": "javascript/guides/node",
+   "ecosystem": "js",
+   "evidence": {
+    "framework": [
+     "services/mcp/package.json:deps:tsx"
+    ]
+   },
+   "framework": "node",
+   "framework_label": "Node.js",
+   "framework_module": "platforms/node",
+   "framework_version": "4.20.6",
+   "id": "mcp",
+   "library": false,
+   "manifests": [
+    "services/mcp/package.json"
+   ],
+   "overlays": [],
+   "package_manager": "npm",
+   "platforms": [],
+   "role": "backend",
+   "root": "services/mcp",
+   "secrets": {
+    "sensitive_files": {},
+    "token_hits": 0,
+    "tracked_token_hits": 0
+   },
+   "sentry": {
+    "artifacts": null,
+    "build": {},
+    "config_files": [],
+    "config_snapshot": [
+     {
+      "file": "services/mcp/src/index.ts",
+      "options": {
+       "sendDefaultPii": "true }"
+      }
+     }
+    ],
+    "dsn_literals": [
+     {
+      "file": "services/mcp/.env.example",
+      "host": "o123456.ingest.de.sentry.io",
+      "line": 2,
+      "project_id": "1234569",
+      "region": "de"
+     }
+    ],
+    "dsn_sources": [
+     {
+      "file": "services/mcp/src/index.ts",
+      "kind": "code",
+      "line": 8,
+      "name": "SENTRY_DSN"
+     }
+    ],
+    "init_sites": [
+     {
+      "file": "services/mcp/src/index.ts",
+      "line": 8,
+      "placement": {
+       "app_ctor_before": [],
+       "local_imports_before": []
+      },
+      "text": "Sentry.init({ dsn: process.env.SENTRY_DSN, sendDefaultPii: true });"
+     }
+    ],
+    "legacy": [],
+    "notes": [],
+    "packages": [
+     {
+      "declared": "11.8.0",
+      "name": "@sentry/node",
+      "resolved": "11.8.0"
+     }
+    ],
+    "status": "present"
+   },
+   "signals": {
+    "mcp": [
+     "@modelcontextprotocol/sdk"
+    ]
+   },
+   "wizard": null
+  }
+ ]
+}

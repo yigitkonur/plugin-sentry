@@ -6,7 +6,7 @@ Precondition: `sentry-ctx flow preamble` is done and `sentry-ctx steer --write` 
 2. **Dispatch auditors in parallel**, at most 4 at a time, with the Agent tool, `subagent_type: "sentry:auditor"`. One per
    unit x group, for each group that has at least one `applicable` cell in `plan.json`:
    `foundation` (core, errors, releases, debug-artifacts, mobile-builds, dev-spotlight) - `telemetry` (tracing, profiling, logs,
-   metrics, ai, mcp, flags, otlp) - `client` (replay, feedback) - `jobs` (crons, uptime) - `privacy` (always).
+   metrics, ai, mcp, flags, otlp, cf-observability) - `client` (replay, feedback) - `jobs` (crons, uptime) - `privacy` (always).
    The org half is not an auditor: when the policy allows org access and the CLI is logged in, run `sentry-ctx flow org` steps 2-5 yourself
    (`sentry-ctx org probe all --record` fills the four `_org/*` cells deterministically).
    Every prompt carries (fill from `plan.json` and the policy; do not paste file contents):
@@ -16,7 +16,7 @@ Precondition: `sentry-ctx flow preamble` is done and `sentry-ctx steer --write` 
    Group: <group>   Products to audit: <the applicable products in this group>
    Read first: sentry-ctx ref forge/ground-rules, then each of these (sentry-ctx ref <name>): <the unit's modules[]>
    Detected Sentry state: <status>; SDK <pkg> <resolved>; init sites <files>; build wiring <ids>
-   Policy digest: <preset, ai_io, replay_mask, environments, release_owner, volume>
+   Policy digest: <preset, ai_io, replay_mask, environments, release_owner, volume, cloudflare.owner (unset = ask, never guess)>
    Org access: <none|read-only|read-write>; CLI: <sentry vX | sentry-cli vX | none>; login: <ok|none>
    Cells you own (coverage): <unit>/<product> for each product above. Every one must end clean, findings, n/a or unverified.
    ```
@@ -24,6 +24,11 @@ Precondition: `sentry-ctx flow preamble` is done and `sentry-ctx steer --write` 
 3. **Barrier and completeness.** When all auditors return, run `sentry-ctx ledger`. For each pending cell re-dispatch once
    (same prompt, only those cells). Cells still pending afterwards: `sentry-ctx coverage set --unit U --product P --state unverified --reason "<why>"`.
    (The Stop hook enforces the same check.)
+3b. **Links** (only when `plan.json` has a `links` cell). After the per-unit audits, dispatch one more `sentry:auditor` for the whole repo:
+   `Unit: _links   Group: links   Products to audit: links   Read first: sentry-ctx ref forge/ground-rules, sentry-ctx ref products/links`, with the
+   `links` section of `.sentry-plugin/detect.json` (edges, cors_allowed_origins, shared_dsns, environment_names) and `sentry-ctx finding list`
+   (what the unit auditors already filed, so an edge problem is filed once). It owns the cell `_links/links`, files findings with `--unit _links`,
+   and re-runs the barrier above for that cell.
 4. **Report.** `sentry-ctx report`. Present: P0 and P1 in full (id, unit/product, one-line what, the evidence, the fix in one line),
    P2/P3 as counts per product, the coverage table with its three different states, org writes awaiting approval, and anything
    UNVERIFIED with the reason. Never blend clean with n/a or unverified.

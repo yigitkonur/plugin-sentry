@@ -77,6 +77,16 @@
         {"value": "exclude:replay", "label": "Never replay", "description": "Mark Session Replay not wanted."},
         {"value": "exclude:profiling", "label": "Never profiling", "description": "Mark profiling not wanted."}
       ]
+    },
+    {
+      "id": "cloudflare.owner", "call": "C", "header": "Cloudflare", "multiSelect": false, "when": "fw:cloudflare",
+      "question": "Cloudflare Workers has its own Logs, Traces and Issues. Where should each signal live?",
+      "options": [
+        {"value": "split", "label": "Cloudflare logs, Sentry errors and traces", "description": "Workers Logs keep console output; Sentry gets errors and traces. No Sentry console logging, no Cloudflare traces or Issues. Nothing is stored twice. Recommended."},
+        {"value": "sentry", "label": "Everything in Sentry", "description": "Errors, traces and logs in Sentry (console logging integration or Sentry.logger). Cloudflare observability off, so nothing is stored twice."},
+        {"value": "both", "label": "Both, on purpose", "description": "Keep Cloudflare Logs, Traces and Issues and Sentry together. Duplicates and double cost are accepted; findings only cover alert ownership and cost."},
+        {"value": "otlp", "label": "Cloudflare exports to Sentry", "description": "Workers keep native observability and export logs and traces to Sentry over OTLP (persist: false if Cloudflare need not store them). The SDK still reports errors."}
+      ]
     }
   ],
   "headless_env": "SENTRY_PLUGIN_POLICY_ANSWERS"

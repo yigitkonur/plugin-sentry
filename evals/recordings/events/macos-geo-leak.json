@@ -1,0 +1,62 @@
+{
+ "event": {
+  "entries": [
+   {
+    "data": {
+     "values": [
+      {
+       "stacktrace": {
+        "frames": []
+       },
+       "type": "NSPOSIXErrorDomain",
+       "value": "Code: 2"
+      },
+      {
+       "stacktrace": {
+        "frames": []
+       },
+       "type": "NSCocoaErrorDomain",
+       "value": "Code: 260"
+      }
+     ]
+    },
+    "type": "exception"
+   }
+  ],
+  "message": "NSCocoaErrorDomain: Code: 260",
+  "tags": [
+   {
+    "key": "environment",
+    "value": "production"
+   },
+   {
+    "key": "release",
+    "value": "person@example.invalid+111dc76"
+   }
+  ],
+  "user": {
+   "data": null,
+   "email": null,
+   "geo": {
+    "city": "Example City",
+    "country_code": "XX",
+    "region": "Example Region"
+   },
+   "id": null,
+   "ip_address": null,
+   "name": null,
+   "username": null
+  }
+ },
+ "expect": {
+  "ok": false,
+  "violations": [
+   "user.geo is present (country/city inferred from the connecti"
+  ],
+  "warnings": []
+ },
+ "note": "before the scrubbing rule: user.geo on a production-tagged native event",
+ "preset": "strict",
+ "recorded": "2026-10-20",
+ "source": "macos/a4397c22"
+}

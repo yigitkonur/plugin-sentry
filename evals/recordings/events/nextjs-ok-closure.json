@@ -1,0 +1,94 @@
+{
+ "event": {
+  "entries": [
+   {
+    "data": {
+     "values": [
+      {
+       "stacktrace": {
+        "frames": [
+         {
+          "absPath": "/home/dev/sentry-plugin-test-nextjs/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.prod.js",
+          "filename": "/home/dev/sentry-plugin-test-nextjs/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.prod.js",
+          "function": "r0.executeRequest",
+          "inApp": false,
+          "lineNo": 5,
+          "module": "next.dist.compiled.next-server:app-route-turbo.runtime.prod"
+         },
+         {
+          "absPath": "/home/dev/sentry-plugin-test-nextjs/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.prod.js",
+          "filename": "/home/dev/sentry-plugin-test-nextjs/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.prod.js",
+          "function": "r0.renderToResponse",
+          "inApp": false,
+          "lineNo": 5,
+          "module": "next.dist.compiled.next-server:app-route-turbo.runtime.prod"
+         },
+         {
+          "absPath": "node:internal/process/task_queues",
+          "filename": "node:internal/process/task_queues",
+          "function": "process.processTicksAndRejections",
+          "inApp": false,
+          "lineNo": 104,
+          "module": "task_queues"
+         },
+         {
+          "absPath": "app:///_next/server/chunks/_05a2r32g36a3t._.js",
+          "filename": "app:///_next/server/chunks/_05a2r32g36a3t._.js",
+          "function": "r",
+          "inApp": true,
+          "lineNo": 2,
+          "module": "_05a2r32g36a3t._"
+         }
+        ]
+       },
+       "type": "Error",
+       "value": "plugin_marker r5-closure nextjs"
+      }
+     ]
+    },
+    "type": "exception"
+   },
+   {
+    "data": {
+     "cookies": [],
+     "data": null,
+     "headers": [],
+     "method": "GET",
+     "url": "http://127.0.0.1:3057/sentry-r5"
+    },
+    "type": "request"
+   }
+  ],
+  "message": "Error: plugin_marker r5-closure nextjs",
+  "tags": [
+   {
+    "key": "environment",
+    "value": "development"
+   },
+   {
+    "key": "release",
+    "value": "70f0469b6d91ee8192602f9d742ae961269f06a3"
+   }
+  ],
+  "user": {
+   "data": null,
+   "email": null,
+   "geo": {},
+   "id": null,
+   "ip_address": null,
+   "name": null,
+   "username": null
+  }
+ },
+ "expect": {
+  "ok": true,
+  "violations": [],
+  "warnings": [
+   "stack-frame file names carry a developer home path (expected"
+  ]
+ },
+ "note": "post-rule Next.js server event",
+ "preset": "strict",
+ "recorded": "2026-10-20",
+ "source": "nextjs/11b6420e"
+}

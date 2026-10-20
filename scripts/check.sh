@@ -27,6 +27,19 @@ out=$($PY scripts/test-gate.py 2>&1); rc=$?
 echo "$out" | tail -1
 [ "$rc" = 0 ] || { echo "FAILED: scripts/test-gate.py"; echo "$out" | grep FAIL; fail=1; }
 
+stage "finding status: verified needs the rung reached and refuses one below what the finding requires"
+run $PY scripts/test-status.py
+
+stage "cross-unit scan: stays inside the repo, records no credentials, survives malformed configs"
+run $PY scripts/test-links.py
+
+stage "credential masking, including URL credentials in detection output"
+run $PY scripts/test-mask.py
+run $PY scripts/test-redirect.py
+
+stage "recorded events: the privacy scan says today what it said when each real event was recorded, and notices when one gets worse"
+run $PY scripts/replay-events.py
+
 stage "plugin manifest and component validation (claude plugin validate --strict)"
 if command -v claude >/dev/null 2>&1; then run claude plugin validate --strict .; else echo "claude CLI not installed: skipped"; fi
 
@@ -37,6 +50,8 @@ if [ "$OFFLINE" = 0 ]; then
   run $PY scripts/check-stale-apis.py
   stage "links: every URL in the repo resolves to a real page"
   run $PY scripts/check-links.py
+  stage "SDK types: every removed or renamed JS stale-API row is rejected by the real @sentry packages"
+  if command -v npm >/dev/null 2>&1; then run $PY scripts/check-sdk-types.py; else echo "npm not installed: skipped"; fi
 fi
 
 stage "secrets: no Sentry token shapes, personal paths or private DSN keys in tracked files"

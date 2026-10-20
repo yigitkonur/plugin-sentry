@@ -1,0 +1,14 @@
+{
+  "expo": {
+    "name": "Example Co",
+    "slug": "example-co",
+    "version": "1.2.0",
+    "orientation": "portrait",
+    "ios": {
+      "bundleIdentifier": "com.exampleco.app"
+    },
+    "android": {
+      "package": "com.exampleco.app"
+    }
+  }
+}

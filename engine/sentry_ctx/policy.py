@@ -10,6 +10,7 @@ DEFAULTS = {
     "privacy": {"preset": None, "ai_io": None, "replay_mask": None},
     "org_access": None, "environments": [], "volume": None, "release_owner": None,
     "products": {"include": [], "exclude": []},
+    "cloudflare": {"owner": None},
 }
 
 
@@ -34,9 +35,10 @@ def save(root, answers: dict, notes: str = ""):
 def questions(detect: dict, plan: dict | None, prev: dict | None):
     """Questions relevant to the detected units, previous answer moved first and labelled."""
     spec = paths.load_json_data("policy_questions.json")
-    sigs, products = set(), set()
+    sigs, products, fws = set(), set(), set()
     for u in detect["units"]:
         sigs |= set(u.get("signals", {}).keys())
+        fws |= {u.get("framework")} | set(u.get("overlays") or [])
     if plan:
         for u in plan["units"]:
             for pid, c in u["products"].items():
@@ -54,6 +56,8 @@ def questions(detect: dict, plan: dict | None, prev: dict | None):
                     ok = True
                 if k == "product" and any(x in products for x in vals):
                     ok = True
+                if k == "fw" and any(x in fws for x in vals):
+                    ok = True
             if not ok:
                 continue
         qq = json.loads(json.dumps(q))
@@ -68,7 +72,8 @@ def questions(detect: dict, plan: dict | None, prev: dict | None):
                         break
             qq["previous"] = prev_val
         out.append(qq)
-    return {"calls": {"A": [q for q in out if q["call"] == "A"], "B": [q for q in out if q["call"] == "B"]}}
+    letters = sorted({q["call"] for q in out} | {"A", "B"})
+    return {"calls": {c: [q for q in out if q["call"] == c] for c in letters}}
 
 
 def _get(d, dotted):

@@ -1,0 +1,93 @@
+{
+ "event": {
+  "entries": [
+   {
+    "data": {
+     "values": [
+      {
+       "stacktrace": {
+        "frames": [
+         {
+          "absPath": "/home/dev/sentry-plugin-test-astro/node_modules/astro/dist/core/pages/handler.js",
+          "filename": "../../../node_modules/astro/dist/core/pages/handler.js",
+          "function": "handlePages",
+          "inApp": false,
+          "lineNo": 31,
+          "module": "sentry.server.config_CoP4_dj1.mjs"
+         },
+         {
+          "absPath": "/home/dev/sentry-plugin-test-astro/node_modules/astro/dist/runtime/server/endpoint.js",
+          "filename": "../../../node_modules/astro/dist/runtime/server/endpoint.js",
+          "function": "renderEndpoint",
+          "inApp": false,
+          "lineNo": 28,
+          "module": "sequence_CnpFEzJu.mjs"
+         },
+         {
+          "absPath": "/home/dev/sentry-plugin-test-astro/src/pages/api/boom.ts",
+          "filename": "../../../src/pages/api/boom.ts",
+          "function": "GET",
+          "inApp": true,
+          "lineNo": 4,
+          "module": "boom_1uYpY4Ge.mjs"
+         }
+        ]
+       },
+       "type": "Error",
+       "value": "astro boom"
+      }
+     ]
+    },
+    "type": "exception"
+   },
+   {
+    "data": {
+     "cookies": [],
+     "data": null,
+     "headers": [],
+     "method": "GET",
+     "url": "http://localhost:8799/api/boom"
+    },
+    "type": "request"
+   }
+  ],
+  "message": "Error: astro boom",
+  "tags": [
+   {
+    "key": "environment",
+    "value": "development"
+   },
+   {
+    "key": "release",
+    "value": "49f6cc28e3b63b5bb3e935e2d496ba367b4531ff"
+   }
+  ],
+  "user": {
+   "data": null,
+   "email": null,
+   "geo": {
+    "city": "Example City",
+    "country_code": "XX",
+    "region": "Example Region"
+   },
+   "id": null,
+   "ip_address": "203.0.113.9",
+   "name": null,
+   "username": null
+  }
+ },
+ "expect": {
+  "ok": false,
+  "violations": [
+   "user.geo is present (country/city inferred from the connecti",
+   "user.ip_address is set"
+  ],
+  "warnings": [
+   "stack-frame file names carry a developer home path (expected"
+  ]
+ },
+ "note": "Astro on Cloudflare before the scrubbing rule: user.ip_address set and user.geo",
+ "preset": "strict",
+ "recorded": "2026-10-20",
+ "source": "astro/3b3a881b"
+}

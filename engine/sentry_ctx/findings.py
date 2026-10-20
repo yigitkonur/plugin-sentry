@@ -15,7 +15,7 @@ KINDS = ["fix", "add", "remove", "org-write", "manual"]
 STATUSES = ["open", "approved", "applied", "verified", "skipped", "blocked", "waived", "unverified"]
 REQUIRES = {"token", "org-write", "deploy", "tty", "policy"}
 RUNGS = ["R0", "R1", "R2", "R3", "R4", "R5", "R6"]
-DOC_HOSTS = {"docs.sentry.io", "develop.sentry.dev", "cli.sentry.dev", "skills.sentry.dev", "mcp.sentry.dev", "spotlightjs.com", "sentry.io"}
+DOC_HOSTS = {"docs.sentry.io", "develop.sentry.dev", "cli.sentry.dev", "skills.sentry.dev", "mcp.sentry.dev", "spotlightjs.com", "sentry.io", "developers.cloudflare.com"}
 DOC_GITHUB_PREFIX = "https://github.com/getsentry/"
 SECTIONS = ["what", "why", "evidence_text", "fix", "verify_text", "source"]
 SECTION_TITLES = {"what": "What", "why": "Why it matters here", "evidence_text": "Evidence", "fix": "Fix", "verify_text": "Verify", "source": "Source"}
@@ -116,8 +116,8 @@ class Invalid(util.EngineError):
 def validate(root, f: dict, units):
     errs, warns = [], []
     unit = f.get("unit")
-    if not unit or (unit not in units and unit != "_org"):
-        errs.append("unit %r is not a detected unit (%s) or _org" % (unit, ", ".join(sorted(units)) or "none; run steer first"))
+    if not unit or (unit not in units and unit not in ("_org", "_links")):
+        errs.append("unit %r is not a detected unit (%s), _org or _links" % (unit, ", ".join(sorted(units)) or "none; run steer first"))
     chk = f.get("check")
     cat = checks()
     if chk in cat:
@@ -245,7 +245,7 @@ def add(root, f: dict, units, force=False):
     return {"id": fid, "path": os.path.relpath(p, root), "warnings": warns + (["token-shaped text was masked"] if leaked else [])}
 
 
-def set_status(root, fid, status, reason=None, ran=None, saw=None):
+def set_status(root, fid, status, reason=None, ran=None, saw=None, rung=None):
     p = find_path(root, fid)
     if not p:
         raise util.EngineError("no such finding: " + fid)
@@ -255,16 +255,29 @@ def set_status(root, fid, status, reason=None, ran=None, saw=None):
         raise util.EngineError("status must be one of " + ", ".join(STATUSES))
     if status not in TRANSITIONS.get(cur, set()) and status != cur:
         raise util.EngineError("illegal transition %s -> %s (allowed: %s)" % (cur, status, ", ".join(sorted(TRANSITIONS.get(cur, set()))) or "none"))
-    if status in ("verified", "waived") and not (ran and saw) and status == "verified":
-        raise util.EngineError("verified needs --ran and --saw (what was run, what was seen)")
+    if status == "verified":
+        if not (ran and ran.strip() and saw and saw.strip()):
+            raise util.EngineError("verified needs --ran and --saw (what was run, what was seen)")
+        rung = (rung or "").strip().upper()
+        if rung not in RUNGS:
+            raise util.EngineError("verified needs --rung R0..R6: the highest rung your proof actually reached")
+        vf = fm.get("verify")
+        need = vf.get("rung") if isinstance(vf, dict) else None
+        if need not in RUNGS:
+            raise util.EngineError("this finding has no valid verify.rung (found %r): fix the finding file before verifying it" % (need,))
+        if RUNGS.index(rung) < RUNGS.index(need):
+            raise util.EngineError("this finding needs rung %s and you reached %s: record it as unverified with --reason (what is missing, and %s as the highest rung reached), or verify again at %s"
+                                   % (need, rung, rung, need))
     if status in ("waived", "skipped", "blocked", "unverified") and not reason:
         raise util.EngineError("%s needs --reason" % status)
     fm["status"] = status
+    if rung and status != "verified":
+        fm["reached_rung"] = str(rung).strip().upper()[:2]  # the highest rung reached, kept for an unverified finding
     if reason:
         fm["reason"] = tokens.mask(reason)
     if ran and saw:
         proofs = fm.get("proof") or {}
-        fm["proof"] = {"ran": tokens.mask(ran), "saw": tokens.mask(saw), "at": util.now_iso(), "rung": fm.get("verify", {}).get("rung")}
+        fm["proof"] = {"ran": tokens.mask(ran), "saw": tokens.mask(saw), "at": util.now_iso(), "rung": rung or fm.get("verify", {}).get("rung")}
     util.write_text(p, miniyaml.join_front_matter(fm, body))
     return {"id": fid, "status": status}
 
@@ -315,6 +328,12 @@ def cov_init(root, plan):
             cells.setdefault(key, {"state": "pending"})
         else:
             cells[key] = {"state": "unverified", "reason": c.get("reason", "no org access")}
+    lk = plan.get("links")
+    if lk:
+        if lk["state"] == "applicable":
+            cells.setdefault("_links/links", {"state": "pending"})
+        else:
+            cells["_links/links"] = {"state": "n/a", "reason": lk.get("reason", "")}
     util.write_json(cov_path(root), cov)
     return cov
 

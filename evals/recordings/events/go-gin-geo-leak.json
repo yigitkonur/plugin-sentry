@@ -1,0 +1,57 @@
+{
+ "event": {
+  "entries": [
+   {
+    "data": {
+     "formatted": "boom: demo handler failure"
+    },
+    "type": "message"
+   },
+   {
+    "data": {
+     "cookies": [],
+     "data": null,
+     "headers": [],
+     "method": "GET",
+     "url": "http://localhost:8081/boom"
+    },
+    "type": "request"
+   }
+  ],
+  "message": "boom: demo handler failure",
+  "tags": [
+   {
+    "key": "environment",
+    "value": "development"
+   },
+   {
+    "key": "release",
+    "value": "d2e49fc6d8c34344518f1cae03f4c8d36f9ddb7b"
+   }
+  ],
+  "user": {
+   "data": null,
+   "email": null,
+   "geo": {
+    "city": "Example City",
+    "country_code": "XX",
+    "region": "Example Region"
+   },
+   "id": null,
+   "ip_address": null,
+   "name": null,
+   "username": null
+  }
+ },
+ "expect": {
+  "ok": false,
+  "violations": [
+   "user.geo is present (country/city inferred from the connecti"
+  ],
+  "warnings": []
+ },
+ "note": "before the scrubbing rule: user.geo",
+ "preset": "strict",
+ "recorded": "2026-10-20",
+ "source": "go-gin/07433b78"
+}

@@ -1,0 +1,51 @@
+{
+ "event": {
+  "entries": [
+   {
+    "data": {
+     "formatted": "boom: demo handler failure"
+    },
+    "type": "message"
+   },
+   {
+    "data": {
+     "cookies": [],
+     "data": null,
+     "headers": [],
+     "method": "GET",
+     "url": "http://127.0.0.1:8081/boom"
+    },
+    "type": "request"
+   }
+  ],
+  "message": "boom: demo handler failure",
+  "tags": [
+   {
+    "key": "environment",
+    "value": "development"
+   },
+   {
+    "key": "release",
+    "value": "d2e49fc6d8c34344518f1cae03f4c8d36f9ddb7b"
+   }
+  ],
+  "user": {
+   "data": null,
+   "email": null,
+   "geo": {},
+   "id": null,
+   "ip_address": null,
+   "name": null,
+   "username": null
+  }
+ },
+ "expect": {
+  "ok": true,
+  "violations": [],
+  "warnings": []
+ },
+ "note": "post-rule marker event: nothing leaks",
+ "preset": "strict",
+ "recorded": "2026-10-20",
+ "source": "go-gin/5aa2dcc7"
+}

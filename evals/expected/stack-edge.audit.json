@@ -1,0 +1,270 @@
+{
+ "policy": "strict-no-org-cf-split",
+ "must_find": [
+  {
+   "id": "cf-logs-double",
+   "any_check": [
+    "cf.logs-owner"
+   ],
+   "files_any": [
+    "services/api"
+   ]
+  },
+  {
+   "id": "cf-traces-double",
+   "any_check": [
+    "cf.traces-owner"
+   ],
+   "files_any": [
+    "services/api"
+   ]
+  },
+  {
+   "id": "cf-export-persist",
+   "any_check": [
+    "cf.export-persist"
+   ],
+   "files_any": [
+    "services/api"
+   ]
+  },
+  {
+   "id": "astro-worker-entry",
+   "any_check": [
+    "core.init-placement"
+   ],
+   "files_any": [
+    "apps/site"
+   ],
+   "text_any": [
+    "withSentry",
+    "wrangler"
+   ]
+  },
+  {
+   "id": "link-propagation-targets",
+   "any_check": [
+    "link.trace-chain",
+    "trace.propagation"
+   ],
+   "text_any": [
+    "tracePropagationTargets"
+   ],
+   "files_any": [
+    "apps/site"
+   ]
+  },
+  {
+   "id": "link-cors-headers",
+   "any_check": [
+    "link.trace-chain",
+    "trace.propagation"
+   ],
+   "text_any": [
+    "cors",
+    "allowHeaders",
+    "access-control"
+   ]
+  },
+  {
+   "id": "environment-spelling-mobile",
+   "any_check": [
+    "link.vocab",
+    "core.environment"
+   ],
+   "text_any": [
+    "\"prod\""
+   ],
+   "files_any": [
+    "apps/mobile"
+   ]
+  },
+  {
+   "id": "environment-spelling-site",
+   "any_check": [
+    "link.vocab",
+    "core.environment"
+   ],
+   "text_any": [
+    "\"prod\""
+   ],
+   "files_any": [
+    "apps/site"
+   ]
+  },
+  {
+   "id": "link-shared-dsn",
+   "any_check": [
+    "link.dsn-reuse"
+   ]
+  },
+  {
+   "id": "data-collection-api",
+   "any_check": [
+    "priv.data-collection"
+   ],
+   "files_any": [
+    "services/api"
+   ]
+  },
+  {
+   "id": "data-collection-site",
+   "any_check": [
+    "priv.data-collection"
+   ],
+   "files_any": [
+    "apps/site"
+   ]
+  },
+  {
+   "id": "data-collection-mobile",
+   "any_check": [
+    "priv.data-collection"
+   ],
+   "files_any": [
+    "apps/mobile"
+   ]
+  },
+  {
+   "id": "data-collection-mcp",
+   "any_check": [
+    "priv.data-collection"
+   ],
+   "files_any": [
+    "services/mcp"
+   ]
+  },
+  {
+   "id": "mcp-init-order",
+   "any_check": [
+    "ai.mcp",
+    "core.init-placement"
+   ],
+   "files_any": [
+    "services/mcp"
+   ],
+   "text_any": [
+    "McpServer"
+   ]
+  },
+  {
+   "id": "sourcemaps-site",
+   "any_check": [
+    "rel.sourcemaps"
+   ],
+   "files_any": [
+    "apps/site"
+   ]
+  },
+  {
+   "id": "sourcemaps-mobile",
+   "any_check": [
+    "rel.sourcemaps"
+   ],
+   "files_any": [
+    "apps/mobile"
+   ]
+  },
+  {
+   "id": "release-api",
+   "any_check": [
+    "core.release"
+   ],
+   "files_any": [
+    "services/api"
+   ]
+  },
+  {
+   "id": "replay-rates-site",
+   "any_check": [
+    "replay.rates"
+   ],
+   "files_any": [
+    "apps/site"
+   ]
+  },
+  {
+   "id": "crons-api",
+   "any_check": [
+    "cron.coverage"
+   ],
+   "files_any": [
+    "services/api"
+   ]
+  },
+  {
+   "id": "trace-rate",
+   "any_check": [
+    "trace.rate"
+   ]
+  },
+  {
+   "id": "link-rpc-binding",
+   "any_check": [
+    "link.rpc-propagation",
+    "link.trace-chain"
+   ],
+   "text_any": [
+    "ORDERS",
+    "OrdersDO"
+   ],
+   "files_any": [
+    "apps/site"
+   ]
+  }
+ ],
+ "must_not": [
+  {
+   "id": "no-cors-on-mobile-edge",
+   "check_in": [
+    "link.trace-chain"
+   ],
+   "text_all": [
+    "mobile",
+    "cors"
+   ]
+  },
+  {
+   "id": "no-cors-on-mcp-edge",
+   "check_in": [
+    "link.trace-chain"
+   ],
+   "text_all": [
+    "mcp",
+    "cors"
+   ]
+  },
+  {
+   "id": "no-p0-outside-privacy",
+   "severity_in": [
+    "P0"
+   ],
+   "product_in": [
+    "core",
+    "errors",
+    "releases",
+    "debug-artifacts",
+    "tracing",
+    "links",
+    "cf-observability",
+    "mcp",
+    "crons",
+    "replay"
+   ]
+  },
+  {
+   "id": "no-rpc-finding-for-unwrapped-entrypoint",
+   "check_in": [
+    "link.rpc-propagation"
+   ],
+   "text_all": [
+    "OrdersRpc",
+    "should list"
+   ]
+  }
+ ],
+ "coverage_states_required": [
+  "n/a",
+  "unverified"
+ ]
+}

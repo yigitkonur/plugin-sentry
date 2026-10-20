@@ -247,10 +247,15 @@ def detect(root: str, include_tests: bool = False) -> dict:
     if util.is_git_repo(root):
         rc, out, _ = util.git(root, "status", "--porcelain")
         dirty = bool(out.strip())
+    from . import links as links_mod
+    try:
+        cross = links_mod.analyze(root, result_units)
+    except Exception as e:  # a relation scan must never take detection down with it
+        cross = {"error": "links scan failed: %s: %s" % (type(e).__name__, str(e)[:120])}
     for u in result_units:
         for k in ("_deps", "_meta", "_files", "_spec"):
             u.pop(k, None)
-    return {
+    out = {
         "schema": 1,
         "repo": {
             "root": ".", "name": repo_name, "git": util.is_git_repo(root), "dirty": dirty, "scm": provider,
@@ -264,6 +269,9 @@ def detect(root: str, include_tests: bool = False) -> dict:
         "iac": repo_level["iac"],
         "elapsed_ms": int((time.time() - t0) * 1000),
     }
+    if cross:
+        out["links"] = cross
+    return out
 
 
 def _classify(unit, c, root, udir, fileset):
