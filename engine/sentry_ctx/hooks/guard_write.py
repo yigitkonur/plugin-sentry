@@ -55,5 +55,5 @@ def run():
         return
     common.decide("deny", (
         "This write puts a Sentry credential-shaped string (sntryu_/sntrys_ token or SENTRY_AUTH_TOKEN value) into %s, which git would track. "
-        "Use a CI secret or an environment variable, or write it to a gitignored file (.env.sentry-build-plugin, .sentryclirc: add it to .gitignore first). "
-        "The DSN is public and is not blocked." % (rel or "a file")))
+        "Do this instead: (1) add %s to .gitignore, (2) repeat this write; it is allowed once `git check-ignore -v %s` prints a rule. "
+        "In CI use a secret or an environment variable. The DSN is public and is not blocked." % (rel or "a file", rel or "the file", rel or "the file")))

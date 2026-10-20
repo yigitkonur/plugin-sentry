@@ -41,6 +41,21 @@ for c, why in [("sentry auth token", "token"), ("sentry auth status", "partial t
                ("SENTRY_AUTH_TOKEN=sntryu_" + "a1" * 32 + " sentry release list", "token on the command line")]:
     expect(c, "deny")
 
+# a credential file reached through a loop variable, glob, pipe or redirect is still a read of the credential
+for c in ['for f in package.json .sentryclirc .gitignore; do echo "== $f"; cat -n "$f"; done', "cat .sentry*", "echo .sentryclirc | xargs cat",
+          "while read l; do echo $l; done < .sentryclirc", "f=.sentryclirc; cat $f", "python3 -c \"print(open('.sentryclirc').read())\"",
+          "echo \"$(cat sentry.properties)\"", "tail -n 3 < .env.sentry-build-plugin"]:
+    expect(c, "deny")
+# writing a credential file is not reading it: redirect targets, cp/mv destinations, sed -i and grep -q/-c/-l print nothing
+for c in ["printf 'SENTRY_AUTH_TOKEN=%s\\n' \"$(tr -d '\\n' < token.txt)\" > .env.sentry-build-plugin && wc -c .env.sentry-build-plugin",
+          "(printf 'SENTRY_AUTH_TOKEN='; cat token.txt) > .env.sentry-build-plugin && test -s .env.sentry-build-plugin && git check-ignore -v .env.sentry-build-plugin",
+          "cp token.txt .env.sentry-build-plugin && sed -i '' '1s/^/SENTRY_AUTH_TOKEN=/' .env.sentry-build-plugin", "cat token.txt >> .env.sentry-build-plugin",
+          "grep -q sntry .sentryclirc && echo found", "echo x 2>.sentryclirc.log"]:
+    expect(c, "allow")
+for c in ["git check-ignore -v .sentryclirc", "git ls-files .sentryclirc sentry.properties", "ls -la .sentryclirc", "test -f .sentryclirc && echo present",
+          'for f in package.json vercel.json; do cat -n "$f"; done', "cat package.json .gitignore", "grep -n sentry package.json"]:
+    expect(c, "allow")
+
 for c in ["sentry-ctx run approve-write --method PUT /projects/a/b/ --finding F-001", "/x/bin/sentry-ctx run approve-write --cli 'project create a/b:node'"]:
     expect(c, "approval")
 
@@ -93,6 +108,29 @@ add_w("PUT", "/projects/o/p", finding="F-2", fp=fp)
 check("bound approval accepts the unchanged operation", runstate.write_is_approved(st, "PUT", "/projects/o/p/", "s1", "F-2", ow), True)
 check("bound approval rejects a changed body", runstate.write_is_approved(st, "PUT", "/projects/o/p/", "s1", "F-2", dict(ow, body={"scrubIPAddresses": False})), False)
 check("bound approval is not another finding's", runstate.write_is_approved(st, "PUT", "/projects/o/p/", "s1", "F-3", ow), False)
+
+
+# Read and Grep on a credential file (hook entry point, fed a PreToolUse payload)
+import io, json, contextlib  # noqa: E402
+from sentry_ctx.hooks import common  # noqa: E402
+
+
+def tool_verdict(tool, **ti):
+    sys.stdin = io.StringIO(json.dumps({"tool_name": tool, "tool_input": ti, "cwd": ROOT, "session_id": "s1"}))
+    out = io.StringIO()
+    with contextlib.redirect_stdout(out):
+        g.run()
+    sys.stdin = sys.__stdin__
+    o = out.getvalue().strip()
+    return json.loads(o)["hookSpecificOutput"]["permissionDecision"] if o else "allow"
+
+
+for tool, ti, want in [("Read", {"file_path": "/repo/.sentryclirc"}, "deny"), ("Grep", {"pattern": "token", "path": "/repo/sentry.properties"}, "deny"),
+                       ("Read", {"file_path": "/repo/package.json"}, "allow"), ("Grep", {"pattern": "sentry", "path": "/repo/src"}, "allow")]:
+    got = tool_verdict(tool, **ti)
+    ok = got == want
+    fails += 0 if ok else 1
+    print("%-5s %-9s want %-9s %s %s" % ("ok" if ok else "FAIL", got, want, tool, ti))
 
 print("\n%s" % ("ALL GATE TESTS PASSED" if not fails else "%d GATE TEST(S) FAILED" % fails))
 sys.exit(1 if fails else 0)

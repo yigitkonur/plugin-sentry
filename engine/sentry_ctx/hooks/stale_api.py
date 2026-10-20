@@ -57,4 +57,4 @@ def run():
         return
     pk = [p for p in best["sentry"]["packages"] if p.get("kind") != "tooling" and p.get("resolved")]
     head = "Sentry stale-API check for %s %s in %s:" % (pk[0]["name"], pk[0]["resolved"], rel) if pk else "Sentry stale-API check:"
-    common.context("PostToolUse", (head + " " + " ".join(lines[:4]) + " Fix these before moving on; look the replacement up with `sentry-ctx docs page`.")[:900])
+    common.context("PostToolUse", (head + " " + " ".join(lines[:4]) + " This list comes from the official migration guides: apply the instruction given for each one to the file you just edited, now, without installing the SDK or re-deriving it. Only when an entry gives no replacement, look it up with `sentry-ctx docs page`.")[:900])

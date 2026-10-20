@@ -11,6 +11,7 @@ approved on its own. Reads are never gated. Best-effort parsing: a guard rail fo
 """
 from __future__ import annotations
 
+import fnmatch
 import os
 import re
 import shlex
@@ -41,7 +42,13 @@ V3_PAIRS = {
 V3_SINGLE = {"upload-dif": "debug-files upload", "upload-dsym": "debug-files upload", "upload-proguard": "proguard upload"}
 CRED_FILES = re.compile(r"(\.sentryclirc|\.env\.sentry-build-plugin|sentry\.properties|SentryCliOptions\.asset|sentry/cli\.db)")
 READERS = {"cat", "less", "more", "head", "tail", "grep", "egrep", "rg", "sed", "awk", "bat", "strings", "xxd", "hexdump", "sqlite3", "cp", "mv", "open", "code", "vim", "nano", "base64"}
+READERS_INDIRECT = READERS | {"nl", "od", "cut", "tr", "sort", "uniq", "diff", "cmp", "paste", "column", "jq", "xargs", "source", ".", "tee", "while", "read"}
+CRED_NAMES = (".sentryclirc", ".env.sentry-build-plugin", "sentry.properties", "SentryCliOptions.asset")
+SHELL_KEYWORDS = {"do", "then", "else", "elif", "{", "(", "!", "time"}
 STATE_FILE = re.compile(r"\.sentry-plugin/run\.json|(?<![\w/.-])run\.json")
+CRED_READ_REASON = ("That file holds Sentry credentials; reading it prints them into the transcript, even through sed/cut (a mask cannot be proven). "
+                    "Audit with `git ls-files`, `git check-ignore -v <file>` or `sentry-ctx detect` (masked). To confirm a file you wrote, use `wc -c <file>` or `test -s <file>`. "
+                    "To create one: add it to .gitignore first, then write it with a command that does not read it back.")
 INTERPRETERS = {"python", "python3", "python3.9", "python3.14", "perl", "ruby", "node", "bun", "deno", "php", "sh", "bash", "zsh"}
 
 
@@ -105,6 +112,35 @@ def _program(seg):
             continue
         break
     return i
+
+
+_REDIR_TOKEN = re.compile(r"^(?:\d*|&)>>?\|?$")
+_REDIR_ATTACHED = re.compile(r"^(?:\d*|&)>>?\|?(?!&)(.+)$")
+
+
+def _read_args(prog, args):
+    """The arguments a program reads and prints: redirect targets are written, not read; the destination of cp/mv is written;
+    `sed -i` edits in place; `grep -q/-c/-l` print no file content."""
+    out, skip = [], False
+    for a in args:
+        if skip:
+            skip = False
+            continue
+        if _REDIR_TOKEN.match(a):
+            skip = True
+            continue
+        if _REDIR_ATTACHED.match(a) and not a.startswith("<"):
+            continue
+        out.append(a)
+    if prog == "sed" and any(a == "-i" or a.startswith("-i") or a == "--in-place" or a.startswith("--in-place=") for a in args if a.startswith("-")):
+        return []
+    if prog in ("grep", "egrep", "fgrep", "rg") and any(re.match(r"^-[A-Za-z]*[qcl][A-Za-z]*$", a) or a in ("--quiet", "--count", "--files-with-matches") for a in args):
+        return []
+    if prog in ("cp", "mv"):
+        files = [a for a in out if not a.startswith("-")]
+        if files:
+            out = [a for a in out if a is not files[-1]]
+    return out
 
 
 def _flag(args, *names):
@@ -256,6 +292,30 @@ def _touches_state(cmd: str):
     return False
 
 
+def _cred_read(seg, mentioned):
+    """A credential file reached through a loop variable, a glob, a pipe or a redirect: `for f in .sentryclirc; do cat "$f"; done`,
+    `cat .sentry*`, `echo .sentryclirc | xargs cat`, `while read l; do :; done < .sentryclirc`. `mentioned`: the command names a credential file."""
+    s = list(seg)
+    while s and s[0] in SHELL_KEYWORDS:
+        s = s[1:]
+    i = _program(s)
+    if i >= len(s):
+        return False
+    prog, all_args = os.path.basename(s[i]), s[i + 1:]
+    args = _read_args(prog, all_args)
+    for k, a in enumerate(args):  # stdin redirect from a credential file, whatever the program
+        if (a.startswith("<") and not a.startswith("<<") and CRED_FILES.search(a)) or (a == "<" and k + 1 < len(args) and CRED_FILES.search(args[k + 1])):
+            return True
+    if prog in READERS_INDIRECT or prog in INTERPRETERS:
+        if any(any(c in a for c in "*?[") and "sentry" in a.lower() and any(fnmatch.fnmatch(n, a) for n in CRED_NAMES) for a in args):
+            return True
+        if mentioned and (prog == "xargs" or "xargs" in s[:i] or any(("$" in a or "`" in a) for a in args)):
+            return True
+        if mentioned and prog in INTERPRETERS and any(CRED_FILES.search(a) for a in args):
+            return True
+    return False
+
+
 def _approve_cmd(prog_base, args):
     """`sentry-ctx run approve-write` / `run adopt` (they record consent or take over a run)."""
     if prog_base != "sentry-ctx":
@@ -281,7 +341,10 @@ def classify(cmd: str, depth: int = 0):
         seen.add(c)
         if depth < 3:
             stack.extend(_nested(c))
+        mentioned = bool(CRED_FILES.search(c))
         for seg in _segments(c):
+            if _cred_read(seg, mentioned):
+                return "deny", CRED_READ_REASON, []
             res = _classify_segment(seg, depth)
             if res is None:
                 continue
@@ -329,8 +392,8 @@ def _classify_segment(seg, depth):
         return "deny", "Printing SENTRY_AUTH_TOKEN would put the token in the transcript. Test that it is set with `[ -n \"$SENTRY_AUTH_TOKEN\" ] && echo set`.", []
     if prog == "printenv" and any(re.match(r"SENTRY_(AUTH_)?TOKEN", a) for a in args):
         return "deny", "Printing the token would put it in the transcript. Test that it is set with `[ -n \"$SENTRY_AUTH_TOKEN\" ] && echo set`.", []
-    if prog in READERS and any(CRED_FILES.search(a) for a in args):
-        return "deny", "That file holds Sentry credentials; reading it prints them into the transcript. Audit with `git ls-files`, `git check-ignore -v <file>` or `sentry-ctx detect` (masked) instead.", []
+    if prog in READERS and any(CRED_FILES.search(a) for a in _read_args(prog, args)):
+        return "deny", CRED_READ_REASON, []
     if prog in ("curl", "wget", "http", "https", "xh"):
         line = " ".join(seg)
         if re.search(r"sentry\.io/api/|\.sentry\.io", line):
@@ -399,6 +462,11 @@ def run():
     if common.mode() == "off":
         return
     ti = inp.get("tool_input") or {}
+    if inp.get("tool_name") in ("Read", "Grep"):  # the file tools print file contents into the transcript just like cat
+        target = ti.get("file_path") or ti.get("path") or ""
+        if target and CRED_FILES.search(os.path.basename(target)):
+            common.decide("deny", CRED_READ_REASON)
+        return
     cmd = ti.get("command") or ""
     if not cmd:
         return
