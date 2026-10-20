@@ -1,17 +1,17 @@
 # Cloudflare observability next to Sentry (product id: cf-observability)
 
-Cloudflare Workers has its own Logs, Traces and Issues, on by default for new Workers. Sentry reports the same Worker. This module decides which system owns which signal, so nothing is stored, billed or paged twice by accident. The owner is a policy answer (`cloudflare.owner`: `split`, `sentry`, `both`, `otlp`); an unset answer is a decision finding, never a guess.
+Cloudflare Workers has its own Logs, Traces and Issues. Workers Logs is on by default for newly created Workers; Traces and Issues are opt-in. Sentry reports the same Worker. This module decides which system owns which signal, so nothing is stored, billed or paged twice by accident. The owner is a policy answer (`cloudflare.owner`: `split`, `sentry`, `both`, `otlp`); an unset answer is a decision finding, never a guess.
 
 ## Fit
 Applies to units with the Cloudflare overlay (`data/signals.tsv` row `cf-observability`, `fw:cloudflare`): Workers, Pages, and frameworks deployed on Workers (Astro, Hono, SvelteKit).
 
 | Repo evidence | Where to look | What it means |
 |---|---|---|
-| `observability` block | `wrangler.jsonc`, `wrangler.json`, `wrangler.toml` (also under `env.<name>`) | Workers Logs (`enabled`), `logs`, `traces`, `issues`; each can differ per environment |
+| `observability` block | `wrangler.jsonc`, `wrangler.json`, `wrangler.toml` (also under `env.<name>`) | Workers Logs (`enabled`), `logs`, `traces`, `issues`. The Logs page shows `observability` per environment; it does not show that for traces or issues |
 | `destinations` under `observability.logs` or `.traces` | same file | OpenTelemetry export; a Sentry destination exists only in the Cloudflare dashboard, so UI-only: ask, else UNVERIFIED |
 | `consoleLoggingIntegration(`, `Sentry.logger.` | the Worker entry or `instrument.server.*` | Sentry Logs fed from `console.*` or called directly |
 | `tracesSampleRate`, `tracesSampler` | Sentry options callback | Sentry tracing on |
-| no `observability` key | wrangler config | Workers Logs state follows the dashboard setting; UNVERIFIED without account access |
+| no `observability` key | wrangler config | The file does not say whether Workers Logs writes (the Logs page: add the setting to write logs); UNVERIFIED without account access |
 
 Worth auditing whenever a Cloudflare unit has Sentry plus any Cloudflare observability, and in baseline mode (Sentry absent) so the init respects the owner. Not worth a finding: a Cloudflare unit with no Sentry and policy `split` that only needs errors and traces added.
 
@@ -25,7 +25,7 @@ Rule: one store per signal, chosen by the policy answer. Cloudflare facts come f
 | `both` | any | any | cost and alert ownership only (checks `cf.export-persist`, `cf.issues-alerts`) |
 | `otlp` | `logs` and `traces` list the Sentry destination names in `destinations`; `persist` set on purpose | no Sentry tracing in the Worker (two trace systems otherwise); the SDK still reports errors | Cloudflare OpenTelemetry export; Cloudflare Export to Sentry |
 
-- Sentry Logs on Cloudflare: enabled by default from SDK 10.71.0 (`enableLogs` below that, removed in v11; see `data/stale-apis/js.tsv`). Console lines reach Sentry only through `consoleLoggingIntegration`, so double capture needs that integration or a direct `Sentry.logger` call.
+- Sentry Logs on Cloudflare: enabled by default from SDK 10.71.0 (`enableLogs` below that, removed in v11; see `data/stale-apis/js.tsv`). The Sentry page shows `consoleLoggingIntegration` as the way to capture `console.*` calls as Sentry Logs, so double capture of console output needs that integration (or a direct `Sentry.logger` call).
 - Workers Logs: "All newly created Workers will come with the observability setting enabled by default". `head_sampling_rate` (0 to 1, default 1) samples whole requests; `invocation_logs` false drops the per-request invocation log.
 - Workers tracing is a separate, automatic system: `observability.traces.enabled`. The tracing page says `observability.enabled` alone does not turn it on while it is in early beta.
 - OpenTelemetry export covers Workers traces and logs (incl. `console.log()`), not metrics. A destination does nothing until the Worker's wrangler config names it and is redeployed; data takes minutes.
@@ -46,13 +46,13 @@ Rule: one store per signal, chosen by the policy answer. Cloudflare facts come f
 | Every request has a Cloudflare trace and a Sentry trace | `observability.traces.enabled` plus a Sentry sample rate | One tracing system per path | Workers tracing; Sentry Cloudflare guide |
 | Sentry destination created, nothing arrives | Creating a destination does not start export | Name it in `destinations` in wrangler config, redeploy, wait minutes | Cloudflare Export to Sentry, step 4 |
 | Data stored and counted in Cloudflare although exported | `persist` defaults to true | `persist: false` when Sentry is the only store | Cloudflare OpenTelemetry export |
-| Sentry metrics empty after moving to export | Metrics cannot be exported over OpenTelemetry | Send metrics with the SDK | Cloudflare OpenTelemetry export, Known limitations |
+| Sentry metrics empty after moving to export | Cloudflare lists metrics as not exportable over OpenTelemetry | Use the SDK for Sentry metrics | Cloudflare OpenTelemetry export, Known limitations |
 | Worker errors page twice | Cloudflare Issues automation and a Sentry alert both fire | One paging owner | Workers Issues |
 | Exported traces do not join SDK errors | The pages fetched do not describe linking for Workers | Do not promise it; mark UNVERIFIED and test (Verify 4) | Unconfirmed |
 
 ## Volume, cost and overhead
 - Cloudflare: persisted logs and traces count toward Cloudflare Observability ingestion and storage from 2026-12-01 (OpenTelemetry export page); `head_sampling_rate` bounds it on both sides.
-- Sentry: logs billed by volume (`quota` module). Console capture of chatty `console.log` multiplies it, which is why `split` keeps console output in Cloudflare.
+- Sentry log volume and billing: see the `quota` module. Console capture of a chatty `console.log` adds to it, which is why `split` keeps console output in Cloudflare.
 - Overhead: no figure is on the pages fetched.
 
 ## Verify (R6)

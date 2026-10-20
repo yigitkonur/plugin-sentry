@@ -33,7 +33,7 @@ def _mask_match(m: "re.Match[str]") -> str:
 # `name: value` / `name=value` where the name says credential and the value is long and opaque (any alphabet), e.g. a legacy
 # 64-hex auth token, a bearer value, a password. The value is masked even when truncation or quoting removed the prefix.
 CONTEXT_ANY = re.compile(
-    r"""(?i)((?:auth[_-]?token|api[_-]?key|access[_-]?token|client[_-]?secret|secret|password|passwd|bearer|authorization)["']?\s*[:=]\s*["']?(?:bearer\s+)?)"""
+    r"""(?i)((?:auth[_-]?token|api[_-]?key|access[_-]?token|client[_-]?secret|secret|password|passwd|bearer|authorization|\btoken)["']?\s*[:=]\s*["']?(?:bearer\s+)?)"""
     r"""([A-Za-z0-9_\-./+=]{16,})"""
 )
 # Dictionary keys that name a credential: their string value is replaced whole.
@@ -41,7 +41,9 @@ SENSITIVE_KEY = re.compile(r"(?i)(?:^|[_.\-])(auth[_-]?token|token|secret|passwo
 
 
 # `scheme://user:password@host` and `scheme://longtoken@host`: the userinfo is a credential. A Sentry DSN key (32 hex) is public and stays.
-URL_CRED = re.compile(r"""(?i)\b([a-z][a-z0-9+.-]*://)(?:[^/\s:@"'`]+:[^/\s@"'`]+|(?![0-9a-f]{32}@)[^/\s:@"'`]{6,})@""")
+# Linear: a scheme can only start where the previous character is not a scheme character. A password may itself contain '@' (the last '@' of the
+# segment before the first '/', '?' or '#' ends the userinfo). A single-token userinfo must be 16+ characters, so `ssh://ubuntu@host` stays.
+URL_CRED = re.compile(r"""(?i)(?<![a-z0-9+.-])([a-z][a-z0-9+.-]*://)(?:[^/?#\s"'`@:]+:[^/?#\s"'`]*|(?![0-9a-f]{32}@)[^/?#\s"'`@:]{16,})@(?=[a-z0-9\[.-])""")
 
 
 def mask(text: str) -> str:

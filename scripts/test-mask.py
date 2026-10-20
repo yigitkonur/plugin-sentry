@@ -28,6 +28,16 @@ dsn = "https://0123456789abcdef0123456789abcdef@o1.ingest.de.sentry.io/42"
 check("a Sentry DSN (public key) is not masked", M(dsn) == dsn, M(dsn))
 check("a legacy DSN with a secret part is masked", "secretpart" not in M("https://0123456789abcdef0123456789abcdef:secretpart@o1.ingest.sentry.io/42"))
 check("a Sentry user token is still masked", "a" * 64 not in M("sntryu_" + "a" * 64))
+check("a password holding a raw '@' is masked to its last '@'", all(x not in M("https://u:p@ss:w0rd@host.example-co.net/x") for x in ("p@ss", "w0rd")) and "host.example-co.net" in M("https://u:p@ss:w0rd@host.example-co.net/x"), M("https://u:p@ss:w0rd@host.example-co.net/x"))
+check("an '@' after the path is not userinfo", M("https://example.com/users/jane:doe@mail") == "https://example.com/users/jane:doe@mail" and M("https://example.com/?next=a:b@c") == "https://example.com/?next=a:b@c")
+check("a 15-character user (ssh://deploymentuser@host) is left alone", M("ssh://deploymentuser@host.example-co.net/r") == "ssh://deploymentuser@host.example-co.net/r")
+check("`token: value` is masked", "abc123secretvalue" not in M("token: abc123secretvalue") and "abc123secretvalue" not in M('{"token":"abc123secretvalue"}'))
+import time  # noqa: E402
+for nm, blob in (("a.", "a." * 500000), ("https://", "https://" * 125000), ("x@", "x@" * 500000), ("a:", "a:" * 500000), ("http://a:", "http://a:" * 100000)):
+    t0 = time.time()
+    M(blob)
+    dt = time.time() - t0
+    check("1 MB of %r masks in under 3 s (%.2fs)" % (nm, dt), dt < 3, "%.2fs" % dt)
 check("plain text is unchanged", M("Hello https://example.com/a?b=c and mail@host") == "Hello https://example.com/a?b=c and mail@host")
 
 with tempfile.TemporaryDirectory() as tmp:

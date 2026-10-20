@@ -51,7 +51,7 @@ When a repo holds more than one deployable unit (a site, a mobile app, an API, a
 
 ### Cloudflare
 
-Workers has its own Logs, Traces and Issues, on by default. If a unit runs on Cloudflare, one extra policy question (`cloudflare.owner`) decides which system owns which signal (Cloudflare logs and Sentry errors and traces, everything in Sentry, both on purpose, or Cloudflare exporting to Sentry over OTLP), and the `cf-observability` checks hold the configuration to that answer instead of adding a second copy of everything. Astro on Cloudflare is handled as a Worker (`@sentry/astro` plus `@sentry/cloudflare`, wrangler `main` pointing at the wrapped entry), not as a Node app.
+Workers has its own Logs, Traces and Issues (Workers Logs is on by default for new Workers). If a unit runs on Cloudflare, one extra policy question (`cloudflare.owner`) decides which system owns which signal (Cloudflare logs and Sentry errors and traces, everything in Sentry, both on purpose, or Cloudflare exporting to Sentry over OTLP), and the `cf-observability` checks hold the configuration to that answer instead of adding a second copy of everything. Astro on Cloudflare is handled as a Worker (`@sentry/astro` plus `@sentry/cloudflare`, wrangler `main` pointing at the wrapped entry), not as a Node app.
 
 The ledger lives in `.sentry-plugin/` (gitignored on your say-so): `policy.md`, `detect.json`, `plan.json`, `findings/`, `coverage.json`, `report.md`, `evidence/`.
 

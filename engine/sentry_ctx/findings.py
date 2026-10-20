@@ -256,17 +256,23 @@ def set_status(root, fid, status, reason=None, ran=None, saw=None, rung=None):
     if status not in TRANSITIONS.get(cur, set()) and status != cur:
         raise util.EngineError("illegal transition %s -> %s (allowed: %s)" % (cur, status, ", ".join(sorted(TRANSITIONS.get(cur, set()))) or "none"))
     if status == "verified":
-        if not (ran and saw):
+        if not (ran and ran.strip() and saw and saw.strip()):
             raise util.EngineError("verified needs --ran and --saw (what was run, what was seen)")
+        rung = (rung or "").strip().upper()
         if rung not in RUNGS:
             raise util.EngineError("verified needs --rung R0..R6: the highest rung your proof actually reached")
-        need = (fm.get("verify") or {}).get("rung") or "R0"
-        if need in RUNGS and RUNGS.index(rung) < RUNGS.index(need):
+        vf = fm.get("verify")
+        need = vf.get("rung") if isinstance(vf, dict) else None
+        if need not in RUNGS:
+            raise util.EngineError("this finding has no valid verify.rung (found %r): fix the finding file before verifying it" % (need,))
+        if RUNGS.index(rung) < RUNGS.index(need):
             raise util.EngineError("this finding needs rung %s and you reached %s: record it as unverified with --reason (what is missing, and %s as the highest rung reached), or verify again at %s"
                                    % (need, rung, rung, need))
     if status in ("waived", "skipped", "blocked", "unverified") and not reason:
         raise util.EngineError("%s needs --reason" % status)
     fm["status"] = status
+    if rung and status != "verified":
+        fm["reached_rung"] = str(rung).strip().upper()[:2]  # the highest rung reached, kept for an unverified finding
     if reason:
         fm["reason"] = tokens.mask(reason)
     if ran and saw:

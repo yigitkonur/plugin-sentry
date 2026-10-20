@@ -48,6 +48,23 @@ with tempfile.TemporaryDirectory() as root:
     fails += 0 if got == "R5" else 1
     print("%-5s proof records the rung reached (R5), not the required one | %s" % ("ok" if got == "R5" else "FAIL", got))
     expect("verified is still refused without --ran and --saw", lambda: findings.set_status(root, "F-001", "verified", rung="R6"), "--ran")
+    make(root, "F-004", "R6", "applied")
+    expect("a lowercase --rung is accepted (r6)", lambda: findings.set_status(root, "F-004", "verified", ran="r", saw="s", rung="r6"))
+    make(root, "F-005", "R6", "applied")
+    expect("a blank --saw is refused", lambda: findings.set_status(root, "F-005", "verified", ran="r", saw="   ", rung="R6"), "--ran")
+    make(root, "F-006", "R9", "applied")
+    expect("a malformed verify.rung fails closed", lambda: findings.set_status(root, "F-006", "verified", ran="r", saw="s", rung="R6"), "no valid verify.rung")
+    d = os.path.join(root, ".sentry-plugin", "findings", "u")
+    os.makedirs(os.path.join(root, ".sentry-plugin", "findings", ".ids"), exist_ok=True)
+    open(os.path.join(root, ".sentry-plugin", "findings", ".ids", "F-007"), "w").close()
+    open(os.path.join(d, "F-007-x.md"), "w").write("---\nid: F-007\nunit: u\nproduct: core\ncheck: core.release\nseverity: P1\nkind: fix\nstatus: applied\ntitle: t\nverify: broken\n---\n## What\nx\n")
+    expect("a verify block that is not a mapping fails closed (no crash)", lambda: findings.set_status(root, "F-007", "verified", ran="r", saw="s", rung="R6"), "no valid verify.rung")
+    make(root, "F-008", "R6", "applied")
+    findings.set_status(root, "F-008", "unverified", reason="R3 reached, deploy not run", rung="r3")
+    fm, _ = findings._load_file(findings.find_path(root, "F-008"))
+    got = fm.get("reached_rung")
+    fails += 0 if got == "R3" else 1
+    print("%-5s unverified keeps the highest rung reached (R3) | %s" % ("ok" if got == "R3" else "FAIL", got))
     expect("applied -> unverified with a reason still works", lambda: findings.set_status(root, "F-001", "unverified", reason="R3 reached, deploy not run"))
 
 print("\n%s" % ("STATUS TESTS PASSED" if not fails else "%d STATUS TEST(S) FAILED" % fails))

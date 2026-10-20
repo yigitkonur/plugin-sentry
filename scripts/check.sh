@@ -35,6 +35,7 @@ run $PY scripts/test-links.py
 
 stage "credential masking, including URL credentials in detection output"
 run $PY scripts/test-mask.py
+run $PY scripts/test-redirect.py
 
 stage "recorded events: the privacy scan says today what it said when each real event was recorded, and notices when one gets worse"
 run $PY scripts/replay-events.py

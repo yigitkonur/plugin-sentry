@@ -26,8 +26,9 @@ class _Redirect(urllib.request.HTTPRedirectHandler):
     Redirects are followed only to the same allow-listed hosts: fetched text is untrusted, and so is where it comes from."""
 
     def redirect_request(self, req, fp, code, msg, headers, newurl):
-        if (urllib.parse.urlparse(newurl).hostname or "") not in HOSTS:
-            raise urllib.error.HTTPError(req.full_url, code, "redirect to a host outside the docs allow-list", headers, fp)
+        u = urllib.parse.urlsplit(newurl)
+        if u.scheme != "https" or (u.hostname or "") not in HOSTS or u.netloc.lower() != (u.hostname or ""):  # https only; no userinfo, port or odd netloc
+            raise urllib.error.HTTPError(req.full_url, code, "redirect outside the docs allow-list (https, a listed host, no userinfo)", headers, fp)
         if code == 308 and req.get_method() in ("GET", "HEAD"):
             code = 307
         return super().redirect_request(req, fp, code, msg, headers, newurl)

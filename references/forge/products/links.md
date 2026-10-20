@@ -24,13 +24,13 @@ Judge each edge by what kind of client it is. CORS exists only in browsers.
 
 | Client | Client side | Server side | Source |
 |---|---|---|---|
-| Browser, cross-origin API | `tracePropagationTargets` lists the API origin. The default is `['localhost', /^\//]`, so a cross-origin API gets no trace headers. `propagateTraceparent` only when the server is OpenTelemetry-instrumented | The server SDK continues the trace; CORS `Access-Control-Allow-Headers` includes `sentry-trace, baggage` (and `traceparent` when `propagateTraceparent` is on) | Dealing with CORS Issues |
+| Browser, cross-origin API | `tracePropagationTargets` lists the API origin. The default is `['localhost', /^\//]`, so a cross-origin API gets no trace headers. `propagateTraceparent` when the backend is OpenTelemetry-instrumented (OTLP page) | The server SDK continues the trace (the Cloudflare SDK propagates traces for incoming and outgoing HTTP requests when tracing is set up); CORS `Access-Control-Allow-Headers` includes `sentry-trace, baggage` (and `traceparent` when `propagateTraceparent` is on) | Dealing with CORS Issues |
 | Browser, same origin | Default is enough | Server SDK present | JS options |
 | React Native app | Default sends trace data to every outgoing request; set `tracePropagationTargets` only to limit it | Server SDK present. No CORS | React Native options |
 | macOS or iOS app (Cocoa) | Default attaches trace data to every outgoing request of the instrumented client; a list limits it | Server SDK present. No CORS | Apple options |
 | Server to server (Node) | Default propagates all outgoing requests | Callee SDK present | Node options |
 
-- Worker to Worker over a service binding or Durable Object binding (RPC): a binding named in `rpcTracePropagationBindings` carries the trace, and the receiver must strip the trailing trace argument. A Vite build derives this for classes it wrapped itself; bindings to *other* Workers stay opt-in "because their receivers may not run Sentry", and "a plain wrangler build still has to list its bindings" (Cloudflare Vite plugin and wrangler install pages). So: caller and receiver both run Sentry and the binding is not listed = the trace stops at the call; the binding is listed but the receiver does not run Sentry = the receiver gets an argument it does not strip.
+- Worker to Worker over a service binding or Durable Object binding (RPC): by default traces are not propagated across RPC calls; a binding named in `rpcTracePropagationBindings` (SDK 10.72.0+) carries the trace as a trailing argument, and "only a Sentry-instrumented receiver strips it again", so list the bindings whose receiver you know runs Sentry; listing on a receiver does no harm (Cloudflare Distributed Tracing page). The Vite plugin derives bindings to classes in the same Worker; bindings to *other* Workers stay opt-in "because their receivers may not run Sentry", and "a plain wrangler build still has to list its bindings" (Vite plugin page). So: caller and receiver both run Sentry and the binding is not listed = the trace stops at the call; the binding is listed but the receiver does not run Sentry = the receiver gets an argument it does not strip.
 - `environment` is case-sensitive; Sentry creates an environment the first time it sees a new name; names cannot hold spaces, newlines or forward slashes, cannot be `None`, max 64 characters. `prod` and `production` are two environments. Same stage, same spelling, in every unit (JS options page, `environment`).
 - A project represents a service or application; separate projects for an API server and a frontend client are the documented example (Projects page). A release can link to several projects (Releases page), so one deploy can share a release name across units.
 
@@ -51,9 +51,9 @@ File each edge problem as its own finding on `_links`, naming both units and bot
 | Browser trace never reaches the API | Default targets cover only `localhost` and same-origin paths | Add the API origin to `tracePropagationTargets` | Dealing with CORS Issues |
 | Requests fail in the browser after adding targets | The API does not allow the trace headers in CORS | Allow `sentry-trace` and `baggage` | Dealing with CORS Issues |
 | Two environments for one stage | `prod` here, `production` there | One spelling | JS options, `environment` |
-| Issues from two apps in one project | One DSN used by both | A project per unit that releases separately | Projects page |
-| Client traces end at the edge | The callee has no Sentry | Add it, or accept and record | Tracing docs |
-| Trace stops at a Worker-to-Worker RPC call | Plain wrangler build and the binding is missing from `rpcTracePropagationBindings` | List the binding in the caller's options | Wrangler install page |
+| Issues from two apps in one project | One DSN used by both (inference from the Projects page: a project is a service or app) | A project per unit that releases separately | Projects page |
+| Client traces end at the edge | The callee has no Sentry (inference: nothing continues the trace there) | Add it, or accept and record | Distributed Tracing docs |
+| Trace stops at a Worker-to-Worker RPC call | The binding is missing from `rpcTracePropagationBindings` (propagation across RPC is off by default) | List the binding in the caller's options when the receiver runs Sentry | Distributed Tracing page, RPC Trace Propagation |
 | CORS finding on a mobile or MCP edge | CORS applies to browsers only | Do not file it | Dealing with CORS Issues |
 
 ## Volume, cost and overhead
@@ -72,6 +72,8 @@ Tracing at a flat 1.0 in every unit multiplies span volume with the number of ho
 - https://docs.sentry.io/platforms/apple/configuration/options/
 - https://docs.sentry.io/platforms/javascript/guides/cloudflare/install/wrangler/
 - https://docs.sentry.io/platforms/javascript/guides/cloudflare/install/vite-plugin/
+- https://docs.sentry.io/platforms/javascript/guides/cloudflare/tracing/distributed-tracing/
+- https://docs.sentry.io/concepts/otlp/sentry-with-otel/
 - https://docs.sentry.io/platforms/javascript/guides/node/configuration/options/
 - https://docs.sentry.io/product/projects/
 - https://docs.sentry.io/product/releases/
@@ -80,7 +82,7 @@ Tracing at a flat 1.0 in every unit multiplies span volume with the number of ho
 ```identifiers
 tracePropagationTargets | https://docs.sentry.io/platforms/javascript/tracing/trace-propagation/dealing-with-cors-issues/
 propagateTraceparent | https://docs.sentry.io/platforms/javascript/tracing/trace-propagation/dealing-with-cors-issues/
-rpcTracePropagationBindings | https://docs.sentry.io/platforms/javascript/guides/cloudflare/install/wrangler/
+rpcTracePropagationBindings | https://docs.sentry.io/platforms/javascript/guides/cloudflare/tracing/distributed-tracing/
 script_name | https://docs.sentry.io/platforms/javascript/guides/cloudflare/install/vite-plugin/
 environment | https://docs.sentry.io/platforms/javascript/configuration/options/
 ```

@@ -109,7 +109,7 @@ For Pages, the docs give no Pages-specific verify step; place the same temporary
 - Plain Wrangler cannot patch bundled packages (database and AI clients); those spans are missing without the Vite plugin's `buildTimeInstrumentation` (install/wrangler, "What You Give Up").
 - Research note C8 said packages can only be instrumented at build time. The fetched docs say `withSentry` without Vite still instruments the handlers and `fetch`; follow the docs.
 - Pages: `sentryPagesPlugin` comes from the package root (`Sentry.sentryPagesPlugin` in the docs). Research note C1 says a `pages` subpath import does not exist; the fetched page shows only the root export. Where a project cannot add the `onRequest` middleware, the Pages page offers `wrapRequestHandler` from `@sentry/cloudflare/request`.
-- Cloudflare has its own Logs, Traces and Issues, on by default for new Workers: read `products/cf-observability` and the policy answer `cloudflare.owner` before proposing Sentry logs or tracing here.
+- Cloudflare has its own Logs, Traces and Issues (Workers Logs is on by default for new Workers; Traces and Issues are opt-in): read `products/cf-observability` and the policy answer `cloudflare.owner` before proposing Sentry logs or tracing here.
 - Vite plugin: run `vite build` before `wrangler deploy`; use `vite dev` in place of `wrangler dev` (guide, "Add the Vite Plugin").
 - Inference, not on a page: do not wrap `app.fetch` with `withSentry` and also add the Hono `sentry` middleware in one Worker; the docs show each path on its own.
 
