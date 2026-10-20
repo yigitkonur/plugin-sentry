@@ -8,7 +8,7 @@ Privacy and cost decisions are the user's every time. Never reuse an old answer 
 2. Run `sentry-ctx policy questions`. It returns `calls.A` and `calls.B`, each a list of questions already filtered to what this
    repo needs (no replay-masking question for a Go API) and already ordered with the previous answer first.
 3. Ask call A with one `AskUserQuestion`, then call B with another. Map each question as-is: `header`, `question`, `multiSelect`,
-   and `options[].label/description`. Do not add, drop or reword options.
+   and `options[].label/description`. Do not add, drop or reword options. Save each answer as the option's `value`, never its label (a label may end in " (previous)").
 4. If privacy preset is `custom`, ask follow-ups for: user info, IP, cookies and headers, request/response bodies, DB query data,
    local variables, screenshots/attachments. Record them under `privacy.custom`.
 5. Build one flat JSON object keyed by question id and save it:

@@ -1,6 +1,6 @@
 ---
 name: init
-description: Set up Sentry properly in a repo that has none: picks the install route, proposes the base setup plus extras that fit, applies only what you approve, and proves it with a live event.
+description: "Set up Sentry properly in a repo that has none: picks the install route, proposes the base setup plus extras that fit, applies only what you approve, and proves it with a live event."
 disable-model-invocation: true
 allowed-tools: Bash(sentry-ctx *), Read, Grep, Glob
 argument-hint: "[unit ...]"

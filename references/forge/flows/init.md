@@ -14,8 +14,9 @@ Precondition: `sentry-ctx flow preamble` is done and `sentry-ctx steer --write` 
    - **`@sentry/wizard`:** only for integrations that need it (mobile/desktop). It needs their browser login, so give them the exact
      line to run themselves, prefixed with `!`: `! npx @sentry/wizard@latest -i <integration> --disable-telemetry`.
    Wizard routes require: git clean (or a new branch), `node`/`npx` for the wizard, a greenfield unit. Never `--force-install`.
-3. **Provision the project** (needs `org_access: read-write`, a login with project:write): this is an `org-write` finding the user
-   approves first. Name: the unit's directory name, lowercase with hyphens (show it as the default; a human can change it).
+3. **Provision the project** (needs `org_access: read-write` and a login with project:write; the default `! sentry auth login` has it, `--read-only` does not): this is an `org-write` finding the user
+   approves first, as a finding (`kind: org-write`, `org_write.cli: "project create <org>/<name>:<platform> --team <t>"`) applied through
+   `sentry-ctx flow org` step 7; never call `sentry project create` directly. Name: the unit's directory name, lowercase with hyphens (show it as the default; a human can change it).
    Platform id: `<language>-<framework>` as Sentry names them (`javascript-nextjs`, `python-fastapi`, `go-gin`, `apple-macos`,
    `ruby-rails`); an unknown id fails the `--dry-run` with "Invalid platform" and creates nothing, so fall back to the language id
    (`node`, `javascript`, `python`, `go`, `apple`, `java`) and say so.
@@ -30,5 +31,6 @@ Precondition: `sentry-ctx flow preamble` is done and `sentry-ctx steer --write` 
      privacy options from the policy, debug-artifacts upload plan, tracing at the policy's rate;
    - extras, only proposed with the evidence that makes them fit: logs, profiling, replay, crons, uptime, feedback, ai, flags,
      Spotlight. Never over-instrument for a first error.
-5. **Barrier, report, approval, hand-off:** steps 3-6 of `sentry-ctx flow audit`.
+5. **Barrier, report, approval, hand-off:** steps 3-6 of `sentry-ctx flow audit`. Baseline `add` findings are approved with the same question; the
+   base set is pre-selected, extras are separate choices.
 6. **If an accelerator ran,** treat the unit as present and run the audit flow on its output before approving anything.

@@ -7,3 +7,5 @@ __pycache__/
 !.env.example
 node_modules/
 evals/results/
+!evals/fixtures/**/.env
+!evals/fixtures/**/.env.*

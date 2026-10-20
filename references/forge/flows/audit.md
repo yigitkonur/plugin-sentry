@@ -7,10 +7,11 @@ Precondition: `sentry-ctx flow preamble` is done and `sentry-ctx steer --write` 
    unit x group, for each group that has at least one `applicable` cell in `plan.json`:
    `foundation` (core, errors, releases, debug-artifacts, mobile-builds, dev-spotlight) - `telemetry` (tracing, profiling, logs,
    metrics, ai, mcp, flags, otlp) - `client` (replay, feedback) - `jobs` (crons, uptime) - `privacy` (always).
-   Plus one org auditor (`unit: _org`, group `org`) when the policy allows org access and the CLI is logged in.
+   The org half is not an auditor: when the policy allows org access and the CLI is logged in, run `sentry-ctx flow org` steps 2-5 yourself
+   (`sentry-ctx org probe all --record` fills the four `_org/*` cells deterministically).
    Every prompt carries (fill from `plan.json` and the policy; do not paste file contents):
    ```
-   Mode: audit
+   Mode: <baseline for a unit whose Sentry status is absent, audit otherwise>
    Unit: <id>   Root: <root>   Ecosystem/framework: <eco>/<framework> <version>   Role: <role>
    Group: <group>   Products to audit: <the applicable products in this group>
    Read first: sentry-ctx ref forge/ground-rules, then each of these (sentry-ctx ref <name>): <the unit's modules[]>
@@ -32,6 +33,6 @@ Precondition: `sentry-ctx flow preamble` is done and `sentry-ctx steer --write` 
      `sentry-ctx run approve-write --method <M> <exact path> --finding <id>` (CLI form: `--cli "<full command>"`) for that call. That command raises a
      permission prompt showing the exact line: it is the user's consent, so run it only after their yes, and never to approve something they did not ask for.
      An approval is bound to this run, this session and the finding's exact call (method, path, body).
-   Then `sentry-ctx finding approve --ids F-001,F-004` (or `--severity P0,P1`, or `--all`), and `sentry-ctx run phase approved`.
+   Then `sentry-ctx finding approve --ids F-001,F-004` (or `--severity P0,P1 --kinds fix,add,remove`; `manual` and `org-write` findings are never bulk-approved: org writes are approved per call in `sentry-ctx flow org` step 7), and `sentry-ctx run phase approved`.
 6. **Hand-off.** If they want it now, run `sentry-ctx flow apply` and follow it. Otherwise tell them `/sentry:apply` continues later
    (the findings stay on disk).

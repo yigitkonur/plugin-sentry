@@ -5,7 +5,7 @@ Read `sentry-ctx ref forge/ground-rules` and `sentry-ctx ref products/org` once.
 
 1. **Tools and login.** `sentry-ctx doctor`. No `sentry` v4 or no login: say that all 17 org rows will be **UNVERIFIED (no login)**, print
    `! sentry auth login --read-only`, and stop unless the user wants the rows recorded as UNVERIFIED (`org probe all --record` does that).
-2. **Org and projects.** The org is the single logged-in org, else ask (AskUserQuestion; headless: the first one from `doctor`). The
+2. **Org and projects.** If the user passed an org slug and project slugs, use them (`sentry-ctx org focus --org <o> --project <p,...>`). The org is the single logged-in org, else ask (AskUserQuestion; headless: the first one from `doctor`). The
    projects that belong to this repo: matched from DSN literals in the code, or ask for slugs (`sentry project list <org>/ --json`
    shows them). Save: `sentry-ctx org focus --org <slug> --project <a,b>`. An unmatched repo is not a reason to probe every project:
    project-level rows stay UNVERIFIED ("no project identified") until the user names them.

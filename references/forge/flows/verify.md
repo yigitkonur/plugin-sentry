@@ -2,6 +2,7 @@
 
 Orchestrator in the main thread. Read `sentry-ctx ref forge/verification-ladder` if you have not this session.
 
+0. If the user named finding ids, prove only those.
 1. **What to prove.** `sentry-ctx finding list --status applied` (and `--status unverified` to retry). Each finding's `verify.rung` is its
    target. R0/R1 may already be recorded by the implementer. Anything with a target of R2 or higher goes to the verifier.
 2. **Which org and project.** The events must go to a project the user owns. From the policy and `sentry-ctx doctor`, pick the org;

@@ -26,7 +26,7 @@ def run():
     if phase in ("auditing", "reporting") and led["pending_cells"]:
         problems.append("%d applicable coverage cells are still pending (e.g. %s). Dispatch auditors for them or mark them `sentry-ctx coverage set ... --state unverified --reason ...`." % (len(led["pending_cells"]), ", ".join(led["pending_cells"][:4])))
     if phase in ("implementing", "verifying", "approved") and led["applied_unverified"]:
-        problems.append("applied findings without proof: %s. Run the verify flow, or `sentry-ctx finding set-status <id> unverified --reason ...` / `waived --reason ...`." % ", ".join(led["applied_unverified"][:8]))
+        problems.append("applied findings without proof: %s. Run the verify flow, or `sentry-ctx finding set-status <id> unverified --reason ...` (then `waived --reason ...` only if the user accepts it)." % ", ".join(led["applied_unverified"][:8]))
     if led["live_triggers"]:
         problems.append("temporary trigger files still exist: %s. Delete them, then `sentry-ctx run trigger <path> --trigger-action remove`." % ", ".join(led["live_triggers"]))
     if not problems:

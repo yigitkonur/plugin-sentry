@@ -1,6 +1,6 @@
 ---
 name: verifier
-description: Independent proof for applied Sentry findings: emits a marked event from the real app, waits for it in Sentry, checks readability and privacy, and records the highest verification rung reached with evidence. Dispatched by the verify flow.
+description: "Independent proof for applied Sentry findings: emits a marked event from the real app, waits for it in Sentry, checks readability and privacy, and records the highest verification rung reached with evidence. Dispatched by the verify flow."
 tools: Read, Grep, Glob, Bash, Edit, Write
 model: haiku
 effort: xhigh

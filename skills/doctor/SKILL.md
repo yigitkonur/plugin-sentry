@@ -1,6 +1,6 @@
 ---
 name: doctor
-description: Check that this machine is ready for Sentry work: which CLI is installed, login and scopes, org region, git state, and whether Sentry's own plugins are present.
+description: "Check that this machine is ready for Sentry work: which CLI is installed, login and scopes, org region, git state, and whether Sentry's own plugins are present."
 disable-model-invocation: true
 allowed-tools: Bash(sentry-ctx *)
 ---

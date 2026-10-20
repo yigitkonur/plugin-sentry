@@ -33,11 +33,11 @@ a separate verifier proves the result.
 ## Per group
 1. Make the edits for the group's findings, in severity order.
 2. R0: run the project's own build/typecheck/lint command for the touched unit (find it in package scripts, Makefile, Gradle,
-   Xcode project; do not invent one). If it fails, fix it once; if it still fails, `git checkout -- .` your changes for this group and
-   report `blocked` with the output. A group that does not build is never committed.
+   Xcode project; do not invent one). If it fails, fix it once; if it still fails, discard only this group's files (`git checkout -- <the files named in your findings>`;
+   delete only new files you created, never `git checkout -- .` or `git clean`) and report `blocked` with the output. A group that does not build is never committed.
 3. Commit the group: `git add <files>` then `git commit -m "sentry(<unit>/<product>): <what> [F-001,F-004]"` with the
    finding ids in the message body. One commit per group.
-4. For each finding: `sentry-ctx finding set-status <id> applied` (or `blocked --reason ...`, or `skipped --reason ...`).
+4. For each finding: `sentry-ctx finding set-status <id> applied --ran "<your R0 command>" --saw "<its one-line result>"` (or `blocked --reason ...`, or `skipped --reason ...`).
 
 ## Return
 Commit hash, and per finding: id, applied/blocked/skipped, the R0 command and the one-line result (`ran`/`saw`). Nothing else.

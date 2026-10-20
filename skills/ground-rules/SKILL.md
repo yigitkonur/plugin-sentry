@@ -1,6 +1,7 @@
 ---
 name: ground-rules
-description: How to work with Sentry in this repo: look options up instead of recalling them, keep tokens out of files, claim only what was verified, confirm before org changes. Use before writing or reviewing any Sentry configuration.
+description: "Use before writing or reviewing Sentry configuration or SDK setup: sentry.init, Sentry.init, sentry_sdk.init, sentry.client/server/edge config, instrumentation.ts, .sentryclirc, sentry.properties, SENTRY_DSN or SENTRY_AUTH_TOKEN, sentry or sentry-cli CI steps. How to work with Sentry here: look options up instead of recalling them, keep tokens out of files, claim only what was verified, confirm before org changes. For production incidents use triage."
+allowed-tools: Bash(sentry-ctx *), Read, Grep, Glob
 ---
 # Sentry ground rules
 
