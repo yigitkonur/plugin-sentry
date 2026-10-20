@@ -56,7 +56,6 @@ Rules for every SDK:
 | No percentile on a gauge | Gauges cannot produce percentiles | Use `distribution` | Python page; Apple page |
 | Chart values have no unit | Unit not set on a gauge or distribution | Set `unit` (millisecond, byte, ...) | JS page |
 | JS v11 code sets `enableMetrics: false` and metrics still flow | The flag applies only below 11.0.0; v11 has no flag | Return null from `beforeSendMetric` to stop sending | JS page |
-| Source conflict: Apple disable option | Quota page shows `experimental.enableMetrics`; Apple page shows `options.enableMetrics` | Follow the Apple page; confirm with the Verify probe | quota page vs Apple page |
 | Source conflict: user IDs on metrics | JS page example attaches `user_id` and `order_id`; quota page warns against user IDs for volume | Follow the quota page for cost; keep per-user values in traces or logs | JS page vs quota page |
 | Source conflict: high cardinality | Vendored upstream concept calls high cardinality a benefit; billing guidance says it inflates volume | Use bounded attributes for cost; the billing guidance wins for this audit | vendored upstream/concepts/metrics vs quota page |
 
@@ -99,7 +98,6 @@ Sentry.flush | https://docs.sentry.io/platforms/javascript/metrics.md
 Sentry.setAttributes | https://docs.sentry.io/platforms/javascript/metrics.md
 enableMetrics | https://docs.sentry.io/platforms/javascript/metrics.md
 options.enableMetrics | https://docs.sentry.io/platforms/apple/metrics.md
-experimental.enableMetrics | https://docs.sentry.io/pricing/quotas/manage-application-metrics-quota.md
 beforeSendMetric | https://docs.sentry.io/platforms/javascript/metrics.md
 before_send_metric | https://docs.sentry.io/platforms/python/metrics.md
 getMetrics().setBeforeSend | https://docs.sentry.io/platforms/java/metrics.md
