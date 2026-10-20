@@ -347,7 +347,7 @@ def _classify_segment(seg, depth):
     w = _words(args)
     if w[:1] == ["auth"] and (w[1:2] == ["token"] or _flag(args, "--show-token")) or (_flag(args, "--show-token") and "auth" in w):
         return "deny", "That prints the raw Sentry token into the transcript. The plugin reuses the CLI login through `sentry api`; it never needs the token itself.", []
-    if w[:2] == ["auth", "status"]:
+    if _has_pair(args, "auth", "status"):
         return "deny", "`sentry auth status` prints part of the login token (first and last characters). Use `sentry-ctx doctor` instead: it shows who is logged in, the org, region and scopes without any token text.", []
     if (_has_pair(args, "event", "send") or "send-event" in w) and not _flag(args, "--no-environ"):
         return "deny", "`event send` attaches the whole process environment (every variable in this shell) to the event unless `--no-environ` is given. Add `--no-environ`.", []

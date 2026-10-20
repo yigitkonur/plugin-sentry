@@ -158,9 +158,13 @@ def scan(event: dict, pol: dict | None):
         return o
     outside = json.dumps(_strip_frame_paths(event), ensure_ascii=False)
     m = PATH_LEAK.search(outside)
-    if m:
+    env_tag = _tags(event).get("environment")
+    if m and env_tag not in (None, "production"):
+        # a marker event from a run on this machine: its own home path (a logged stack, a breadcrumb) is expected; the static audit owns the hygiene
+        w.append("a developer home path appears outside stack frames (environment %s, a local run): %s. Strip it in beforeSend/beforeBreadcrumb if you do not want it in production events" % (env_tag, re.sub(r"(/Users/|/home/)[^/\s\"']+", r"\1<name>", m.group(0))))
+    elif m:
         v.append("a user home path is present outside stack frames: %s" % re.sub(r"(/Users/|/home/)[^/\s\"']+", r"\1<name>", m.group(0)))
-    elif PATH_LEAK.search(blob):
+    elif PATH_LEAK.search(blob) and not m:
         w.append("stack-frame file names carry a developer home path (expected for a run on this machine; a deployed build shows its own path). Strip it with the SDK's frame rewriting only if you ship builds from a user directory")
     if ai_io == "off":
         for k in GENAI_KEYS:

@@ -23,7 +23,9 @@ stage "skills, agents and flows only name flows and references that exist"
 run $PY scripts/check-refs.py
 
 stage "hook gate regression tests (compound commands, global options, approval provenance)"
-run $PY scripts/test-gate.py | tail -1
+out=$($PY scripts/test-gate.py 2>&1); rc=$?
+echo "$out" | tail -1
+[ "$rc" = 0 ] || { echo "FAILED: scripts/test-gate.py"; echo "$out" | grep FAIL; fail=1; }
 
 stage "plugin manifest and component validation (claude plugin validate --strict)"
 if command -v claude >/dev/null 2>&1; then run claude plugin validate --strict .; else echo "claude CLI not installed: skipped"; fi
