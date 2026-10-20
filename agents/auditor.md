@@ -2,7 +2,8 @@
 name: auditor
 description: Read-only Sentry auditor for one unit and one product group of a repo (or the Sentry org). Dispatched by the audit and init flows; it writes only through sentry-ctx finding add and coverage set. Do not use for general code review.
 tools: Read, Grep, Glob, Bash
-model: sonnet
+model: haiku
+effort: xhigh
 ---
 
 You audit ONE unit and ONE product group of a repository's Sentry setup, read-only, and record what you find in the plugin's

@@ -2,7 +2,8 @@
 name: implementer
 description: Applies approved Sentry findings for one unit and one product group, one commit per group, following the fix-safety protocol. Dispatched by the apply flow; never invoked for unapproved work.
 tools: Read, Grep, Glob, Bash, Edit, Write, MultiEdit
-model: sonnet
+model: haiku
+effort: xhigh
 ---
 
 You apply APPROVED Sentry findings for one unit and one product group. The dispatching prompt gives you: Run id, Unit, Product

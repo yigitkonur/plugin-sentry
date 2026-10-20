@@ -214,7 +214,7 @@ def add(root, f: dict, units, force=False):
         raise Invalid(errs)
     if not force:
         for ex in load_all(root):
-            if ex.get("status") in ("open", "approved", "applied") and ex.get("unit") == f["unit"] and ex.get("check") == f["check"] and sorted(ex.get("files", [])) == sorted(f["files"]):
+            if ex.get("status") in ("open", "approved", "applied") and ex.get("unit") == f["unit"] and ex.get("check") == f["check"] and sorted(ex.get("files", [])) == sorted(f["files"]) and (f["files"] or ex.get("title") == f.get("title")):
                 raise util.EngineError("duplicate of %s (same unit, check, files); update it instead or pass --force" % ex["id"], 4)
     fid = _reserve_id(root)
     f["id"] = fid

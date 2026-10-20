@@ -206,6 +206,28 @@ def cmd_checks(args):
         print("no checks for: %s (products with checks: %s)" % (", ".join(sorted(want)), ", ".join(sorted({c["product"] for c in findings.checks().values()}))))
 
 
+def cmd_org(args):
+    from . import org
+    root = _root(args)
+    projects = [x for v in (args.project or []) for x in v.split(",") if x] or None
+    if args.action == "focus":
+        util.emit(org.focus_cmd(root, args.org, projects))
+    elif args.action == "probe":
+        res = org.probe(root, args.what or "all", args.org, projects)
+        if args.record:
+            res["recorded"] = org.record(root, res)
+        if args.json:
+            util.emit(res)
+        else:
+            print(org.render(res))
+            if args.record:
+                print("recorded: " + json.dumps(res["recorded"], ensure_ascii=False))
+    elif args.action == "apply":
+        if not args.what:
+            raise util.EngineError("usage: org apply <finding id> [--run]")
+        util.emit(org.apply_write(root, args.what, run=args.run))
+
+
 def cmd_stale(args):
     from . import stale
     root = _root(args)
@@ -355,6 +377,16 @@ def register(sub):
     vf.add_argument("--timeout", type=int, default=120)
     vf.add_argument("--interval", type=int, default=3)
     vf.set_defaults(fn=cmd_verify)
+
+    og = sub.add_parser("org", help="org-side probes (GET-only) and approved org writes: focus | probe [row|id|all] | apply <finding> [--run]")
+    og.add_argument("action", choices=["focus", "probe", "apply"])
+    og.add_argument("what", nargs="?")
+    og.add_argument("--org")
+    og.add_argument("--project", action="append", help="project slug(s) of this repo in the org, comma separated or repeated")
+    og.add_argument("--record", action="store_true", help="probe: add candidates as open _org findings and set the _org coverage cells")
+    og.add_argument("--run", action="store_true", help="apply: perform the write (only if approved in this run)")
+    og.add_argument("--json", action="store_true")
+    og.set_defaults(fn=cmd_org)
 
     ck = sub.add_parser("checks", help="check ids with default severity, applicability and the passing condition (data/checks.tsv)")
     ck.add_argument("--product", action="append", help="product id(s), comma separated or repeated")
