@@ -438,7 +438,7 @@ def register(sub):
     rf.add_argument("--kind", choices=["product", "platform"])
     rf.set_defaults(fn=cmd_ref)
 
-    fl = sub.add_parser("flow", help="print a flow's instructions (audit, init, apply, verify, org, policy, clean)")
+    fl = sub.add_parser("flow", help="print a flow's instructions (preamble, policy, start, audit, init, apply, verify, org)")
     fl.add_argument("name")
     fl.set_defaults(fn=cmd_flow)
 

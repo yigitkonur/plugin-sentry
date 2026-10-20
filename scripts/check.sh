@@ -19,6 +19,9 @@ echo "$out" | grep -v ' ok$' || true
 echo "$(echo "$out" | grep -c ' ok$') fixtures ok"
 [ "$rc" = 0 ] || { echo "FAILED: fixtures"; fail=1; }
 
+stage "skills, agents and flows only name flows and references that exist"
+run $PY scripts/check-refs.py
+
 stage "hook gate regression tests (compound commands, global options, approval provenance)"
 run $PY scripts/test-gate.py | tail -1
 

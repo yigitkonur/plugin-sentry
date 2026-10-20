@@ -29,4 +29,4 @@ Read `sentry-ctx ref forge/ground-rules` and `sentry-ctx ref products/org` once.
    `sentry-ctx finding set-status <id> verified --ran "<probe command>" --saw "<row state and observation, copied>"`. If the row still shows it,
    the finding stays `applied` and the reason goes in the report.
 9. **Finish.** `sentry-ctx ledger` must pass. Only resources named `sentry-plugin-test-*` are ever created or removed by this plugin's own tests; for
-   a user's org, every write is the user's decision. Clean up with `sentry-ctx flow clean` when the run is done.
+   a user's org, every write is the user's decision. When the run is done, clean up as the end of the apply flow does: `sentry-ctx clean` (dry run), ask what to keep, then `sentry-ctx clean --yes [--keep policy|all]`.
