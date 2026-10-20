@@ -1,0 +1,27 @@
+name: ci
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    - cron: "17 5 * * 1"   # weekly: docs drift (links, identifiers, stale-API rows)
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.9", "3.14"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install Claude Code (plugin validator)
+        run: npm install -g @anthropic-ai/claude-code
+      - name: Offline checks (compile, fixtures, validate, secrets)
+        run: scripts/check.sh --offline
+      - name: Docs-backed checks (identifiers, stale-API rows, links)
+        run: scripts/check.sh
