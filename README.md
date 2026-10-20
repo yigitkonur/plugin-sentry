@@ -63,7 +63,7 @@ The ledger lives in `.sentry-plugin/` (gitignored on your say-so): `policy.md`, 
 | SessionStart | restores the run digest after `/compact`, resume or clear |
 | Write guard | denies writing a Sentry token into a file git would track |
 | Stale-API | after an edit, tells the model when it wrote an option your SDK major removed |
-| Bash gate | denies token paste, `auth token`, `event send` without `--no-environ`, a credential file written where git would track it, and hand edits of the run state; asks before every Sentry mutation not approved in this run and session (every segment of a compound command is checked), and before an approval is recorded. CI and eval harnesses opt in with `SENTRY_PLUGIN_APPROVE_WRITES=1` in their own environment |
+| Bash gate | denies token paste, `auth token`, `event send` without `--no-environ`, printing a credential file (`.sentryclirc`, `.env.sentry-build-plugin`, `sentry.properties`) by `cat`, a loop, a glob, a pipe or the Read/Grep tools, a credential file written where git would track it, and hand edits of the run state; asks before every Sentry mutation not approved in this run and session (every segment of a compound command is checked), and before an approval is recorded. CI and eval harnesses opt in with `SENTRY_PLUGIN_APPROVE_WRITES=1` in their own environment |
 | Stop gate | refuses to finish while the run you own has unproven applied findings or leftover trigger files (max two blocks) |
 
 ## Headless runs (CI, evals, `claude -p`)
