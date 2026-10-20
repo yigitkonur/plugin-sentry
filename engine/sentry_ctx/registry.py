@@ -73,6 +73,8 @@ def cmd_policy(args):
         pl = steer.plan(det, prev, (prev or {}).get("org_access") or "none")
         util.emit(policy.questions(det, pl, prev))
     elif act == "set":
+        if os.environ.get("SENTRY_PLUGIN_POLICY_ANSWERS"):
+            raise util.EngineError("SENTRY_PLUGIN_POLICY_ANSWERS is set: the operator supplied the policy. Run `sentry-ctx policy from-env`.", 5)
         answers = _read_stdin_json()
         pol = policy.from_answers(answers)
         policy.save(root, pol)
@@ -295,7 +297,12 @@ def cmd_ref(args):
 
 def cmd_flow(args):
     from . import refs
-    print(refs.flow(args.name))
+    text = refs.flow(args.name)
+    src = os.environ.get("SENTRY_PLUGIN_POLICY_ANSWERS")
+    if src and args.name in ("preamble", "policy", "start", "audit", "init", "org"):
+        text = ("> **HEADLESS POLICY: `SENTRY_PLUGIN_POLICY_ANSWERS` is set (`%s`).** Run `sentry-ctx policy from-env` for the policy and do not ask or decide it yourself;\n"
+                "> `sentry-ctx policy set` is refused while it is set. No human is available: every approval gate is \"Report only\" unless the prompt that started this session says otherwise.\n\n") % src + text
+    print(text)
 
 
 def cmd_docs(args):
