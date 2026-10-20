@@ -80,6 +80,7 @@ masking defaults and rates are in `platforms/browser-spa`. `tunnelRoute` adds se
 Temporary route handler `app/api/<random>/route.ts` (or a Pages API route) that calls `Sentry.captureException(new Error("plugin_marker ..."))` with a
 unique tag, requested once against `next start` (a production build: source maps are only generated and uploaded on production builds). Delete it
 afterwards. Browser path: a temporary client component that throws on click. `sentry-ctx flow verify` owns the polling and cleanup.
+R4 needs a frame from your own file: put the throw in a named function inside the route or component file (a `Sentry.captureException(...)` call directly in the handler body gives framework frames only), build with `next build`, upload that build's artifacts for the release the build uses, and run `next start`. A `next dev` event proves arrival (R3) only: dev frames are compiled chunks and local paths.
 
 ## Gotchas
 | trap | fix | source |

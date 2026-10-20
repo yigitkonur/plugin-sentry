@@ -7,8 +7,8 @@ Orchestrator in the main thread. Read `sentry-ctx ref forge/fix-safety` if you h
 2. **Git.** `sentry-ctx doctor --no-auth` shows whether the tree is clean. If dirty, ask: commit or stash first, or continue on a new
    branch. Then `git switch -c sentry-plugin/<run-id>` (run-id from `sentry-ctx run status`). Not a git repo: say so, there is no
    undo, and ask before continuing. `sentry-ctx run phase implementing`.
-3. **Implement, one group at a time.** Group approved fix/add/remove findings by unit x product, ordered P0, P1, P2, P3 (SDK major
-   upgrades last). For each group run the Agent tool with `subagent_type: "sentry:implementer"` and this prompt:
+3. **Implement, one group at a time.** Group approved fix/add/remove findings by unit x product. The `core` group goes first (install and init: other groups edit init options that
+   must already exist), then P0, P1, P2, P3 (SDK major upgrades last). For each group run the Agent tool with `subagent_type: "sentry:implementer"` and this prompt:
    ```
    Run id: <id>   Unit: <id>   Product group: <product>
    Findings to apply (approved): <F-ids>
@@ -19,6 +19,8 @@ Orchestrator in the main thread. Read `sentry-ctx ref forge/fix-safety` if you h
    Groups run sequentially: they edit the same tree. If a group's R0 fails and the implementer cannot fix it in two attempts, revert that
    group with `git revert --no-edit <hash>` and mark its findings `blocked` with the reason.
 4. **Org writes.** For approved `org-write` findings follow `sentry-ctx flow org` (one exact call at a time, each already approved).
+   If an approved finding needs source maps or debug files uploaded to prove it (R4), the user's approval of that finding covers the upload: record it
+   once with `sentry-ctx run approve-write --cli "sourcemap upload" --finding <id>` (or `"debug-files upload"`) before the verifier runs.
 5. **Prove it.** `sentry-ctx run phase verifying`, then follow `sentry-ctx flow verify` for the findings whose `verify.rung` is R2 or
    higher. R0/R1 results are already on the findings.
 6. **Finish.** `sentry-ctx ledger` must pass (no pending cells, no applied-but-unverified findings, no leftover triggers); findings that

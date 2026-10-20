@@ -120,9 +120,20 @@ def scan(event: dict, pol: dict | None):
     blob = json.dumps(event, ensure_ascii=False)
     if tokens.has_token(blob):
         v.append("a Sentry credential-shaped string is present in the event")
-    m = PATH_LEAK.search(blob)
+    # Home paths in stack-frame file names are what a run on a developer machine looks like; a deployed build shows its container path.
+    # Everything outside the frames (message, tags, contexts, breadcrumbs, request, extra) is a real leak.
+    def _strip_frame_paths(o):
+        if isinstance(o, dict):
+            return {k: ("<frame-path>" if k in ("filename", "absPath", "abs_path", "module") and isinstance(val, str) else _strip_frame_paths(val)) for k, val in o.items()}
+        if isinstance(o, list):
+            return [_strip_frame_paths(x) for x in o]
+        return o
+    outside = json.dumps(_strip_frame_paths(event), ensure_ascii=False)
+    m = PATH_LEAK.search(outside)
     if m:
-        v.append("a user home path is present: %s" % re.sub(r"(/Users/|/home/)[^/\s\"']+", r"\1<name>", m.group(0)))
+        v.append("a user home path is present outside stack frames: %s" % re.sub(r"(/Users/|/home/)[^/\s\"']+", r"\1<name>", m.group(0)))
+    elif PATH_LEAK.search(blob):
+        w.append("stack-frame file names carry a developer home path (expected for a run on this machine; a deployed build shows its own path). Strip it with the SDK's frame rewriting only if you ship builds from a user directory")
     if ai_io == "off":
         for k in GENAI_KEYS:
             if k in blob:

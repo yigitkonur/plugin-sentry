@@ -60,6 +60,7 @@ Rules the auditor applies:
 - Tracing needs no pay-as-you-go budget to start, but overage on spans does (pricing page).
 
 ## Verify (R6)
+0. Do not test with a health-check-shaped route (`/health`, `/healthz`, `/ping`, ...): the project's `filtered-transaction` inbound filter drops those transactions on arrival (observed live on a Go project: 40 requests, outcome `filtered / filtered-transaction`). Use a route named for the test.
 1. Local run with the rate temporarily 1.0 (JS tracing page: use 1.0 while testing), hit one route, then:
    `sentry trace list <org>/<project> -t 1h --json` (expect at least one trace with the marker route) and `sentry explore <org>/<project> -d spans -F "count()" -t 1h`.
 2. Distributed: open the trace with `sentry trace view <org>/<project>/<trace-id>`; spans from both frontend and backend project share one trace id. In the browser Network tab the API request carries `sentry-trace` and `baggage`; a CORS error there means the header allow-list is wrong.

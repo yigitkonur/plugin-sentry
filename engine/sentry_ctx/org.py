@@ -859,7 +859,7 @@ def apply_write(root, finding_id, run=False):
         import shlex
         args = shlex.split(ow["cli"])
         sub = " ".join(args[:2])
-        approved = runstate.cli_is_approved(st, sub)
+        approved = runstate.cli_approved_for(st, sub, finding_id)
         out.update(cli="sentry " + ow["cli"], approved_in_run=approved)
         binary = cli_tools.sentry_bin()
         if not binary:

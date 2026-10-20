@@ -16,5 +16,9 @@ Orchestrator in the main thread. Read `sentry-ctx ref forge/verification-ladder`
    ```
 4. **After it returns:** `sentry-ctx ledger` must show no live triggers (`git status` shows only the intended changes). If a trigger is
    still registered, remove it yourself: delete the file, then `sentry-ctx run trigger <path> --trigger-action remove`.
-5. **Report per finding:** the highest rung reached, the evidence (`ran`/`saw`), and for every rung not reached the reason and the
+5. **Verification never edits approved code.** If a proof fails because of the change itself (a duplicate event, a missing frame, a leaked field),
+   set the finding `blocked --reason "<what was observed>"` and say what a fix would be as a new finding; do not patch it here. Run the app on a free
+   port you pick with the OS (a failed bind sends an error event to the project); markers go to a route that is not health-check shaped.
+   R4 and R5 are run against the production-like build and the artifacts of that exact release.
+6. **Report per finding:** the highest rung reached, the evidence (`ran`/`saw`), and for every rung not reached the reason and the
    exact reproduction steps. Never write "check your dashboard".

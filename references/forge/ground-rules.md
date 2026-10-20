@@ -31,3 +31,4 @@ environment, and SDK majors changed what is collected by default.
     verification row green.
 13. **Say UNVERIFIED when you could not look.** No login, no network, no access: that is a different state from clean and from
     not applicable, and the report keeps all three.
+14. **Never edit the plugin.** Its engine, references, data and hooks are not part of the user's repo. If `sentry-ctx` fails or gives a wrong answer, stop, quote the command and its output, and say so; do not patch it.

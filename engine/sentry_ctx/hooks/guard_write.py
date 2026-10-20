@@ -29,6 +29,17 @@ def run():
     if inp.get("agent_type") == "sentry:auditor":
         common.decide("deny", "The auditor is read-only; it records findings with `sentry-ctx finding add`, not by editing files.")
         return
+    # the plugin's own files (engine, references, data, hooks) are never edited by a run in a user's repo; engine bugs are reported
+    plugin_root = os.environ.get("CLAUDE_PLUGIN_ROOT")
+    if plugin_root and path and not os.environ.get("SENTRY_PLUGIN_DEV"):
+        try:
+            ap = os.path.realpath(path if os.path.isabs(path) else os.path.join(root, path))
+            pr = os.path.realpath(plugin_root)
+            if ap == pr or ap.startswith(pr + os.sep):
+                common.decide("deny", "That file belongs to the sentry plugin itself (%s). A run never edits the plugin: if `sentry-ctx` misbehaves, stop and report the exact command and its output to the user." % os.path.relpath(ap, pr))
+                return
+        except OSError:
+            pass
     if not any(tokens.has_token(t) for t in _texts(ti)):
         return
     rel = os.path.relpath(path, root) if os.path.isabs(path) else path

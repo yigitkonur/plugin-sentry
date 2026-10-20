@@ -362,6 +362,13 @@ def ledger_check(root):
 
 # ---------- report ----------
 
+def _ow_call(ow):
+    # a REST write has method + path; a CLI write has only the subcommand
+    if ow.get("cli"):
+        return "sentry " + ow["cli"]
+    return "%s %s" % (ow.get("method"), ow.get("path"))
+
+
 def report(root, plan):
     allf = load_all(root)
     cov = cov_load(root)
@@ -406,7 +413,7 @@ def report(root, plan):
                     out.append("- ran: `%s` / saw: `%s`" % (str(ev.get("ran", ""))[:140], str(ev.get("saw", ""))[:140]))
                 if f.get("org_write"):
                     ow = f["org_write"]
-                    out.append("- org write: `%s %s` (%s)" % (ow.get("method"), ow.get("path"), ow.get("effect", "")))
+                    out.append("- org write: `%s` (%s)" % (_ow_call(ow), ow.get("effect", "")))
                 if f.get("docs"):
                     out.append("- docs: " + ", ".join(f["docs"]))
                 out.append("")
@@ -430,7 +437,7 @@ def report(root, plan):
         out.append("")
         for f in ow:
             o = f["org_write"]
-            out.append("- %s: `%s %s` : %s" % (f["id"], o["method"], o["path"], o.get("effect", "")))
+            out.append("- %s: `%s` : %s" % (f["id"], _ow_call(o), o.get("effect", "")))
         out.append("")
     text = "\n".join(out) + "\n"
     util.write_text(os.path.join(paths.state_dir(root), "report.md"), text)

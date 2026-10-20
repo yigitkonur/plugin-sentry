@@ -16,14 +16,14 @@ from . import common
 
 WRAPPERS = {"env", "sudo", "command", "time", "nohup", "exec", "xargs", "npx", "pnpx", "bunx", "dlx", "exec", "--yes", "-y", "--no-install", "--"}
 SENTRY_BINS = {"sentry", "sentry-cli"}
-READ_AGENTS = {"sentry:auditor", "sentry:verifier"}
+READ_AGENTS = {"sentry:auditor"}  # the verifier may run mutations the user approved in this run (artifact uploads); nothing else
 
 # subcommand prefixes (v4 names; v3 plural/old names normalized below) that change state
 MUTATING = [
     "issue resolve", "issue unresolve", "issue archive", "issue merge", "issue explain", "issue plan",
     "project create", "project delete", "project remove", "project rm",
     "release create", "release new", "release finalize", "release delete", "release archive", "release restore", "release deploy", "release set-commits",
-    "sourcemap upload", "sourcemap inject", "debug-files upload", "proguard upload", "code-mappings upload", "build upload", "dart-symbol-map upload",
+    "sourcemap upload", "debug-files upload", "proguard upload", "code-mappings upload", "build upload", "dart-symbol-map upload",
     "feedback resolve", "feedback unresolve", "feedback spam", "dashboard create", "dashboard widget", "dashboard restore",
     "monitor run", "trial start", "init", "snapshots upload",
 ]

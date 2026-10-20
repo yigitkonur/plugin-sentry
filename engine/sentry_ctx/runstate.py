@@ -100,6 +100,17 @@ def cli_is_approved(state, subcommand: str) -> bool:
     return any(sub == w["cli"] or sub.startswith(w["cli"] + " ") for w in (state or {}).get("approved_cli", []))
 
 
+def cli_approved_for(state, subcommand: str, finding_id: str) -> bool:
+    """An approval recorded with --finding covers only that finding; one recorded without a finding covers the subcommand."""
+    sub = " ".join(subcommand.split())
+    for w in (state or {}).get("approved_cli", []):
+        if not (sub == w["cli"] or sub.startswith(w["cli"] + " ")):
+            continue
+        if w.get("finding") in (None, "", finding_id):
+            return True
+    return False
+
+
 def write_is_approved(state, method, path) -> bool:
     """path_pattern may contain {placeholders} or * which match one path segment."""
     for w in (state or {}).get("approved_writes", []):

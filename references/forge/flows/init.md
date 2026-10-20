@@ -20,7 +20,10 @@ Precondition: `sentry-ctx flow preamble` is done and `sentry-ctx steer --write` 
    `ruby-rails`); an unknown id fails the `--dry-run` with "Invalid platform" and creates nothing, so fall back to the language id
    (`node`, `javascript`, `python`, `go`, `apple`, `java`) and say so.
    `sentry project create <org>/<name>:<platform> --dry-run`, show it, then run it, then
-   `sentry dsn list <org>/<name> --json`. The DSN goes into an environment variable named per the platform's convention, never a
+   `sentry dsn list <org>/<name> --json`.
+   Right after it exists: `sentry-ctx org focus --org <o> --project <name>` and `sentry-ctx org probe identity,keys,filters,scrubbing,spike,alerting --record`.
+   A strict or standard policy then yields an org-write finding for the new project's IP-storage setting (without it every event carries an inferred
+   `user.geo`, which the privacy scan rejects) and, if the project has no alert route, one for an alert. They are approved like any other org write. The DSN goes into an environment variable named per the platform's convention, never a
    literal. With no org access: ask the user for a DSN and use the same variable.
 4. **Dispatch auditors in baseline mode** (same dispatch as `sentry-ctx flow audit`, `Mode: baseline`). They create `add` findings:
    - base set, pre-selected: core (init, DSN from env, environment, release), errors, releases (+ release plumbing in CI),
