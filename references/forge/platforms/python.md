@@ -9,7 +9,6 @@ celery, ...) add to this one. Removed/renamed 3.0 names are in data/stale-apis/p
 |---|---|---|
 | `sentry-sdk` / `sentry-sdk[fastapi]` | pyproject.toml, requirements*.txt, Pipfile, uv.lock, poetry.lock | SDK installed; the lockfile gives the real major (2 vs 3) |
 | `sentry_sdk.init(` or `init_sentry(` | `*.py` | the init site(s); more than one is normal for Celery (app + worker), a problem elsewhere |
-| `DjangoIntegration`, `LoggingIntegration(level=..., event_level=...)`, `_experiments={...}` | init call | 2.x idioms: read them against the options table below |
 | `celery`, `apscheduler`, `@monitor`, `monitor_beat_tasks` | deps and code | scheduled work (crons row below); `raven` = legacy SDK |
 | uWSGI config (`--enable-threads`, `--py-call-uwsgi-fork-hooks`) | Dockerfile, uwsgi.ini, Procfile | threading flags, see Gotchas |
 
@@ -53,9 +52,7 @@ Two init sites in one process, or init inside a task module only, are findings. 
 | `profiles_sample_rate` | deprecated (legacy; not available in stream mode) | removed | continuous: `profile_session_sample_rate` + `profile_lifecycle` |
 | `enable_logs` | default `False`, deprecated since 2.68.1 | removed (logs work without it) | |
 | `attach_stacktrace` | default `False` | default `True` | changes grouping |
-| `transaction_style` | per web integration | removed | |
 | `include_prompts` | per AI integration, default `True` | removed | use `gen_ai` key of `data_collection` |
-| `trace_propagation_targets` | default `['.*']` | same | narrow it when third-party hosts are called |
 
 3.0 alpha needs Python 3.7+ (migration page) and self-hosted Sentry 26.4.2+. The 3.0 logging integrations are not auto-enabled.
 
@@ -118,17 +115,13 @@ trigger afterwards. For Celery send the marker from a task AND from the producer
 | Duplicate cron check-ins | `monitor_beat_tasks=True` and `@monitor` on one task; auto-discovery creates the monitor on first run and handles crontab schedules only | celery crons page |
 | uWSGI crashes or missing data | threads off by default: needs `--enable-threads` and `--py-call-uwsgi-fork-hooks` | django, flask pages |
 | `_experiments={"enable_logs": True}` | experimental idiom; in 3.0 experimental options are top-level only | migration page |
-| 3.0: locals unscrubbed | `event_scrubber` removed; use denylist `mode` under `stack_frame_variables` | migration page |
 | Starlette/FastAPI bodies absent in 3.0 | body only attached if handler called `Request.json()`/`Request.form()` first | migration page |
 
 ## Sources
 - https://docs.sentry.io/platforms/python/
 - https://docs.sentry.io/platforms/python/configuration/options/
 - https://docs.sentry.io/platforms/python/migration/2.x-to-3.x/
-- https://docs.sentry.io/platforms/python/data-management/data-collected/
 - https://docs.sentry.io/platforms/python/integrations/ (and the django, flask, celery, logging, default-integrations, agent-tracing/openai pages under it)
-- https://docs.sentry.io/platforms/python/integrations/celery/
-- https://docs.sentry.io/platforms/python/integrations/celery/crons/
 - https://docs.sentry.io/platforms/python/crons/ , .../profiling/ , .../configuration/releases/
 
 ## Identifiers
@@ -146,7 +139,6 @@ profile_session_sample_rate | https://docs.sentry.io/platforms/python/configurat
 profile_lifecycle | https://docs.sentry.io/platforms/python/configuration/options/
 enable_logs | https://docs.sentry.io/platforms/python/configuration/options/
 attach_stacktrace | https://docs.sentry.io/platforms/python/configuration/options/
-trace_propagation_targets | https://docs.sentry.io/platforms/python/configuration/options/
 stream_gen_ai_spans | https://docs.sentry.io/platforms/python/configuration/options/
 disabled_integrations | https://docs.sentry.io/platforms/python/configuration/options/
 auto_enabling_integrations | https://docs.sentry.io/platforms/python/configuration/options/
@@ -155,7 +147,6 @@ max_request_body_size | https://docs.sentry.io/platforms/python/configuration/op
 shutdown_timeout | https://docs.sentry.io/platforms/python/configuration/options/
 enable_tracing | https://docs.sentry.io/platforms/python/migration/2.x-to-3.x/
 enable_metrics | https://docs.sentry.io/platforms/python/migration/2.x-to-3.x/
-transaction_style | https://docs.sentry.io/platforms/python/migration/2.x-to-3.x/
 before_send_span | https://docs.sentry.io/platforms/python/migration/2.x-to-3.x/
 include_prompts | https://docs.sentry.io/platforms/python/migration/2.x-to-3.x/
 breadcrumb_level | https://docs.sentry.io/platforms/python/migration/2.x-to-3.x/
@@ -178,7 +169,6 @@ sentry_logs_level | https://docs.sentry.io/platforms/python/integrations/logging
 event_level | https://docs.sentry.io/platforms/python/integrations/logging/
 monitor_beat_tasks | https://docs.sentry.io/platforms/python/integrations/celery/crons/
 capture_checkin | https://docs.sentry.io/platforms/python/crons/
-DjangoIntegration | https://docs.sentry.io/platforms/python/integrations/django/
 config_from_object | https://docs.sentry.io/platforms/python/integrations/celery/
 celeryd_init | https://docs.sentry.io/platforms/python/integrations/celery/
 worker_init | https://docs.sentry.io/platforms/python/integrations/celery/

@@ -148,4 +148,4 @@ startWithConfigureOptions | https://docs.sentry.io/platforms/apple/guides/ios/
 ## Unconfirmed
 - `shellScript`, `XCRemoteSwiftPackageReference`, `XCSwiftPackageProductDependency`, `Package.resolved`: Xcode/SwiftPM file formats used as detection signals; Sentry's docs do not describe them, and the `xcshareddata/swiftpm` location of a workspace's `Package.resolved` is from Xcode convention, not a Sentry page.
 - `sentry init`: not exercised on Apple targets; the documented accelerator is `sentry-wizard -i ios`.
-- `import SentrySwift`: shown only in first-party test apps (TestApps/macOS-CLI-Xcode, TestApps/SPM); the SPM docs page and README use `import Sentry`.
+- `import SentrySwift`: shown only in first-party test apps (TestApps/macOS-CLI-Xcode, TestApps/SPM); the README initialization snippet uses `import Sentry`.
