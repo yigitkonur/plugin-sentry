@@ -3,13 +3,13 @@
   "owner": { "name": "yigitkonur", "url": "https://github.com/yigitkonur" },
   "metadata": {
     "description": "A CLI-first Claude Code plugin that audits, initializes and hardens Sentry in any repo.",
-    "version": "0.2.0"
+    "version": "0.2.1"
   },
   "plugins": [
     {
       "name": "sentry",
       "description": "Detect the repo, audit or initialize Sentry (errors, tracing, profiling, replay, logs, metrics, crons, uptime, releases, source maps, alerts, AI monitoring), apply approved changes, and prove them with a live event. CLI-first on the sentry v4 CLI.",
-      "version": "0.2.0",
+      "version": "0.2.1",
       "author": { "name": "yigitkonur", "url": "https://github.com/yigitkonur" },
       "source": "."
     }
