@@ -1,6 +1,6 @@
 {
   "name": "sentry",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Audit, initialize and harden Sentry in any repo, CLI-first on the sentry v4 CLI. Detects what the repo is, finds gaps or sets Sentry up properly, applies only what you approve, and proves it with a live event.",
   "author": { "name": "yigitkonur", "url": "https://github.com/yigitkonur" },
   "homepage": "https://github.com/yigitkonur/plugin-sentry",

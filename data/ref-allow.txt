@@ -63,3 +63,7 @@ unmatched_origins
 rpc_binding_listed
 truncated_units
 receiver_sentry_wrapped
+# event processing error types and the source-map field seen on real events (not options)
+js_no_source
+js_invalid_sourcemap_location
+debugId

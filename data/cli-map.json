@@ -72,7 +72,8 @@
   },
   {
    "v3": "releases propose-version",
-   "v4": "release propose-version"
+   "v4": "release propose-version | head -n 1",
+   "note": "Seen on sentry 0.47.0: stdout carries the version, a blank line and `Detected from ...`, so `$(sentry release propose-version)` captures all three lines. Keep the first line."
   },
   {
    "v3": "releases info V",
@@ -101,9 +102,14 @@
    "note": "One directory argument. Debug IDs are injected automatically unless --no-rewrite."
   },
   {
-   "v3": "sourcemaps upload --validate|--wait|--wait-for|--note|--decompress|--url-suffix|--no-sourcemap-reference|--debug-id-reference",
+   "v3": "sourcemaps upload --validate|--wait|--wait-for|--note|--decompress|--url-suffix|--no-sourcemap-reference",
    "v4": "(no v4 flag)",
    "note": "Drop the flag; v4 matches by debug ID and does not need these."
+  },
+  {
+   "v3": "sourcemaps upload --debug-id-reference BUNDLE MAP",
+   "v4": "(keep on sentry-cli 3)",
+   "note": "`--debug-id-reference` has no v4 equivalent and the line must stay on sentry-cli 3: for a Hermes bytecode bundle, sentry-cli 3 uploads an empty placeholder that carries the map's Debug ID. `sentry sourcemap upload` 0.47.0 cannot do that (the bytecode file gives `js_no_source`, and the placeholder it rewrites gives `js_invalid_sourcemap_location`; observed 2026-10-21). Keep the React Native SDK's own upload (Xcode/Gradle build phase, `@sentry/expo-upload-sourcemaps`)."
   },
   {
    "v3": "sourcemaps inject PATH...",

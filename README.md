@@ -163,6 +163,8 @@ no cli? the repo-side audit still runs, and every org-side row is reported as `U
 | `sentry-cli releases set-commits V --auto` | `sentry release set-commits ORG/V --auto` |
 | `sentry-cli releases deploys V new -e ENV` | `sentry release deploy ORG/V ENV` |
 | `sentry-cli sourcemaps upload DIR -r V` | `sentry sourcemap upload DIR --release V` |
+| `VERSION=$(sentry-cli releases propose-version)` | `VERSION=$(sentry release propose-version \| head -n 1)` (v4 prints a second `Detected from …` line on stdout) |
+| `sentry-cli sourcemaps upload --debug-id-reference BUNDLE.hbc MAP` | keep it on sentry-cli 3: v4 can't upload a hermes bytecode bundle (react native / expo) |
 | `sentry-cli upload-dif` / `upload-dsym` | `sentry debug-files upload` |
 | `sentry-cli send-event -m MSG` | `sentry event send -m MSG --no-environ` |
 | `sentry-cli monitors run SLUG -- CMD` | `sentry monitor run SLUG -- CMD` |
@@ -170,7 +172,7 @@ no cli? the repo-side audit still runs, and every org-side row is reported as `U
 
 ## verified against
 
-sentry docs and sdk releases as of **2026-10-20**: javascript sdk v11 (11.8.0), python sdk 2.x with the 3.0 alpha, cocoa 9, react native 8 and `sentry` cli 0.47. it was run live against a real eu org on next.js, go (gin), fastapi, a swiftui macos app, a cloudflare worker (hono), an mcp server, astro on cloudflare and expo. rubric claims trace to official pages, and `scripts/check.sh` re-fetches them.
+sentry docs and sdk releases as of **2026-10-21**: javascript sdk v11 (11.8.0), python sdk 2.x with the 3.0 alpha, cocoa 9, react native 8 and `sentry` cli 0.47. it was run live against a real eu org on next.js, go (gin), fastapi, a swiftui macos app, a cloudflare worker (hono), an mcp server, astro on cloudflare and expo. rubric claims trace to official pages, and `scripts/check.sh` re-fetches them.
 
 ## development
 

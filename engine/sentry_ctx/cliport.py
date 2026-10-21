@@ -49,9 +49,27 @@ SUB = [
 NO_V4_FLAGS = {
     "--ignore-missing": "set-commits has no --ignore-missing: append `|| true` where a missing base commit must not fail the job",
     "--validate": "no v4 flag (Debug IDs match by id; drop it)", "--wait": None, "--wait-for": "no v4 flag", "--note": "no v4 flag",
-    "--decompress": "no v4 flag", "--url-suffix": "no v4 flag", "--no-sourcemap-reference": "no v4 flag", "--debug-id-reference": "no v4 flag",
+    "--decompress": "no v4 flag", "--url-suffix": "no v4 flag", "--no-sourcemap-reference": "no v4 flag",
     "--symbol-maps": "no v4 flag", "--allow-failure": "removed: append `|| true`", "--quiet": "no global equivalent: redirect output", "--silent": "no global equivalent: redirect output",
 }
+
+
+HERMES_NOTE = ("`--debug-id-reference` has no v4 equivalent and the line must stay on sentry-cli 3: for a Hermes bytecode bundle, sentry-cli 3 uploads an empty placeholder that carries the map's Debug ID. `sentry sourcemap upload` 0.47.0 cannot do that (the bytecode file gives `js_no_source`, and the placeholder it rewrites gives `js_invalid_sourcemap_location`; observed 2026-10-21). Keep the React Native SDK's own upload (Xcode/Gradle build phase, `@sentry/expo-upload-sourcemaps`)")
+
+
+# One argument of the current command, or a stderr redirection that stays with it. Anything else (a closing `)` or backtick,
+# `|`, `;`, `&`, `<`, a stdout redirection) ends the command.
+_ARG_OR_STDERR = re.compile(r"""\s*(?:2>&1|2>>?\s*[^\s)`|;&<>]+|"[^"]*"|'[^']*'|[^\s)`|;&<>"']+)""")
+
+
+def _cut_command(tail: str):
+    pos = 0
+    while True:
+        m = _ARG_OR_STDERR.match(tail, pos)
+        if not m or not m.group(0).strip():
+            break
+        pos = m.end()
+    return tail[:pos].strip(), tail[pos:].strip()
 
 
 def _tokens(cmd: str):
@@ -70,7 +88,23 @@ def _flag_value(tail: str, names):
 
 
 def port_line(text: str):
-    """Returns None when the line has no `sentry-cli` call, else {'v4': str, 'notes': [..]}. Works on the raw text so quoting is kept."""
+    """Returns None when the line has no `sentry-cli` call, else {'v4': str, 'notes': [..]}. Works on the raw text so quoting is kept.
+    A line with several calls (`sentry-cli releases new "$(sentry-cli releases propose-version)"`) is ported one call at a time."""
+    out = _port_one(text)
+    for _ in range(4):
+        if not out or not out["v4"] or not V3_CALL.search(out["v4"]):
+            break
+        more = _port_one(out["v4"])
+        if not more or not more["v4"] or more["v4"] == out["v4"]:
+            break
+        out = {"v4": more["v4"], "notes": out["notes"] + [n for n in more["notes"] if n not in out["notes"]]}
+    return out
+
+
+V3_CALL = re.compile(r"\bsentry-cli\b|@sentry/cli\b")
+
+
+def _port_one(text: str):
     t = text.strip()
     if re.search(r"(?:npm|pnpm|yarn)\s+(?:i|install|add)\s+(?:-g\s+|--global\s+)?@sentry/cli\b", t):
         return {"v4": re.sub(r"@sentry/cli(@\S+)?", "sentry", t), "notes": ["the v4 CLI is the npm package `sentry` (it installs the `sentry` binary); pin an exact version", "or: curl https://cli.sentry.dev/install -fsS | bash"]}
@@ -91,6 +125,8 @@ def port_line(text: str):
         w2 = " ".join(tail.split()[:2])
         return {"v4": None, "notes": ["no known v4 counterpart for `sentry-cli %s`: check `sentry-ctx cli-map --v3 \"%s\"`" % (w2, w2)]}
     sub = " ".join(words)
+    if sub == "sourcemap upload" and re.search(r"(?:(?<=\s)|^)--debug-id-reference(?=\s|$)", tail):
+        return {"v4": None, "notes": [HERMES_NOTE]}
     suffix = ""
     mt = _flag_value(tail, ["--auth-token"])
     if mt:
@@ -119,6 +155,11 @@ def port_line(text: str):
     if sub == "event send" and "--no-environ" not in tail:
         tail = (tail + " --no-environ").strip()
         notes.append("`event send` attaches the whole process environment unless `--no-environ` is given")
+    if sub == "release propose-version":
+        # sentry 0.47.0 prints a "Detected from ..." hint on stdout after the version, so a captured value holds both lines.
+        args, rest = _cut_command(tail)
+        tail = (args + " | head -n 1" + ("" if not rest or rest[0] in ")`" else " ") + rest).strip()
+        notes.append("`release propose-version` prints a second line (`Detected from ...`) on stdout; `| head -n 1` keeps only the version")
     if sub == "release create" and not re.search(r"\S+/\S+", tail.split()[0] if tail.split() else ""):
         notes.append("the organization comes from SENTRY_ORG, `--org`, or an `ORG/` prefix on the version")
     v4 = (prefix + "sentry " + sub + (" " + re.sub(r"\s+", " ", tail).strip() if tail.strip() else "") + suffix).strip()
