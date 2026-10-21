@@ -57,6 +57,21 @@ NO_V4_FLAGS = {
 HERMES_NOTE = ("`--debug-id-reference` has no v4 equivalent and the line must stay on sentry-cli 3: for a Hermes bytecode bundle, sentry-cli 3 uploads an empty placeholder that carries the map's Debug ID. `sentry sourcemap upload` 0.47.0 cannot do that (the bytecode file gives `js_no_source`, and the placeholder it rewrites gives `js_invalid_sourcemap_location`; observed 2026-10-21). Keep the React Native SDK's own upload (Xcode/Gradle build phase, `@sentry/expo-upload-sourcemaps`)")
 
 
+# One argument of the current command, or a stderr redirection that stays with it. Anything else (a closing `)` or backtick,
+# `|`, `;`, `&`, `<`, a stdout redirection) ends the command.
+_ARG_OR_STDERR = re.compile(r"""\s*(?:2>&1|2>>?\s*[^\s)`|;&<>]+|"[^"]*"|'[^']*'|[^\s)`|;&<>"']+)""")
+
+
+def _cut_command(tail: str):
+    pos = 0
+    while True:
+        m = _ARG_OR_STDERR.match(tail, pos)
+        if not m or not m.group(0).strip():
+            break
+        pos = m.end()
+    return tail[:pos].strip(), tail[pos:].strip()
+
+
 def _tokens(cmd: str):
     try:
         return shlex.split(cmd, posix=True)
@@ -142,9 +157,8 @@ def _port_one(text: str):
         notes.append("`event send` attaches the whole process environment unless `--no-environ` is given")
     if sub == "release propose-version":
         # sentry 0.47.0 prints a "Detected from ..." hint on stdout after the version, so a captured value holds both lines.
-        cut = re.search(r"[)`>|;&]", tail)
-        at = cut.start() if cut else len(tail)
-        tail = (tail[:at].rstrip() + " | head -n 1" + (" " if cut and tail[at] != ")" and tail[at] != "`" else "") + tail[at:]).strip()
+        args, rest = _cut_command(tail)
+        tail = (args + " | head -n 1" + ("" if not rest or rest[0] in ")`" else " ") + rest).strip()
         notes.append("`release propose-version` prints a second line (`Detected from ...`) on stdout; `| head -n 1` keeps only the version")
     if sub == "release create" and not re.search(r"\S+/\S+", tail.split()[0] if tail.split() else ""):
         notes.append("the organization comes from SENTRY_ORG, `--org`, or an `ORG/` prefix on the version")
