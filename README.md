@@ -2,95 +2,99 @@
 
 tl;dr: point it at any repo. it works out whether sentry is there, audits it or sets it up from scratch, changes only what you approve, then proves every change with a real event landing in your sentry org. no "should work now" vibes. it runs on the new `sentry` v4 cli (the successor to `sentry-cli`), and it has no mcp server and no telemetry. it runs in claude code and in codex (see [codex](#codex)).
 
+<!-- kit:install:start -->
 ## install
 
-from your terminal, two steps:
+Every plugin of ours is installed **once, globally, and off**, then **turned on per project**. Nothing runs and no tokens are spent in chats that don't switch it on. It works the same in Claude Code and Codex.
+
+### 1. install it globally
+
+**Claude Code**
 
 ```sh
 claude plugin marketplace add yigitkonur/plugin-sentry
-claude plugin install sentry@plugin-sentry
+claude plugin install sentry@plugin-sentry -s user          # stays off: defaultEnabled is false in the manifest
 ```
 
-or the one-liner (it adds the marketplace for you):
-
-```sh
-claude plugin install sentry --marketplace yigitkonur/plugin-sentry
-```
-
-already inside a claude code session? same thing as slash commands:
-
-```
-/plugin marketplace add yigitkonur/plugin-sentry
-/plugin install sentry@plugin-sentry
-```
-
-check it landed (and if a claude code session was already open, restart it):
-
-```sh
-claude plugin list          # look for sentry@plugin-sentry with Status: ✔ enabled
-```
-
-new versions: a release is cut automatically on every shipped change, but claude code only pulls it by itself when auto-update is on for the marketplace, and that is **off by default** for third-party marketplaces. turn it on once: in a session run `/plugin`, open **Marketplaces**, pick `plugin-sentry`, **Enable auto-update**. (or put `"autoUpdate": true` on its `extraKnownMarketplaces` entry in your settings.) `/sentry:doctor` tells you when it's off. if you run with `CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1`, also set `FORCE_AUTOUPDATE_PLUGINS=1`, or the update pass is skipped.
-
-the install may say `1 userConfig option not yet set`. that's `hook_mode`, and it defaults to `on`, so you can ignore it, or set it right away with `--config hook_mode=on` (or `quiet` / `off`).
-
-### installed everywhere, on only where you want it
-
-the plugin adds a few hundred tokens to every session while it's enabled. so install it globally, keep it switched off, and turn it on per project when you actually want it (claude below; codex has its own block right after):
-
-```sh
-claude plugin install sentry --marketplace yigitkonur/plugin-sentry     # once per machine, installs switched off (the manifest says defaultEnabled: false)
-claude plugin disable sentry@plugin-sentry --scope user                  # only needed on an older copy that installed enabled
-```
-
-then in any project:
-
-```sh
-claude plugin enable sentry@plugin-sentry --scope project     # on here (restart the session, or /reload-plugins)
-claude plugin disable sentry@plugin-sentry --scope project    # off here again
-```
-
-`scripts/sp` wraps that (and codex too, if you have it): `sp on`, `sp off`, `sp status` for the folder you're in (`sp on ~/some/project` for another one). copy it to a folder on your PATH (`cp scripts/sp ~/.local/bin/sp`). it installs the plugin globally (disabled) first if the machine doesn't have it yet, writes to `.claude/settings.local.json` instead when the repo tracks `.claude/settings.json`, and adds an untracked settings file to `.git/info/exclude` so `git add -A` can't sweep it in.
-
-checked live through herdr on a scratch project: a fresh claude there answered `NONE` when asked for `sentry:` skills, after `sp on` it listed `sentry:ground-rules` and `sentry:triage`, and after `sp off` it answered `NONE` again.
-
-updating and removing:
-
-```sh
-claude plugin marketplace update plugin-sentry
-claude plugin update sentry@plugin-sentry
-claude plugin uninstall sentry@plugin-sentry
-```
-
-heads up: sentry also ships an official plugin that is *also* called `sentry`. you can run both. every command here is `/sentry:<verb>`, and none of our skill names clash with its `sentry-*` skills. `/sentry:doctor` tells you when both are on.
-
-### codex
-
-same repo, same plugin, one extra marketplace file (`.agents/plugins/marketplace.json`). install it globally and switch it off, the same way:
+**Codex** (0.163+)
 
 ```sh
 codex plugin marketplace add yigitkonur/plugin-sentry
 codex plugin add sentry@plugin-sentry
-scripts/codex-plugin-project.sh global-off sentry@plugin-sentry     # codex has no `plugin disable`, this edits ~/.codex/config.toml
+codex-plugin-project.sh global-off sentry@plugin-sentry     # Codex has no enable/disable command; this keeps it off everywhere
 ```
 
-on in one project (it writes `<project>/.codex/config.toml`, which codex only reads for a trusted project, so `--trust` adds the project to your trusted list. that also turns on the project's own hooks and rules, so only do it for projects you own):
+All our plugins, both hosts, plus the `plugin` command and the 6-hourly update job, in one line:
 
 ```sh
-codex-plugin-project.sh on sentry@plugin-sentry . --trust       # run inside the project, then start a new codex there
-codex-plugin-project.sh off sentry@plugin-sentry                # off again
-codex plugin list                                               # "installed, enabled" inside the project, "installed, disabled" elsewhere
+curl -fsSL https://raw.githubusercontent.com/yigitkonur/plugin-kit/main/install.sh | sh -s -- --all
 ```
 
-`sp on --trust` / `sp off` / `sp status` do both hosts at once (copy `scripts/sp` and `scripts/codex-plugin-project.sh` to a folder on your PATH).
+### 2. turn it on in a project
 
-update: `codex plugin marketplace upgrade plugin-sentry`, then start a new session. the first time codex loads the plugin's hooks it asks you to review them (`t` trusts all).
+```sh
+cd your-project
+plugin on sentry    # Claude Code and Codex, this folder only
+plugin off sentry   # undo
+plugin              # or pick from a list (TUI)
+```
+
+By hand, without the `plugin` command:
+
+```sh
+claude plugin enable sentry@plugin-sentry --scope project      # undo: claude plugin disable sentry@plugin-sentry --scope project
+codex-plugin-project.sh on sentry@plugin-sentry . --trust      # undo: codex-plugin-project.sh off sentry@plugin-sentry
+```
+
+Restart `claude` / `codex` in that folder afterwards.
+Codex reads a folder's `.codex/config.toml` only when the folder is trusted; `--trust` adds that, and it also enables the folder's hooks and rules, so use it for your own projects only. `plugin` and `codex-plugin-project.sh` come from [plugin-kit](https://github.com/yigitkonur/plugin-kit) (the one-line installer above).
+
+### 3. updates
+
+A plugin updates only when its `version` changes, and this repo's `release` workflow bumps it on every shipped change. Machines pick it up with `plugin update`, or by themselves with the 6-hourly job (`plugin autoupdate install`). By hand:
+
+```sh
+claude plugin marketplace update plugin-sentry && claude plugin update sentry@plugin-sentry
+codex plugin marketplace upgrade plugin-sentry        # then start a new session
+```
+
+No GitHub SSH key on the machine? `export CLAUDE_CODE_PLUGIN_PREFER_HTTPS=1` (`plugin install` sets it in Claude's settings for you).
+
+### 4. uninstall
+
+```sh
+claude plugin uninstall sentry@plugin-sentry -s user
+claude plugin marketplace remove plugin-sentry
+codex plugin remove sentry@plugin-sentry
+codex plugin marketplace remove plugin-sentry
+```
+<!-- kit:install:end -->
+
+### after switching it on
+
+new chats in that folder (restart `claude` / `codex` first) get the `/sentry:` commands; start with `/sentry:doctor`, then `/sentry:start`.
+
+the install may say `1 userConfig option not yet set`. that's `hook_mode`, and it defaults to `on`, so you can ignore it, or set it right away with `--config hook_mode=on` (or `quiet` / `off`).
+
+the plugin adds a few hundred tokens to every session while it's switched on, which is why it stays off until a project asks for it.
+
+checked live through herdr on a scratch project: a fresh claude there answered `NONE` when asked for `sentry:` skills, after switching the plugin on it listed `sentry:ground-rules` and `sentry:triage`, and after switching it off it answered `NONE` again.
+
+### updates in claude code
+
+if you run with `CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1`, also set `FORCE_AUTOUPDATE_PLUGINS=1`, or background plugin updates are skipped. `/sentry:doctor` tells you when updates can't arrive by themselves.
+
+### the official sentry plugin
+
+sentry also ships an official plugin that is *also* called `sentry`. you can run both. every command here is `/sentry:<verb>`, and none of our skill names clash with its `sentry-*` skills. `/sentry:doctor` tells you when both are on.
+
+### codex
+
+same repo, same plugin, one extra marketplace file (`.agents/plugins/marketplace.json`). the first time codex loads the plugin's hooks it asks you to review them (`t` trusts all).
 
 what's different in codex: there are no `/sentry:` slash commands, so you name the skill (`$doctor`, `$audit`, or just ask for "the sentry audit"); there are no subagents, so the audit runs inline, one cell at a time; there is no question tool, so questions come as numbered lists and you answer in chat; and the auditor's hard read-only gate is claude-only. the hooks (token paste, `enableLogs` on the wrong sdk major, unapproved sentry writes, unfinished run) work in both, including writes made with `apply_patch`. one difference: codex hooks can't ask you anything (an "ask" decision is rejected and the command then runs anyway), so in codex an unapproved sentry write is *denied* outright, and you record the approval yourself in your own terminal with `sentry-ctx run approve-write` after saying yes in chat. also: the `sentry` cli keeps its login database under your home folder, so codex's `workspace-write` sandbox can't run it (`unable to open database file`); use a mode that can write there.
 
 smoke-tested live: a fresh codex in a trusted scratch project loaded the doctor skill and ran it by full path (`sentry v4 CLI : 0.47.0`, login and region lines on screen), `apply_patch` writing a `sntryu_` token was blocked, and an unapproved `sentry api -X PUT` was blocked.
-
-no github ssh key on the machine? set `CLAUDE_CODE_PLUGIN_PREFER_HTTPS=1`, or background updates fail quietly.
 
 ## quick start
 

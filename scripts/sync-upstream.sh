@@ -11,7 +11,7 @@ here="$(cd -P "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 root="$(cd "$here/.." && pwd)"
 dest="$root/references/upstream"
 # what we vendor: slow-changing concepts and procedures. Per-platform setup and span conventions are fetched live.
-INCLUDE=(concepts debug-artifacts releases first-error-setup.md new-project.md sdk-docs.md auth-token.md search-query-language.md)
+INCLUDE=(concepts debug-artifacts releases first-error-setup.md new-project.md sdk-docs.md auth-token.md search-query-language.md setup-verification.md)
 
 ref="$PIN"
 [ "${1:-}" = "--latest" ] && ref="HEAD"
