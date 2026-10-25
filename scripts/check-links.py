@@ -4,6 +4,7 @@ docs.sentry.io answers HTTP 200 with a 'Page Not Found' title for missing pages,
 Usage: check-links.py [--offline]   (offline only lists the URLs)"""
 import os
 import re
+import time
 import sys
 import urllib.error
 import urllib.request
@@ -50,13 +51,19 @@ def check(u):
         except util.EngineError as e:
             return str(e)
     req = urllib.request.Request(u, headers={"User-Agent": docs.UA}, method="GET")
-    try:
-        with docs.open_url(req) as r:
-            return None if r.status < 400 else "HTTP %d" % r.status
-    except urllib.error.HTTPError as e:
-        return "HTTP %d" % e.code if e.code not in (401, 403, 429) else None
-    except Exception as e:  # network trouble is reported, not hidden
-        return "unreachable: %s" % e
+    err = None
+    for attempt in range(3):  # GitHub answers 503 for a moment now and then; a 404 is dead at once, a 5xx or a dropped connection gets two more tries
+        try:
+            with docs.open_url(req) as r:
+                return None if r.status < 400 else "HTTP %d" % r.status
+        except urllib.error.HTTPError as e:
+            if e.code < 500:
+                return "HTTP %d" % e.code if e.code not in (401, 403, 429) else None
+            err = "HTTP %d" % e.code
+        except Exception as e:  # network trouble is reported, not hidden
+            err = "unreachable: %s" % e
+        time.sleep(3)
+    return err
 
 
 def main():
