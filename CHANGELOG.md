@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.4.1 - 2026-10-25
+
+- fix: sp is idempotent on both hosts (#5) (c0b46f1)
+
 ## 0.4.0 - 2026-10-25
 
 - feat: run in codex too; install globally off, enable per project (#4) (ffa5f6d)
