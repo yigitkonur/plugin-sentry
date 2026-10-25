@@ -28,7 +28,7 @@ The product page links eight SDK pages for evaluation tracking: Android, Apple, 
 
 Rules that apply to every family:
 - Generic API: evaluations are held in memory and sent with error and transaction events. Boolean values only (JavaScript and Python pages say "At the moment, we only support boolean flag evaluations").
-- Privacy: the Python LaunchDarkly sample sets `send_default_pii=True` with the comment "Add data like request headers and IP for users, if applicable". Keep the default unless the app already sends that data. Flag names and values travel with error and transaction events. No fetched page says whether values are sensitive, so judge them under the repo's data-collection settings.
+- Privacy: the Python LaunchDarkly page's sample no longer sets `send_default_pii`; the Python options page documents it (to be removed in 3.0) and `data_collection`. Keep the defaults unless the app already sends request headers and IP. Flag names and values travel with error and transaction events. No fetched page says whether values are sensitive, so judge them under the repo's data-collection settings.
 - Change tracking requires evaluation tracking. Register a webhook with the provider (Flagsmith, LaunchDarkly, Statsig, Unleash, or Generic). For LaunchDarkly: in Sentry's feature-flags change-tracking settings, click Add New Provider (one webhook secret per provider type), copy the webhook URL into LaunchDarkly, tick "Sign this webhook", paste the revealed secret into Sentry, then save in both places.
 - Sampling, environments and releases: no fetched page sets a rule for flag data. Do not invent one.
 
@@ -45,7 +45,7 @@ Rules that apply to every family:
 | Multivariate flag absent or wrong | Generic API is boolean only | Track a boolean flag, or use the provider integration where one exists | JS featureflags page; Python feature-flags page |
 | Change lines never appear | Evaluation tracking is off (change tracking needs it), or the webhook is missing or unsigned | Enable evaluation tracking; register the webhook and tick "Sign this webhook" | Issue Details feature-flags page; LaunchDarkly org page |
 | Webhook not accepted | Signing was not enabled, or the pasted secret differs from the one LaunchDarkly shows | Re-copy the secret; keep one secret per provider type | LaunchDarkly org page |
-| Request headers and IP sent after copying the sample | The sample sets `send_default_pii=True` | Leave it off unless the app already sends that data | Python LaunchDarkly page |
+| Request headers and IP sent after copying a sample | The app, or an older sample, sets `send_default_pii=True` | Leave it off unless the app already sends that data | Python options page |
 
 ## Volume, cost and overhead
 - Flag data rides on error and transaction events (JavaScript and Python generic pages). The fetched pages name no separate billing category. The research notes say "no separate billing"; that is not confirmed (see Unconfirmed).
@@ -74,6 +74,7 @@ No CLI or API route for flag evaluations was verified on a fetched page, so the 
 - https://docs.sentry.io/platforms/php/feature-flags/
 - https://docs.sentry.io/organization/integrations/feature-flag/
 - https://docs.sentry.io/organization/integrations/feature-flag/launchdarkly/
+- https://docs.sentry.io/platforms/python/configuration/options.md
 
 ## Identifiers
 ```identifiers
@@ -82,7 +83,8 @@ addFeatureFlag | https://docs.sentry.io/platforms/javascript/configuration/integ
 getIntegrationByName | https://docs.sentry.io/platforms/javascript/configuration/integrations/featureflags/
 add_feature_flag | https://docs.sentry.io/platforms/python/feature-flags/
 LaunchDarklyIntegration | https://docs.sentry.io/platforms/python/integrations/launchdarkly/
-send_default_pii | https://docs.sentry.io/platforms/python/integrations/launchdarkly/
+send_default_pii | https://docs.sentry.io/platforms/python/configuration/options.md
+data_collection | https://docs.sentry.io/platforms/python/configuration/options.md
 ```
 
 ## Unconfirmed

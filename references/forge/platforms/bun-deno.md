@@ -111,12 +111,14 @@ Deno: the same steps in the Deno entry file, started with the permissions from t
 - https://docs.sentry.io/platforms/javascript/guides/deno/configuration/options.md
 - https://docs.sentry.io/platforms/javascript/guides/bun/sourcemaps/uploading.md
 - https://docs.sentry.io/platforms/javascript/guides/deno/sourcemaps/uploading.md
+- https://docs.sentry.io/platforms/javascript/guides/bun/sampling.md
+- https://docs.sentry.io/platforms/javascript/guides/bun/usage.md
 
 ## Identifiers
 ```identifiers
 Sentry.init | https://docs.sentry.io/platforms/javascript/guides/bun.md
-Sentry.captureException | https://docs.sentry.io/platforms/javascript/guides/bun.md
-Sentry.startSpan | https://docs.sentry.io/platforms/javascript/guides/bun.md
+Sentry.captureException | https://docs.sentry.io/platforms/javascript/guides/bun/usage.md
+Sentry.startSpan | https://docs.sentry.io/platforms/javascript/guides/bun/sampling.md
 Sentry.logger.info | https://docs.sentry.io/platforms/javascript/guides/bun.md
 Sentry.logger.warn | https://docs.sentry.io/platforms/javascript/guides/bun.md
 Sentry.logger.error | https://docs.sentry.io/platforms/javascript/guides/bun.md

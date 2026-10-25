@@ -83,7 +83,7 @@ Defaults from `dataCollection` (options page). The SDK always replaces values of
 Right: a deliberate `dataCollection` block in `instrument.server.*` (or the options callback) that turns off what the product does not need. Without the key, v11 still sends these defaults.
 
 ## Verify recipe
-Use the real Worker entry, so the marker travels the wrapper that ships. The guide's Verify step adds a route to the fetch handler; for the fixture, wrap `fetch` so the check runs before Hono:
+Use the real Worker entry, so the marker travels the wrapper that ships. Add a temporary route to the fetch handler; for the fixture, wrap `fetch` so the check runs before Hono (`Sentry.startSpan` around handler code is shown on the Cloudflare Pages page):
 
 ```ts
 fetch: async (req, env, ctx) => {
@@ -147,7 +147,7 @@ compatibility_date | https://docs.sentry.io/platforms/javascript/guides/cloudfla
 version_metadata | https://docs.sentry.io/platforms/javascript/guides/cloudflare.md
 CF_VERSION_METADATA | https://docs.sentry.io/platforms/javascript/guides/cloudflare.md
 upload_source_maps | https://docs.sentry.io/platforms/javascript/guides/cloudflare.md
-startSpan | https://docs.sentry.io/platforms/javascript/guides/cloudflare.md
+startSpan | https://docs.sentry.io/platforms/javascript/guides/cloudflare/features/pages.md
 SENTRY_RELEASE | https://docs.sentry.io/platforms/javascript/guides/cloudflare/configuration/options.md
 tracesSampleRate | https://docs.sentry.io/platforms/javascript/guides/cloudflare/configuration/options.md
 tracesSampler | https://docs.sentry.io/platforms/javascript/guides/cloudflare/configuration/options.md

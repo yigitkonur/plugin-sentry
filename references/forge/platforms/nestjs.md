@@ -84,7 +84,7 @@ The built-in denylist (`auth`, `token`, `secret`, `password`, ...) always scrubs
 
 ## Verify recipe
 
-Trigger through the real HTTP path, not a unit test. Add a temporary route to an existing controller (the guide's sample; needs `import * as Sentry from "@sentry/nestjs";`):
+Trigger through the real HTTP path, not a unit test. Add a temporary route to an existing controller (needs `import * as Sentry from "@sentry/nestjs";`):
 
 ```typescript
 @Get("/debug-sentry")
@@ -123,6 +123,7 @@ getError() {
 - https://docs.sentry.io/platforms/javascript/guides/nestjs/sourcemaps/uploading.md
 - https://docs.sentry.io/platforms/javascript/guides/nestjs/sourcemaps/uploading/typescript.md
 - https://docs.sentry.io/platforms/javascript/migration/v10-to-v11.md
+- https://docs.sentry.io/platforms/javascript/guides/nestjs/sampling.md
 
 ## Identifiers
 
@@ -134,7 +135,7 @@ SentryGlobalFilter | https://docs.sentry.io/platforms/javascript/guides/nestjs.m
 APP_FILTER | https://docs.sentry.io/platforms/javascript/guides/nestjs.md
 SentryExceptionCaptured | https://docs.sentry.io/platforms/javascript/guides/nestjs.md
 Sentry.captureException | https://docs.sentry.io/platforms/javascript/guides/nestjs.md
-Sentry.startSpan | https://docs.sentry.io/platforms/javascript/guides/nestjs.md
+Sentry.startSpan | https://docs.sentry.io/platforms/javascript/guides/nestjs/sampling.md
 tracesSampleRate | https://docs.sentry.io/platforms/javascript/guides/nestjs.md
 profileSessionSampleRate | https://docs.sentry.io/platforms/javascript/guides/nestjs.md
 nodeProfilingIntegration | https://docs.sentry.io/platforms/javascript/guides/nestjs.md

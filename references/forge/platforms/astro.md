@@ -105,7 +105,7 @@ Goal: one marked error from the real server path, then removal.
 |---|---|---|
 | Non-Node runtime | The Astro guide says the SDK works on Node runtimes only and sends Cloudflare Workers and Pages to the Astro on Cloudflare guide, which installs `@sentry/astro` and `@sentry/cloudflare`; Vercel Edge is not covered | guide, "What runtime do you use?"; `platforms/cloudflare` |
 | Netlify adapter version | `@astrojs/netlify` must be 5.0.0 or above | guide, Prerequisites |
-| Renamed init files | auto-detected only at root with exact names; move via `clientInitPath` / `serverInitPath` | guide, Configure Client-side Sentry |
+| Renamed init files | auto-detected only at root with exact names; move via `clientInitPath` / `serverInitPath` | `@sentry/astro` 11.9.0 types (observed 2026-10-25); no fetched docs page lists the two options any more |
 | Sample rates copied from the guide | guide values `tracesSampleRate: 1.0` and `profileSessionSampleRate: 1.0` are examples; "adjust this value in production" | guide, both init snippets |
 | v11 privacy | unset `dataCollection` collects everything in v11; v10 unset was restrictive, so an upgrade widens data | migration v10-to-v11 |
 | Replay rates | set in `Sentry.init` of the client file; the research note that the integration rejects them is consistent with the guide | guide, Configure Client-side Sentry |
@@ -122,6 +122,7 @@ Goal: one marked error from the real server path, then removal.
 - https://docs.sentry.io/platforms/javascript/guides/astro/configuration/options.md
 - https://docs.sentry.io/platforms/javascript/migration/v10-to-v11.md
 - https://docs.sentry.io/platforms/javascript/configuration/releases.md
+- https://docs.sentry.io/platforms/javascript/guides/astro/sampling.md
 
 ## Identifiers
 
@@ -147,10 +148,8 @@ beforeSendTransaction | https://docs.sentry.io/platforms/javascript/migration/v1
 ignoreTransactions | https://docs.sentry.io/platforms/javascript/migration/v10-to-v11.md
 dataCollection | https://docs.sentry.io/platforms/javascript/guides/astro.md
 userInfo | https://docs.sentry.io/platforms/javascript/guides/astro.md
-clientInitPath | https://docs.sentry.io/platforms/javascript/guides/astro.md
-serverInitPath | https://docs.sentry.io/platforms/javascript/guides/astro.md
 loadEnv | https://docs.sentry.io/platforms/javascript/guides/astro.md
-startSpan | https://docs.sentry.io/platforms/javascript/guides/astro.md
+startSpan | https://docs.sentry.io/platforms/javascript/guides/astro/sampling.md
 SENTRY_AUTH_TOKEN | https://docs.sentry.io/platforms/javascript/guides/astro/sourcemaps.md
 authToken | https://docs.sentry.io/platforms/javascript/guides/astro/sourcemaps.md
 sourcemaps | https://docs.sentry.io/platforms/javascript/guides/astro/sourcemaps.md
@@ -161,6 +160,7 @@ sentryVitePlugin | https://docs.sentry.io/platforms/javascript/guides/astro/sour
 ```
 
 ## Unconfirmed
+- `clientInitPath`, `serverInitPath`: both are options of `sentry()` in `@sentry/astro` 11.9.0 (`build/types/integration/types.d.ts`, observed 2026-10-25), but no fetched docs page lists them now; the guide that did no longer does. Use them only to point at renamed init files.
 - `sentryAstro`: name from a research note for the v11 integration; no fetched Astro page uses it (the guide registers `sentry()`). Do not use.
 - `enableLogs`, `enableMetrics`: research says removed in v11; the v10-to-v11 page does not mention them. Do not use until confirmed.
 - `prerender`: needed for a server route under static output in Astro; not on any fetched Sentry page. Confirm in Astro docs before writing it.

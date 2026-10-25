@@ -86,7 +86,7 @@ Matrix values come from the Python row of the platform matrix (research note), u
 
 | Data | Default | Control |
 |---|---|---|
-| user identity, IP, request headers | the example sets `send_default_pii=True` with a comment that it adds request headers and IP | `send_default_pii` in `sentry_sdk.init()` (celery page) |
+| user identity, IP, request headers | the Celery page no longer shows an init example; the Python options page documents `send_default_pii` (to be removed in 3.0) and its replacement `data_collection` | `send_default_pii` or `data_collection` in `sentry_sdk.init()` (Python options page) |
 | task arguments and results | page does not say | unconfirmed; check task modules for personal data passed as arguments |
 
 ## Verify recipe
@@ -129,6 +129,7 @@ Matrix values come from the Python row of the platform matrix (research note), u
 - https://docs.sentry.io/platforms/python/integrations/celery/crons.md
 - https://docs.sentry.io/platforms/python/configuration/releases.md
 - https://docs.sentry.io/platforms/python/usage.md
+- https://docs.sentry.io/platforms/python/configuration/options.md
 
 ## Identifiers
 
@@ -151,7 +152,8 @@ debug_sentry | https://docs.sentry.io/platforms/python/integrations/celery.md
 debug | https://docs.sentry.io/platforms/python/integrations/celery.md
 capture_message | https://docs.sentry.io/platforms/python/usage.md
 traces_sample_rate | https://docs.sentry.io/platforms/python/integrations/celery.md
-send_default_pii | https://docs.sentry.io/platforms/python/integrations/celery.md
+send_default_pii | https://docs.sentry.io/platforms/python/configuration/options.md
+data_collection | https://docs.sentry.io/platforms/python/configuration/options.md
 profile_session_sample_rate | https://docs.sentry.io/platforms/python/integrations/celery.md
 profile_lifecycle | https://docs.sentry.io/platforms/python/integrations/celery.md
 release | https://docs.sentry.io/platforms/python/configuration/releases.md
