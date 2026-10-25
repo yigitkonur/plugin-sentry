@@ -52,10 +52,16 @@ def _do_bindings(root, files):
     return out
 
 
-def _wrapped(class_name, texts):
-    """True when some file exports `class_name` through one of Sentry's instrument*WithSentry wrappers."""
-    rx = re.compile(r"export\s+(?:const|let|var|class)\s+%s\b[^;]{0,300}?instrument(?:DurableObject|Workflow|Agent)WithSentry" % re.escape(class_name), re.S)
-    return any(rx.search(t) for t in texts.values())
+def _receiver(class_name, texts):
+    """(wrapped, "file:line"): where `class_name` is exported in the receiver, and whether that export goes through one of Sentry's
+    instrument*WithSentry wrappers. (None, None) when no file exports the class, so the auditor reads the receiver instead of trusting a guess."""
+    wrap = re.compile(r"export\s+(?:const|let|var|class)\s+%s\b[^;]{0,300}?instrument(?:DurableObject|Workflow|Agent)WithSentry" % re.escape(class_name), re.S)
+    decl = re.compile(r"export\s+(?:default\s+)?(?:const|let|var|class)\s+%s\b" % re.escape(class_name))
+    for rel in sorted(texts):
+        m = decl.search(texts[rel])
+        if m:
+            return bool(wrap.search(texts[rel])), "%s:%d" % (rel, texts[rel].count("\n", 0, m.start()) + 1)
+    return None, None
 
 
 RPC_LIST_RX = re.compile(r"rpcTracePropagationBindings\s*:\s*\[([^\]]*)\]")
@@ -357,19 +363,20 @@ def analyze(root, units):
             for b_id, b in per.items():
                 if b_id != a_id and sv["service"] in b["names"]:
                     listed = [x for x in a["rpc_listed"] if sv["binding"] in x["bindings"]]
+                    wrapped, where = _receiver(sv["entrypoint"], b["texts"]) if sv["entrypoint"] else (None, None)
                     edges.append({"kind": "service-binding", "from": a_id, "to": b_id, "binding": sv["binding"], "entrypoint": sv["entrypoint"],
                                   "from_role": a["unit"].get("role"), "to_role": b["unit"].get("role"),
-                                  "rpc_binding_listed": bool(listed),
-                                  "receiver_sentry_wrapped": _wrapped(sv["entrypoint"], b["texts"]) if sv["entrypoint"] else None,
-                                  "evidence": {"from": [sv["evidence"]] + [x["evidence"] for x in listed][:2], "to": []}})
+                                  "rpc_binding_listed": bool(listed), "receiver_sentry_wrapped": wrapped,
+                                  "evidence": {"from": [sv["evidence"]] + [x["evidence"] for x in listed][:2], "to": [where] if where else []}})
         for db in a["do_bindings"]:
             for b_id, b in per.items():
                 if b_id != a_id and db["script_name"] in b["names"]:
                     listed = [x for x in a["rpc_listed"] if db["binding"] in x["bindings"]]
+                    wrapped, where = _receiver(db["class_name"], b["texts"])
                     edges.append({"kind": "durable-object-binding", "from": a_id, "to": b_id, "binding": db["binding"], "entrypoint": db["class_name"],
                                   "from_role": a["unit"].get("role"), "to_role": b["unit"].get("role"),
-                                  "rpc_binding_listed": bool(listed), "receiver_sentry_wrapped": _wrapped(db["class_name"], b["texts"]),
-                                  "evidence": {"from": [db["evidence"]] + [x["evidence"] for x in listed][:2], "to": []}})
+                                  "rpc_binding_listed": bool(listed), "receiver_sentry_wrapped": wrapped,
+                                  "evidence": {"from": [db["evidence"]] + [x["evidence"] for x in listed][:2], "to": [where] if where else []}})
     shared = {}
     for uid, p in per.items():
         for k, locs in p["dsns"].items():

@@ -101,7 +101,9 @@
      "from": [
       "apps/site/wrangler.jsonc:8"
      ],
-     "to": []
+     "to": [
+      "services/api/src/index.ts:9"
+     ]
     },
     "from": "site",
     "from_role": "fullstack",
@@ -118,7 +120,9 @@
      "from": [
       "apps/site/wrangler.jsonc:8"
      ],
-     "to": []
+     "to": [
+      "services/api/src/index.ts:22"
+     ]
     },
     "from": "site",
     "from_role": "fullstack",

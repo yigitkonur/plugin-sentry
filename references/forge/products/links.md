@@ -9,7 +9,7 @@ Applies when detect has a `links` section (two or more units that are not librar
 |---|---|---|
 | `edges` | `from`, `to`, `host`, `via_env`, evidence lines on both sides | One row of the chain table per edge |
 | `cors_allowed_origins` | origins a unit's CORS config names | A browser edge needs the client origin here |
-| `edges` with `kind: service-binding` or `durable-object-binding` | a Worker's wrangler `services` binding, or Durable Object binding with a `script_name`, that names another Worker of this repo (`binding`, `entrypoint` = the class, `rpc_binding_listed`, `receiver_sentry_wrapped`: the class is exported through an `instrument...WithSentry` wrapper, or null when no class is named) | `link.rpc-propagation` |
+| `edges` with `kind: service-binding` or `durable-object-binding` | a Worker's wrangler `services` binding, or Durable Object binding with a `script_name`, that names another Worker of this repo (`binding`, `entrypoint` = the class, `rpc_binding_listed`, `receiver_sentry_wrapped`: the class is exported through an `instrument...WithSentry` wrapper, or null when no class is named or no file of the receiver exports it; `evidence.to` is then empty, otherwise the export's file:line) | `link.rpc-propagation` |
 | `shared_dsns` | units sharing one project and key (key shown as an 8-char hash) | `link.dsn-reuse` |
 | `environment_names` | each `environment` value with the units and lines that set it | `link.vocab` |
 | `truncated_units` | present only when a unit was too large to scan fully (the shallowest 6,000 text files or 40 MB of them) | Search those units by hand before calling an edge absent |
