@@ -38,6 +38,12 @@ ensure_installed() {
   claude plugin disable "$P" --scope user >/dev/null 2>&1
 }
 
+claude_toggle() {  # claude_toggle enable|disable: "already enabled/disabled" counts as success, so the codex half still runs
+  out=$(claude plugin "$1" "$P" --scope "$scope" 2>&1); rc=$?
+  case "$out" in *"already"*) return 0 ;; esac
+  echo "$out"; return $rc
+}
+
 codex_state() { codex plugin list 2>/dev/null | awk -F'  +' '$1=="sentry@plugin-sentry"{print $2; exit}'; }
 
 codex_ensure_installed() {
@@ -52,7 +58,7 @@ case "$cmd" in
   on)
     if [ "$HAVE_CLAUDE" = 1 ]; then
       ensure_installed
-      claude plugin enable "$P" --scope "$scope" || exit 1
+      claude_toggle enable || exit 1
       # keep the settings file out of `git add -A` without touching tracked files
       if git rev-parse --git-dir >/dev/null 2>&1 && ! git check-ignore -q "$file" 2>/dev/null; then
         ex=$(git rev-parse --git-path info/exclude); mkdir -p "$(dirname "$ex")"
@@ -67,7 +73,7 @@ case "$cmd" in
     ;;
   off)
     if [ "$HAVE_CLAUDE" = 1 ]; then
-      claude plugin disable "$P" --scope "$scope" || exit 1
+      claude_toggle disable || exit 1
       echo "sp: claude: off in $PWD ($scope scope). Run /reload-plugins in an open claude here, or restart it."
     fi
     if [ "$HAVE_CODEX" = 1 ]; then
