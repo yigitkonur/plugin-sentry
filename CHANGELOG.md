@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.4.0 - 2026-10-25
+
+- feat: run in codex too; install globally off, enable per project (#4) (ffa5f6d)
+- ci: link check retries a 5xx or dropped connection twice (0a66095)
+- docs: install globally but off, switch on per project; scripts/sp toggles it (1a79132)
+
 ## 0.3.0 - 2026-10-25
 
 - feat(doctor): warn when the plugin-sentry marketplace will not auto-update (399b6ac)
