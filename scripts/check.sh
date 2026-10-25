@@ -43,6 +43,9 @@ run $PY scripts/replay-events.py
 stage "plugin manifest and component validation (claude plugin validate --strict)"
 if command -v claude >/dev/null 2>&1; then run claude plugin validate --strict .; else echo "claude CLI not installed: skipped"; fi
 
+stage "codex package: manifest, marketplace, versions equal, hook targets exist"
+run $PY scripts/check-codex.py
+
 if [ "$OFFLINE" = 0 ]; then
   stage "reference modules: structure, check ids, identifiers present in their cited pages"
   bin/sentry-ctx ref verify | $PY -I -c 'import sys,json; r=json.load(sys.stdin); bad=[x for x in r if not x.get("ok",True)]; [print(x["name"], x["errors"][:5]) for x in bad]; print(len(r), "modules,", len(bad), "failing"); sys.exit(1 if bad else 0)' || fail=1

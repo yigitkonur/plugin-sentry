@@ -7,6 +7,8 @@ argument-hint: "[what you want, optional]"
 ---
 # /sentry:start
 
+> Codex: the `!` lines below are not run for you. Run each one yourself as `<plugin root>/bin/sentry-ctx ...` (the plugin root is two folders above this file), then follow its output.
+
 !`sentry-ctx flow start`
 
 User request (may be empty): $ARGUMENTS

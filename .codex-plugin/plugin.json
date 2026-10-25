@@ -1,0 +1,39 @@
+{
+  "name": "sentry",
+  "version": "0.3.0",
+  "description": "Audit, initialize and harden Sentry in any repo, CLI-first on the sentry v4 CLI. Detects what the repo is, finds gaps or sets Sentry up properly, applies only what you approve, and proves it with a live event.",
+  "author": {
+    "name": "yigitkonur",
+    "url": "https://github.com/yigitkonur"
+  },
+  "homepage": "https://github.com/yigitkonur/plugin-sentry",
+  "repository": "https://github.com/yigitkonur/plugin-sentry",
+  "license": "MIT",
+  "keywords": [
+    "sentry",
+    "observability",
+    "error-tracking",
+    "audit",
+    "cli",
+    "tracing",
+    "source-maps"
+  ],
+  "skills": "./skills/",
+  "hooks": "./hooks/codex-hooks.json",
+  "interface": {
+    "displayName": "Sentry",
+    "shortDescription": "Audit or set up Sentry in any repo, proven with a live event",
+    "longDescription": "Detects what the repo is, audits or initializes Sentry (errors, tracing, profiling, replay, logs, crons, releases, source maps, privacy), applies only the changes you approve, and proves each one with a live event. CLI-first on the sentry v4 CLI. In Codex the work runs inline in one thread and questions are asked as numbered lists.",
+    "developerName": "yigitkonur",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/yigitkonur/plugin-sentry",
+    "defaultPrompt": [
+      "Run the sentry doctor skill",
+      "Audit Sentry in this repo"
+    ]
+  }
+}

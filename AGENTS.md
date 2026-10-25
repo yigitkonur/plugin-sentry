@@ -1,6 +1,6 @@
 # Maintainer notes (plugin-sentry)
 
-Claude Code plugin `sentry` (marketplace `plugin-sentry`). Python 3.9+ standard library only; no runtime dependencies.
+Claude Code and Codex plugin `sentry` (marketplace `plugin-sentry`). The Codex side is `.codex-plugin/plugin.json`, `.agents/plugins/marketplace.json` and `hooks/codex-hooks.json`; the skills, engine and `hooks/run.sh` are shared. Keep the two manifests and the Claude marketplace entry on one version (`scripts/check-codex.py` checks it; `release.py` writes all three). Python 3.9+ standard library only; no runtime dependencies.
 
 ## Layout
 - `bin/sentry-ctx` -> `engine/` : the deterministic engine (detection, steering, findings ledger, org probes, verification, hooks). Skills and agents call it; they never re-derive what it computes.
@@ -19,4 +19,5 @@ Claude Code plugin `sentry` (marketplace `plugin-sentry`). Python 3.9+ standard 
 5. Do not bump the version by hand. `.github/workflows/release.yml` runs `scripts/release.py` on every push to `main` (the same two files every yigitkonur plugin repo vendors; the canonical copy is `plugin-agentic-maker`): `feat` is minor, `fix`/`perf` patch, `type!:` or a BREAKING CHANGE line major, and docs, ci, chore, test, style, build and refactor release nothing. A release rewrites both manifests and CHANGELOG.md, commits `chore(release)`, tags `vX.Y.Z` and publishes the GitHub release. Installed copies update only when the version string changes, so a shipped change must reach `main` through a commit type that releases. `python3 scripts/release.py` (no flags) shows the decision; Actions > release > Run workflow forces a level.
 6. Never commit a token, a DSN key from a real project, a personal path or an email. Commit under the GitHub noreply identity.
 7. Live tests create only resources named `sentry-plugin-test-*` and every marker event is sent with `--no-environ`.
-8. `sentry issue explain|plan` (Seer) spend money: nothing in this repo may run them unprompted.
+8. Codex has no subagents and no question tool: the Codex addendum lives in `registry.py` (`CODEX_FLOW_NOTE`, appended to every `sentry-ctx flow` output when the host is Codex), not in the flow files. File writes reach hooks as `apply_patch`; `hooks/common.py:written` is the one place that reads both shapes.
+9. `sentry issue explain|plan` (Seer) spend money: nothing in this repo may run them unprompted.

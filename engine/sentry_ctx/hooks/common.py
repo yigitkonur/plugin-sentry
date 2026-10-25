@@ -38,6 +38,36 @@ def decide(decision: str, reason: str) -> None:
     emit({"hookSpecificOutput": {"hookEventName": "PreToolUse", "permissionDecision": decision, "permissionDecisionReason": reason}})
 
 
+def _texts(ti: dict):
+    out = []
+    for k in ("content", "new_string"):
+        if isinstance(ti.get(k), str):
+            out.append(ti[k])
+    for e in ti.get("edits") or []:
+        if isinstance(e, dict) and isinstance(e.get("new_string"), str):
+            out.append(e["new_string"])
+    return out
+
+
+def written(inp: dict):
+    """[(path, [new text, ...])] for a file-writing tool call: Claude's Write/Edit/MultiEdit, or Codex's apply_patch (the patch text arrives in tool_input.command)."""
+    ti = inp.get("tool_input") or {}
+    cmd = ti.get("command")
+    if isinstance(cmd, str) and not ti.get("file_path") and (inp.get("tool_name") == "apply_patch" or "*** Begin Patch" in cmd):
+        files, cur = [], None
+        for line in cmd.split("\n"):
+            for tag in ("*** Add File: ", "*** Update File: ", "*** Move to: "):
+                if line.startswith(tag):
+                    cur = (line[len(tag):].strip(), [])
+                    files.append(cur)
+                    break
+            else:
+                if cur is not None and line.startswith("+"):
+                    cur[1].append(line[1:])
+        return [(p, ["\n".join(t)]) for p, t in files]
+    return [(ti.get("file_path") or "", _texts(ti))]
+
+
 def cache_dir() -> str:
     d = os.path.join(os.path.expanduser("~"), ".cache", "sentry-plugin")
     os.makedirs(d, exist_ok=True)
