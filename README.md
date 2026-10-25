@@ -34,24 +34,25 @@ new versions: a release is cut automatically on every shipped change, but claude
 
 the install may say `1 userConfig option not yet set`. that's `hook_mode`, and it defaults to `on`, so you can ignore it, or set it right away with `--config hook_mode=on` (or `quiet` / `off`).
 
-### install it in one project, switched off
+### installed everywhere, on only where you want it
 
-want it available in a project but not running until you ask? install at project scope, then disable it there. the plugin is recorded for that project only (nothing global), and its skills, hooks and agents stay unloaded until you enable it:
-
-```sh
-cd your-project
-claude plugin install sentry --marketplace yigitkonur/plugin-sentry --scope project
-claude plugin disable sentry@plugin-sentry --scope project
-```
-
-this writes `"sentry@plugin-sentry": false` into the project's `.claude/settings.json`. when you want it:
+the plugin adds a few hundred tokens to every session while it's enabled. so install it globally, keep it switched off, and turn it on per project when you actually want it:
 
 ```sh
-claude plugin enable sentry@plugin-sentry --scope project     # then restart the session; /sentry:start works
-claude plugin disable sentry@plugin-sentry --scope project    # and back off again
+claude plugin install sentry --marketplace yigitkonur/plugin-sentry     # once per machine
+claude plugin disable sentry@plugin-sentry --scope user                  # global, but off
 ```
 
-`.claude/settings.json` is a shared file, so commit it (everyone gets the same switched-off entry) or leave it out of the commit. use `--scope local` instead if you want it kept out of git.
+then in any project:
+
+```sh
+claude plugin enable sentry@plugin-sentry --scope project     # on here (restart the session, or /reload-plugins)
+claude plugin disable sentry@plugin-sentry --scope project    # off here again
+```
+
+`scripts/sp` wraps that: `sp on`, `sp off`, `sp status` for the folder you're in (`sp on ~/some/project` for another one). copy it to a folder on your PATH (`cp scripts/sp ~/.local/bin/sp`). it installs the plugin globally (disabled) first if the machine doesn't have it yet, writes to `.claude/settings.local.json` instead when the repo tracks `.claude/settings.json`, and adds an untracked settings file to `.git/info/exclude` so `git add -A` can't sweep it in.
+
+checked live through herdr on a scratch project: a fresh claude there answered `NONE` when asked for `sentry:` skills, after `sp on` it listed `sentry:ground-rules` and `sentry:triage`, and after `sp off` it answered `NONE` again.
 
 updating and removing:
 

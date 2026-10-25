@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+# sp: switch the sentry plugin on or off for ONE project, with the project-scope enable/disable commands.
+#   sp on [dir]      enable here (project scope; local scope when the repo tracks .claude/settings.json)
+#   sp off [dir]     disable here
+#   sp status [dir]  on or off here
+# The plugin stays installed globally but disabled, so it costs no tokens anywhere it is off.
+# Not part of the plugin: its own bin/ is not on PATH while it is off. Copy this file to a folder on PATH (for example ~/.local/bin/sp).
+set -u
+export PATH="$HOME/.local/bin:/opt/homebrew/bin:/usr/local/bin:$PATH"
+P="sentry@plugin-sentry"
+cmd="${1:-status}"; dir="${2:-$PWD}"
+cd "$dir" 2>/dev/null || { echo "sp: no such folder: $dir" >&2; exit 2; }
+command -v claude >/dev/null 2>&1 || { echo "sp: claude cli not found on PATH" >&2; exit 2; }
+
+scope=project; file=.claude/settings.json
+if git ls-files --error-unmatch .claude/settings.json >/dev/null 2>&1; then scope=local; file=.claude/settings.local.json; fi
+
+state() {  # prints on, off or not-installed for this folder
+  claude plugin list --json 2>/dev/null | python3 -c '
+import sys, json, os
+here = os.path.realpath(os.getcwd())
+rows = [p for p in json.load(sys.stdin) if p["id"] == "'$P'"]
+if not rows: print("not-installed"); sys.exit()
+on = any(p["enabled"] for p in rows if p["scope"] == "user" or os.path.realpath(p.get("projectPath") or "/nonexistent") == here)
+print("on" if on else "off")'
+}
+
+ensure_installed() {
+  [ "$(state)" = "not-installed" ] || return 0
+  echo "sp: not installed yet, installing globally (disabled)"
+  claude plugin install sentry --marketplace yigitkonur/plugin-sentry >/dev/null 2>&1 || { echo "sp: install failed" >&2; exit 1; }
+  claude plugin disable "$P" --scope user >/dev/null 2>&1
+}
+
+case "$cmd" in
+  on)
+    ensure_installed
+    claude plugin enable "$P" --scope "$scope" || exit 1
+    # keep the settings file out of `git add -A` without touching tracked files
+    if git rev-parse --git-dir >/dev/null 2>&1 && ! git check-ignore -q "$file" 2>/dev/null; then
+      ex=$(git rev-parse --git-path info/exclude); mkdir -p "$(dirname "$ex")"
+      grep -qxF "$file" "$ex" 2>/dev/null || echo "$file" >> "$ex"
+    fi
+    echo "sp: on in $PWD ($scope scope). Run /reload-plugins in an open claude here, or start claude, then /sentry:start."
+    ;;
+  off)
+    claude plugin disable "$P" --scope "$scope" || exit 1
+    echo "sp: off in $PWD ($scope scope). Run /reload-plugins in an open claude here, or restart it."
+    ;;
+  status)
+    echo "sp: $(state) in $PWD"
+    ;;
+  *)
+    echo "usage: sp on|off|status [dir]" >&2; exit 2 ;;
+esac
