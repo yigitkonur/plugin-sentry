@@ -32,6 +32,25 @@ claude plugin list          # look for sentry@plugin-sentry with Status: ✔ ena
 
 the install may say `1 userConfig option not yet set`. that's `hook_mode`, and it defaults to `on`, so you can ignore it, or set it right away with `--config hook_mode=on` (or `quiet` / `off`).
 
+### install it in one project, switched off
+
+want it available in a project but not running until you ask? install at project scope, then disable it there. the plugin is recorded for that project only (nothing global), and its skills, hooks and agents stay unloaded until you enable it:
+
+```sh
+cd your-project
+claude plugin install sentry --marketplace yigitkonur/plugin-sentry --scope project
+claude plugin disable sentry@plugin-sentry --scope project
+```
+
+this writes `"sentry@plugin-sentry": false` into the project's `.claude/settings.json`. when you want it:
+
+```sh
+claude plugin enable sentry@plugin-sentry --scope project     # then restart the session; /sentry:start works
+claude plugin disable sentry@plugin-sentry --scope project    # and back off again
+```
+
+`.claude/settings.json` is a shared file, so commit it (everyone gets the same switched-off entry) or leave it out of the commit. use `--scope local` instead if you want it kept out of git.
+
 updating and removing:
 
 ```sh
