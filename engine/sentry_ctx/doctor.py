@@ -50,6 +50,22 @@ def coexistence():
     }
 
 
+def auto_update():
+    """Whether Claude Code refreshes the `plugin-sentry` marketplace by itself. None when the marketplace is not registered here (for example a
+    --plugin-dir run). autoUpdate on the settings entry wins over the one in known_marketplaces.json; the default for a third-party marketplace is off."""
+    home = os.path.expanduser("~/.claude")
+    settings = util.read_json(os.path.join(home, "settings.json"), {}) or {}
+    known = util.read_json(os.path.join(home, "plugins", "known_marketplaces.json"), {}) or {}
+    entry = ((settings.get("extraKnownMarketplaces") or {}).get("plugin-sentry")) if isinstance(settings, dict) else None
+    kentry = known.get("plugin-sentry") if isinstance(known, dict) else None
+    if entry is None and kentry is None:
+        return None
+    flag = next((e["autoUpdate"] for e in (entry, kentry) if isinstance(e, dict) and "autoUpdate" in e), False)
+    env = dict(os.environ, **{k: str(v) for k, v in ((settings.get("env") or {}) if isinstance(settings, dict) else {}).items()})
+    blocked = any(env.get(k) for k in ("DISABLE_UPDATES", "DISABLE_AUTOUPDATER", "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC")) and env.get("FORCE_AUTOUPDATE_PLUGINS") != "1"
+    return {"marketplace_auto_update": bool(flag), "blocked_by_env": blocked, "on": bool(flag) and not blocked}
+
+
 def git_info(root: str):
     if not util.is_git_repo(root):
         return {"repo": False}
@@ -77,6 +93,7 @@ def run(root: str, want_auth: bool = True) -> dict:
         },
         "git": git_info(root),
         "coexistence": coexistence(),
+        "updates": auto_update(),
         "legacy": {
             "home_sentryclirc_exists": os.path.isfile(os.path.expanduser("~/.sentryclirc")),
             "token_env_vars_set": [n for n in TOKEN_ENV_NAMES if os.environ.get(n)],
@@ -125,6 +142,14 @@ def run(root: str, want_auth: bool = True) -> dict:
         )
     if not node:
         advice.append("node/npx not found: the optional @sentry/wizard route and JS tooling are unavailable.")
+    up = result["updates"]
+    if up is not None and not up["on"]:
+        advice.append(
+            "New plugin versions will not arrive by themselves: %s. Fix: in Claude Code run /plugin, open Marketplaces, pick plugin-sentry, Enable auto-update%s. "
+            "Until then update with `claude plugin update sentry@plugin-sentry`."
+            % ("auto-update is blocked by an environment variable (DISABLE_UPDATES, DISABLE_AUTOUPDATER or CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC)" if up["marketplace_auto_update"] else "auto-update is off for the plugin-sentry marketplace",
+               " (and set FORCE_AUTOUPDATE_PLUGINS=1 in your settings env)" if up["blocked_by_env"] else "")
+        )
     if result["coexistence"]["note"]:
         advice.append(result["coexistence"]["note"])
     if result["git"].get("repo") and result["git"].get("dirty"):
