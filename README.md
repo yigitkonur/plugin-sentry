@@ -30,6 +30,8 @@ check it landed (and if a claude code session was already open, restart it):
 claude plugin list          # look for sentry@plugin-sentry with Status: ✔ enabled
 ```
 
+new versions: a release is cut automatically on every shipped change, but claude code only pulls it by itself when auto-update is on for the marketplace, and that is **off by default** for third-party marketplaces. turn it on once: in a session run `/plugin`, open **Marketplaces**, pick `plugin-sentry`, **Enable auto-update**. (or put `"autoUpdate": true` on its `extraKnownMarketplaces` entry in your settings.) `/sentry:doctor` tells you when it's off. if you run with `CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1`, also set `FORCE_AUTOUPDATE_PLUGINS=1`, or the update pass is skipped.
+
 the install may say `1 userConfig option not yet set`. that's `hook_mode`, and it defaults to `on`, so you can ignore it, or set it right away with `--config hook_mode=on` (or `quiet` / `off`).
 
 ### install it in one project, switched off
