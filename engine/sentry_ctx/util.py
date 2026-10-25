@@ -17,6 +17,14 @@ PRUNE_DIRS = {
 MAX_FILE_BYTES = 1_000_000
 
 
+def host() -> str:
+    """Which agent runs us: SENTRY_PLUGIN_HOST (set by the hook command line), else Codex's own shell variables, else Claude Code."""
+    h = os.environ.get("SENTRY_PLUGIN_HOST")
+    if h in ("claude", "codex"):
+        return h
+    return "codex" if (os.environ.get("CODEX_THREAD_ID") or os.environ.get("CODEX_CI")) else "claude"
+
+
 class EngineError(Exception):
     """A user-facing failure: message to stderr, exit code 2."""
 

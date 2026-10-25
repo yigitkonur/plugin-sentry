@@ -4,7 +4,7 @@ deny  : anything that prints or copies a raw credential, a token on a command li
         a credential file written where git would track it, a hand edit of the run state (approvals), and any Sentry mutation
         from the read-only auditor agent.
 ask   : every outward-facing Sentry mutation the user has not approved in THIS run and session, and every attempt to record
-        an approval (a human sees the exact command; `SENTRY_PLUGIN_APPROVE_WRITES=1` in the operator's environment, which the
+        an approval (a human sees the exact command; in Codex both become a deny, because its hooks cannot ask a human; `SENTRY_PLUGIN_APPROVE_WRITES=1` in the operator's environment, which the
         model cannot set for the hook process, turns that prompt off for CI and tests).
 Every segment of a compound command is inspected: a denial anywhere denies the whole command, and every mutation in it must be
 approved on its own. Reads are never gated. Best-effort parsing: a guard rail for an agent, not a sandbox.
@@ -490,6 +490,9 @@ def run():
     if verdict == "approval":
         if os.environ.get("SENTRY_PLUGIN_APPROVE_WRITES") == "1":
             return
+        if util.host() == "codex":
+            common.decide("deny", "Recording an approval needs a human, and Codex hooks cannot ask one (a permission prompt is not supported there). Ask the user in chat; if they agree, they run this themselves in their own terminal (not through Codex), from %s: %s" % (root, cmd[:300]))
+            return
         common.decide("ask", "This records the user's approval for a Sentry write (%s). Only approve it if you asked for exactly this operation; the run will treat it as your consent." % cmd[:300])
         return
     if verdict != "mutation":
@@ -503,4 +506,8 @@ def run():
     if not pending:
         return
     seer = any(k[0] == "seer" or (k[0] == "cli" and len(k) > 2 and k[2] in SEER) for k in pending)
-    common.decide("ask", "This changes Sentry state: %s. %s Record the approval first (the user is asked): `sentry-ctx run approve-write` (REST: --method M <exact path>, CLI: --cli \"<command>\"), always in this run and session. Seer runs (`issue explain|plan`) spend money." % (reason, "It includes a Seer run, which spends budget." if seer else ""))
+    verb = "deny" if util.host() == "codex" else "ask"   # Codex rejects permissionDecision "ask" and then runs the command anyway, so there a missing approval must be a denial
+    how = ("Ask the user in chat first. Codex hooks cannot prompt, so once they agree they record it themselves in their own terminal (not through Codex): `sentry-ctx run approve-write` (REST: --method M <exact path>, CLI: --cli \"<command>\"), in this run and session."
+           if verb == "deny" else
+           "Record the approval first (the user is asked): `sentry-ctx run approve-write` (REST: --method M <exact path>, CLI: --cli \"<command>\"), always in this run and session.")
+    common.decide(verb, "This changes Sentry state: %s. %s %s Seer runs (`issue explain|plan`) spend money." % (reason, "It includes a Seer run, which spends budget." if seer else "", how))

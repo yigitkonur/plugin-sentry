@@ -306,7 +306,26 @@ def cmd_flow(args):
     if src and args.name in ("preamble", "policy", "start", "audit", "init", "org"):
         text = ("> **HEADLESS POLICY: `SENTRY_PLUGIN_POLICY_ANSWERS` is set (`%s`).** Run `sentry-ctx policy from-env` for the policy and do not ask or decide it yourself;\n"
                 "> `sentry-ctx policy set` is refused while it is set. No human is available: every approval gate is \"Report only\" unless the prompt that started this session says otherwise.\n\n") % src + text
+    if util.host() == "codex":
+        text = _codex_flow(text)
     print(text)
+
+
+CODEX_FLOW_NOTE = """> **You are in Codex. Where this flow differs from Claude Code, this note wins.**
+> - There is no `AskUserQuestion`: ask each question as a short numbered list (recommended option first, one question per turn), then end your turn and wait for the answer. Never decide an approval gate yourself.
+> - There are no subagents and no `Agent` tool: wherever the flow says to dispatch `sentry:auditor`, `sentry:implementer` or `sentry:verifier`, do that job yourself in this thread, one cell at a time, following `{root}/agents/<auditor|implementer|verifier>.md` (read it first; ignore its `tools:` header).
+> - `sentry-ctx` is not on PATH here; every command below already uses the full path `{ctx}`.
+> - Headless (`codex exec`) works like the no-human rule above.
+
+"""
+
+
+def _codex_flow(text: str) -> str:
+    import re
+    root = paths.plugin_root()
+    ctx = os.path.join(root, "bin", "sentry-ctx")
+    text = re.sub(r"(?<![\w/.-])sentry-ctx(?=[ `\n)])", lambda m: ctx, text)
+    return CODEX_FLOW_NOTE.replace("{root}", root).replace("{ctx}", ctx) + text
 
 
 def cmd_docs(args):

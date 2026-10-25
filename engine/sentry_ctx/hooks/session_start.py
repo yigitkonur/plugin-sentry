@@ -68,5 +68,9 @@ def run():
                 sdk.append("%s %s %s (%s)" % (u["id"], pk[0]["name"], pk[0]["resolved"], init))
         if sdk:
             parts.append(("Sentry detected: %s. SDK majors changed in 2026 (JS v11, Cocoa 9, Python 3 alpha, sentry v4 CLI): do not write Sentry options from memory; look them up with `sentry-ctx docs page <path>` / `sentry-ctx ref <module>`. Deep review: /sentry:audit." % "; ".join(sdk[:3]))[:500])
+    if util.host() == "codex" and source in ("startup", "clear", "resume"):
+        from .. import paths
+        ctx = os.path.join(paths.plugin_root(), "bin", "sentry-ctx")
+        parts.append("Sentry plugin (Codex): its skills (start, audit, init, doctor, ...) tell you to run `sentry-ctx ...`; that command is not on PATH here, so run it as `%s ...`. A skill's `!`-prefixed lines are not run for you: run them yourself. There are no subagents and no AskUserQuestion: ask as a numbered list and wait." % ctx)
     if parts:
         common.context("SessionStart", "\n".join(parts))

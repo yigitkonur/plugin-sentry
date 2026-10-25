@@ -1,0 +1,20 @@
+{
+  "name": "plugin-sentry",
+  "interface": {
+    "displayName": "Sentry (audit and set up)"
+  },
+  "plugins": [
+    {
+      "name": "sentry",
+      "source": {
+        "source": "local",
+        "path": "./"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
+    }
+  ]
+}
