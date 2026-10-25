@@ -25,3 +25,34 @@ jobs:
         run: scripts/check.sh --offline
       - name: Docs-backed checks (identifiers, stale-API rows, links)
         run: scripts/check.sh
+  # After the checks pass on main: bump the version in both manifests when a shipped path changed, tag it and publish a release.
+  # Installed copies update on a version change (marketplaces with autoUpdate on), so a shipped change with no bump would never reach them.
+  release:
+    needs: check
+    if: github.event_name == 'push' && !startsWith(github.event.head_commit.message, 'chore(release)')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    concurrency:
+      group: release
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - name: Decide the bump
+        id: bump
+        run: python3 scripts/bump-version.py --range "${{ github.event.before }}..${{ github.sha }}" --write --github-output
+      - name: Commit, tag, release
+        if: steps.bump.outputs.bump == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          v="${{ steps.bump.outputs.new }}"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -am "chore(release): v$v [skip ci]"
+          git tag -a "v$v" -m "sentry $v"
+          git push origin HEAD:main "v$v"
+          prev="$(git describe --tags --abbrev=0 "v$v^" 2>/dev/null || true)"
+          if [ -n "$prev" ]; then gh release create "v$v" --title "sentry $v" --generate-notes --notes-start-tag "$prev"; else gh release create "v$v" --title "sentry $v" --generate-notes; fi
