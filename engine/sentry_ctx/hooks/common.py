@@ -64,7 +64,8 @@ def written(inp: dict):
             else:
                 if cur is not None and line.startswith("+"):
                     cur[1].append(line[1:])
-        return [(p, ["\n".join(t)]) for p, t in files]
+        cwd = inp.get("cwd") or os.getcwd()   # patch paths are relative to the session's cwd, which can be a subfolder of the repo
+        return [(p if os.path.isabs(p) else os.path.normpath(os.path.join(cwd, p)), ["\n".join(t)]) for p, t in files]
     return [(ti.get("file_path") or "", _texts(ti))]
 
 
