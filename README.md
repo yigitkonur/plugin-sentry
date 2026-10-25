@@ -86,7 +86,9 @@ codex plugin list                                               # "installed, en
 
 update: `codex plugin marketplace upgrade plugin-sentry`, then start a new session. the first time codex loads the plugin's hooks it asks you to review them (`t` trusts all).
 
-what's different in codex: there are no `/sentry:` slash commands, so you name the skill (`$doctor`, `$audit`, or just ask for "the sentry audit"); there are no subagents, so the audit runs inline, one cell at a time; there is no question tool, so questions come as numbered lists and you answer in chat; and the auditor's hard read-only gate is claude-only. the hooks (token paste, `enableLogs` on the wrong sdk major, unapproved sentry writes, unfinished run) work in both, including writes made with `apply_patch`.
+what's different in codex: there are no `/sentry:` slash commands, so you name the skill (`$doctor`, `$audit`, or just ask for "the sentry audit"); there are no subagents, so the audit runs inline, one cell at a time; there is no question tool, so questions come as numbered lists and you answer in chat; and the auditor's hard read-only gate is claude-only. the hooks (token paste, `enableLogs` on the wrong sdk major, unapproved sentry writes, unfinished run) work in both, including writes made with `apply_patch`. one difference: codex hooks can't ask you anything (an "ask" decision is rejected and the command then runs anyway), so in codex an unapproved sentry write is *denied* outright, and you record the approval yourself in your own terminal with `sentry-ctx run approve-write` after saying yes in chat. also: the `sentry` cli keeps its login database under your home folder, so codex's `workspace-write` sandbox can't run it (`unable to open database file`); use a mode that can write there.
+
+smoke-tested live: a fresh codex in a trusted scratch project loaded the doctor skill and ran it by full path (`sentry v4 CLI : 0.47.0`, login and region lines on screen), `apply_patch` writing a `sntryu_` token was blocked, and an unapproved `sentry api -X PUT` was blocked.
 
 no github ssh key on the machine? set `CLAUDE_CODE_PLUGIN_PREFER_HTTPS=1`, or background updates fail quietly.
 
